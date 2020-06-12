@@ -1,0 +1,17 @@
+{
+  "eslint.alwaysShowStatus": true,
+  "html.format.maxPreserveNewLines": null,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "window.zoomLevel": 0,
+  "files.insertFinalNewline": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cmake.configureOnOpen": false
+}

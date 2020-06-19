@@ -1,11 +1,9 @@
 import React from 'react';
-import ButtonComponent from 'Components/Button';
-import Emotion from 'Components/Emotion';
+import ProductList from 'Containers/ProductList/ProductListView';
 
 const MainPage = () => (
   <>
-    <ButtonComponent />
-    <Emotion />
+    <ProductList />
   </>
 );
 

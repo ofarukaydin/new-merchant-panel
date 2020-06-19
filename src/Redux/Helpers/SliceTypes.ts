@@ -1,7 +1,11 @@
 export enum sliceTypes {
-    button = 'button'
-};
+  products = 'products',
+}
 
 export enum sliceNames {
-    buttonSlice = 'buttonSlice',
-};
+  productList = 'productList',
+}
+
+export enum thunkActionTypes {
+  getProducts = 'products/getProducts',
+}

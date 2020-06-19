@@ -1,16 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Profile from 'Components/Profile';
-import MainPage from 'Containers/MainPage';
+import ProductList from 'Containers/ProductList/ProductListView';
 
 const Routes = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path="/">
-        <MainPage />
-      </Route>
-      <Route exact path="/profile">
-        <Profile />
+      <Route exact path="/products">
+        <ProductList />
       </Route>
     </Switch>
   );

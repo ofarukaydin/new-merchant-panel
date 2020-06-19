@@ -85,8 +85,8 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
           pageClassName="px-2"
           forcePage={mutatedParams.pageIndex - 1}
           onPageChange={(page) => handlePagination(page)}
-          marginPagesDisplayed={10}
-          pageRangeDisplayed={10}
+          marginPagesDisplayed={3}
+          pageRangeDisplayed={2}
         />
       )}
       noHeader

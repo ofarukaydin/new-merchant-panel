@@ -75,8 +75,8 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
       paginationServer
       paginationComponent={() => (
         <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
+          previousLabel={<ChevronLeft size={14} />}
+          nextLabel={<ChevronRight size={14} />}
           breakLabel="..."
           pageCount={totalPages}
           containerClassName="tw-flex tw-justify-end tw-mt-8 tw-items-center"

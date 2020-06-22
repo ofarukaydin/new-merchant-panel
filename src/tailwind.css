@@ -1,9 +1,15 @@
 @tailwind base;
 
-.ant-menu-item,
-li div {
-  display: flex !important;
-  align-items: center !important;
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: inline;
+  vertical-align: initial;
 }
 
 @tailwind components;

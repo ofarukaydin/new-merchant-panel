@@ -1,7 +1,9 @@
 import React from 'react';
 import { Menu, Layout } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
-import { NotificationOutlined, UserOutlined, LaptopOutlined } from '@ant-design/icons';
+import { UserOutlined, LaptopOutlined, HomeOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import Logo from 'Components/Logo';
 
 type PropTypes = {
   collapsed: boolean;
@@ -11,35 +13,36 @@ type PropTypes = {
 const LayoutSideMenu = (props: PropTypes) => {
   return (
     <Layout.Sider
+      css={{ overflow: 'auto', height: '100vh', position: 'sticky', top: 0, left: 0 }}
       collapsible
       collapsed={props.collapsed}
       onCollapse={props.onCollapse}
-      className="site-layout-background"
     >
-      <Menu
-        mode="inline"
-        theme="dark"
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        style={{ height: '100%', borderRight: 0 }}
-      >
-        <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-          <Menu.Item key="1">option1</Menu.Item>
-          <Menu.Item key="2">option2</Menu.Item>
-          <Menu.Item key="3">option3</Menu.Item>
-          <Menu.Item key="4">option4</Menu.Item>
+      <div className="tw-items-center tw-justify-center tw-flex tw-py-2">
+        <Logo />
+      </div>
+      <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']}>
+        <Menu.Item key="1" icon={<HomeOutlined />}>
+          <Link to="/">Yönetim Paneli</Link>
+        </Menu.Item>
+        <SubMenu key="sub1" icon={<UserOutlined />} title="Ürün Yönetimi">
+          <Menu.Item key="13">
+            <Link to="/products">Ürün Listesi</Link>
+          </Menu.Item>
         </SubMenu>
-        <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-          <Menu.Item key="5">option5</Menu.Item>
-          <Menu.Item key="6">option6</Menu.Item>
-          <Menu.Item key="7">option7</Menu.Item>
-          <Menu.Item key="8">option8</Menu.Item>
-        </SubMenu>
-        <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-          <Menu.Item key="9">option9</Menu.Item>
-          <Menu.Item key="10">option10</Menu.Item>
-          <Menu.Item key="11">option11</Menu.Item>
-          <Menu.Item key="12">option12</Menu.Item>
+        <SubMenu key="sub2" icon={<LaptopOutlined />} title="Sipariş Yönetimi">
+          <Menu.Item key="5">
+            <Link to="/orders?page=newOrders&status=ORDERED">Yeni Siparişler</Link>
+          </Menu.Item>
+          <Menu.Item key="6">
+            <Link to="/orders?page=shippingStage&status=READY">Kargo Aşamasında</Link>
+          </Menu.Item>
+          <Menu.Item key="7">
+            <Link to="/orders?page=cancelledOrders&status=CANCELLED">İptal Edilenler</Link>
+          </Menu.Item>
+          <Menu.Item key="8">
+            <Link to="/orders?page=refundedOrders&status=REFUNDED">İade / Eksik Ürün</Link>
+          </Menu.Item>
         </SubMenu>
       </Menu>
     </Layout.Sider>

@@ -16,6 +16,7 @@
     "axios": "^0.19.2",
     "edkk-redux": "^1.4.0",
     "history": "^4.10.1",
+    "jsonwebtoken": "^8.5.1",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-data-table-component": "^6.9.3",
@@ -49,6 +50,7 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
+      "chrome 79",
       "last 1 safari version"
     ]
   },

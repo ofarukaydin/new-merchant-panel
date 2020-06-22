@@ -4,4 +4,5 @@ export type SearchParams = {
   searchValue: string;
   orderDir: string;
   orderBy: string;
+  page?: 'shippingStage' | 'cancelledOrders' | 'refundedOrders' | 'newOrders';
 };

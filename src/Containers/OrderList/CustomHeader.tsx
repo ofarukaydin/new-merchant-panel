@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
 import { Menu, Dropdown, Button } from 'antd';
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { SearchParams } from 'Util/Types';
 import Searchbar from 'Components/Searchbar';
+import ShippingStageHeader from 'Containers/OrderList/ShippingStageHeader';
+import CancelledOrdersHeader from 'Containers/OrderList/CancelledOrdersHeader';
 
 type PropTypes = {
   handleFilter: (value: string) => void;
@@ -14,7 +15,7 @@ type PropTypes = {
   params: SearchParams;
 };
 
-const CustomHeader = ({ handleRowsPerPage, index, total, handleFilter }: PropTypes) => {
+const CustomHeader = ({ handleRowsPerPage, index, total, handleFilter, params }: PropTypes) => {
   const menu = (
     <Menu>
       <Menu.Item key="1" onClick={() => handleRowsPerPage(4)}>
@@ -32,11 +33,16 @@ const CustomHeader = ({ handleRowsPerPage, index, total, handleFilter }: PropTyp
     </Menu>
   );
   return (
-    <div className="tw-flex tw-justify-between">
-      <Dropdown overlay={menu}>
-        <Button>{`${index[0]} - ${index[1]} of ${total}`}</Button>
-      </Dropdown>
-      <Searchbar className="tw-ml-2" onChange={(e) => handleFilter(e)} />
+    <div className="tw-flex tw-justify-between tw-w-full">
+      {params.page === 'shippingStage' && <ShippingStageHeader />}
+      {params.page === 'cancelledOrders' && <CancelledOrdersHeader />}
+      <div />
+      <div className="tw-flex">
+        <Dropdown overlay={menu}>
+          <Button>{`${index[0]} - ${index[1]} of ${total}`}</Button>
+        </Dropdown>
+        <Searchbar className="tw-ml-2" onChange={(e) => handleFilter(e)} />
+      </div>
     </div>
   );
 };

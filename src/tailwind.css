@@ -1,3 +1,10 @@
 @tailwind base;
+
+.ant-menu-item,
+li div {
+  display: flex !important;
+  align-items: center !important;
+}
+
 @tailwind components;
 @tailwind utilities;

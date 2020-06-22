@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 import LayoutSideMenu from 'Components/Layout/SideMenu';
 import LayoutHeader from 'Components/Layout/Header';
 import LayoutBreadcrumb from 'Components/Layout/Breadcrumb';
+import LayoutFooter from 'Components/Layout/Footer';
 
 const { Content } = Layout;
 
@@ -10,22 +11,15 @@ const LayoutUI = (props: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <LayoutHeader />
+      <LayoutSideMenu collapsed={collapsed} onCollapse={() => setCollapsed(!collapsed)} />
       <Layout>
-        <LayoutSideMenu collapsed={collapsed} onCollapse={() => setCollapsed(!collapsed)} />
-        <Layout style={{ padding: '0 24px 24px' }}>
+        <LayoutHeader />
+        <Content style={{ margin: '0 16px' }}>
           <LayoutBreadcrumb />
-          <Content
-            className="site-layout-background"
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            {props.children}
-          </Content>
-        </Layout>
+
+          {props.children}
+        </Content>
+        <LayoutFooter />
       </Layout>
     </Layout>
   );

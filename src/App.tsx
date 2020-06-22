@@ -1,19 +1,26 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import reactotron from 'Util/Config/Reactotron';
 import Layout from 'Containers/Layout';
-import { Router } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import Routes from 'Routes';
 import history from 'Util/History';
-import 'tailwind.css';
+import Login from 'Containers/Login';
+import { checkAuthState } from 'Util/Auth';
 
 const App: FC = () => {
-  reactotron.log!('test');
+  useEffect(() => {
+    checkAuthState();
+  }, []);
+
   return (
-    <Layout>
-      <Router history={history}>
-        <Routes />
-      </Router>
-    </Layout>
+    <Router history={history}>
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Layout>
+          <Routes />
+        </Layout>
+      </Switch>
+    </Router>
   );
 };
 

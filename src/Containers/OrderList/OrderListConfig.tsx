@@ -3,9 +3,9 @@ import DataTable from 'react-data-table-component';
 import ReactPaginate from 'react-paginate';
 import { ChevronDown, Check, ChevronLeft, ChevronRight } from 'react-feather';
 import { useSelector, useDispatch } from 'react-redux';
-import { asyncGetProducts } from 'Redux/ProductListSlice';
+import { asyncGetOrders } from 'Redux/OrderListSlice';
 import { Checkbox, Spin } from 'antd';
-import CustomHeader from 'Containers/ProductList/CustomHeader';
+import CustomHeader from 'Containers/OrderList/CustomHeader';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
   sortIndexSelector,
@@ -14,12 +14,12 @@ import {
   rowsPerPageSelector,
   paginatedDataSelector,
   loadingSelector,
-} from 'Containers/ProductList/Selectors';
-import getProductListColumns from 'Containers/ProductList/ProductListColumns';
+} from 'Containers/OrderList/Selectors';
+import getOrderListColumns from 'Containers/OrderList/OrderListColumns';
 import { navigateTo } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
 
-const ProductListConfig = ({ params }: { params: SearchParams }) => {
+const OrderListConfig = ({ params }: { params: SearchParams }) => {
   const [selectedRows, setSelectedRows] = useState<unknown>([]);
 
   const dispatch = useDispatch();
@@ -33,36 +33,36 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
 
   const mutatedParams = { ...params };
   useDeepCompareEffect(() => {
-    dispatch(asyncGetProducts(mutatedParams));
+    dispatch(asyncGetOrders(mutatedParams));
   }, [mutatedParams]);
 
   const handleFilter = (value: string) => {
     if (value !== mutatedParams.searchValue) {
       mutatedParams.searchValue = value;
-      navigateTo('/products', mutatedParams);
+      navigateTo('/orders', mutatedParams);
     }
   };
 
   const handleRowsPerPage = (value: number) => {
     mutatedParams.pageIndex = 1;
     mutatedParams.pageSize = value;
-    navigateTo('/products', mutatedParams);
+    navigateTo('/orders', mutatedParams);
   };
 
   const handlePagination = (page: any) => {
     mutatedParams.pageIndex = page.selected + 1;
-    navigateTo('/products', mutatedParams);
+    navigateTo('/orders', mutatedParams);
   };
 
   const handleSort = (column: any, sortDirection: string) => {
     mutatedParams.orderBy = column.selector;
     mutatedParams.orderDir = sortDirection;
-    navigateTo('/products', mutatedParams);
+    navigateTo('/orders', mutatedParams);
   };
 
   return (
     <DataTable
-      columns={getProductListColumns()}
+      columns={getOrderListColumns(params)}
       data={paginatedData}
       progressPending={loading}
       progressComponent={
@@ -120,4 +120,4 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   );
 };
 
-export default memo(ProductListConfig);
+export default memo(OrderListConfig);

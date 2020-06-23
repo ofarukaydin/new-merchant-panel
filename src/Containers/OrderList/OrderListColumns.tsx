@@ -4,7 +4,6 @@ import { isoToLocalDate } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
 import { orderStatus } from 'Util/Enums';
 import { ColumnProps } from 'antd/lib/table';
-import { Space, Popconfirm } from 'antd';
 
 export default function getOrderListColumns(params: SearchParams) {
   const baseOrderListColumns: Array<ColumnProps<any>> = [

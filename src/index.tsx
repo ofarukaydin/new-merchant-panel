@@ -7,6 +7,8 @@ import './index.less';
 import 'tailwind.css';
 import { sliceTypes } from 'Redux/Helpers/SliceTypes';
 import { AxiosClient } from 'edkk-redux';
+import { ConfigProvider } from 'antd';
+import trTR from 'antd/es/locale/tr_TR';
 
 AxiosClient.defaults.baseURL = process.env.REACT_APP_BACKEND_API_URL;
 store.subscribe(() => {
@@ -17,9 +19,11 @@ store.subscribe(() => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ConfigProvider locale={trTR}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ConfigProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

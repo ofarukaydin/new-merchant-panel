@@ -2,10 +2,14 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import ProductList from 'Containers/ProductList/ProductListView';
 import OrderList from 'Containers/OrderList/OrderListView';
+import Dashboard from 'Containers/Dashboard';
 
 const Routes = (): JSX.Element => {
   return (
     <Switch>
+      <Route exact path="/">
+        <Dashboard />
+      </Route>
       <Route exact path="/products">
         <ProductList />
       </Route>

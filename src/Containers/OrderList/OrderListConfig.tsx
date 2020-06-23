@@ -1,34 +1,24 @@
-import React, { useState, memo } from 'react';
-import DataTable from 'react-data-table-component';
-import ReactPaginate from 'react-paginate';
-import { ChevronDown, Check, ChevronLeft, ChevronRight } from 'react-feather';
+import React, { memo, ReactText } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
-import { Checkbox, Spin } from 'antd';
-import CustomHeader from 'Containers/OrderList/CustomHeader';
+import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
-  sortIndexSelector,
-  totalPagesSelector,
   totalRecordsSelector,
-  rowsPerPageSelector,
   paginatedDataSelector,
   loadingSelector,
 } from 'Containers/OrderList/Selectors';
-import getOrderListColumns from 'Containers/OrderList/OrderListColumns';
 import { navigateTo } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
+import { TablePaginationConfig } from 'antd/lib/table/interface';
+import getOrderListColumns from 'Containers/OrderList/OrderListColumns';
+import CustomHeader from 'Containers/OrderList/CustomHeader';
 
-const OrderListConfig = ({ params }: { params: SearchParams }) => {
-  const [selectedRows, setSelectedRows] = useState<unknown>([]);
-
+const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();
 
   const paginatedData: any = useSelector(paginatedDataSelector);
-  const totalPages: number = useSelector(totalPagesSelector);
   const totalRecords: number = useSelector(totalRecordsSelector);
-  const sortIndex: number[] = useSelector(sortIndexSelector);
-  const rowsPerPage: number = useSelector(rowsPerPageSelector);
   const loading: boolean = useSelector(loadingSelector);
 
   const mutatedParams = { ...params };
@@ -36,88 +26,41 @@ const OrderListConfig = ({ params }: { params: SearchParams }) => {
     dispatch(asyncGetOrders(mutatedParams));
   }, [mutatedParams]);
 
-  const handleFilter = (value: string) => {
-    if (value !== mutatedParams.searchValue) {
-      mutatedParams.searchValue = value;
-      navigateTo('/orders', mutatedParams);
-    }
-  };
+  const handlePaginationAndFilterAndSort = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, ReactText[] | null>,
+    sorter: any,
+  ) => {
+    mutatedParams.pageIndex = pagination.current || mutatedParams.pageIndex;
+    mutatedParams.pageSize = pagination.pageSize || mutatedParams.pageSize;
+    mutatedParams.orderBy = sorter.field || mutatedParams.orderBy;
+    mutatedParams.orderDir = sorter.order === 'ascend' ? 'asc' : 'desc';
 
-  const handleRowsPerPage = (value: number) => {
-    mutatedParams.pageIndex = 1;
-    mutatedParams.pageSize = value;
     navigateTo('/orders', mutatedParams);
   };
 
-  const handlePagination = (page: any) => {
-    mutatedParams.pageIndex = page.selected + 1;
-    navigateTo('/orders', mutatedParams);
-  };
-
-  const handleSort = (column: any, sortDirection: string) => {
-    mutatedParams.orderBy = column.selector;
-    mutatedParams.orderDir = sortDirection;
+  const handleSearch = (searchValue: string) => {
+    mutatedParams.searchValue = searchValue;
     navigateTo('/orders', mutatedParams);
   };
 
   return (
-    <DataTable
-      columns={getOrderListColumns(params)}
-      data={paginatedData}
-      progressPending={loading}
-      progressComponent={
-        <div className="tw-p-4 tw-m-4">
-          <Spin size="large" />
-        </div>
-      }
-      noDataComponent={<div className="tw-p-2">Herhangi bir veri bulunamadı</div>}
-      pagination
-      paginationServer
-      paginationComponent={() => (
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          pageCount={totalPages}
-          containerClassName="tw-flex tw-justify-end tw-mt-8 tw-items-center"
-          activeClassName="tw-text-primary"
-          pageClassName="tw-px-2"
-          forcePage={mutatedParams.pageIndex - 1}
-          onPageChange={(page) => handlePagination(page)}
-          marginPagesDisplayed={3}
-          pageRangeDisplayed={2}
-        />
-      )}
-      noHeader
-      subHeader
-      selectableRows
-      responsive
-      pointerOnHover
-      selectableRowsHighlight
-      onSelectedRowsChange={(rows) => setSelectedRows(rows.selectedRows)}
-      subHeaderComponent={
-        <CustomHeader
-          handleFilter={handleFilter}
-          handleRowsPerPage={handleRowsPerPage}
-          rowsPerPage={rowsPerPage}
-          total={totalRecords}
-          index={sortIndex}
-          selectedRows={selectedRows}
-          params={mutatedParams}
-        />
-      }
-      sortIcon={<ChevronDown />}
-      sortServer
-      onSort={handleSort}
-      selectableRowsComponent={Checkbox}
-      selectableRowsComponentProps={{
-        color: 'primary',
-        icon: <Check size={12} />,
-        label: '',
-        size: 'sm',
-      }}
-    />
+    <>
+      <CustomHeader handleSearch={handleSearch} params={params} />
+      <Table
+        onChange={handlePaginationAndFilterAndSort}
+        columns={getOrderListColumns(params)}
+        rowKey={(row) => row.id}
+        dataSource={paginatedData}
+        loading={loading}
+        pagination={{
+          pageSize: mutatedParams.pageSize,
+          total: totalRecords,
+          current: mutatedParams.pageIndex,
+        }}
+      />
+    </>
   );
 };
 
-export default memo(OrderListConfig);
+export default memo(ProductListConfig);

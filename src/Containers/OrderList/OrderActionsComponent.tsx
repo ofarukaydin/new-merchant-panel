@@ -4,11 +4,11 @@ import { orderStatus } from 'Util/Enums';
 import { useDispatch } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
 import Api from 'Util/Api';
-import { notification } from 'antd';
+import { notification, Popconfirm } from 'antd';
 import { SearchParams } from 'Util/Types';
 
 type PropTypes = {
-  row: any;
+  record: any;
   params: SearchParams;
 };
 
@@ -16,7 +16,7 @@ const OrderActionsComponent = (props: PropTypes) => {
   const dispatch = useDispatch();
 
   const changeOrderStatusTo = (status: keyof typeof orderStatus) => {
-    Api.post('/order/updateorderstatusasync', { orderId: props.row.id, orderStatus: status })
+    Api.post('/order/updateorderstatusasync', { orderId: props.record.id, orderStatus: status })
       .then((response: any) => {
         if (response?.data?.result) {
           notification.success({
@@ -40,10 +40,26 @@ const OrderActionsComponent = (props: PropTypes) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', width: 70 }}>
-      <Check onClick={() => changeOrderStatusTo('READY')} className="cursor-pointer" size={20} />
-      <X onClick={() => changeOrderStatusTo('CANCELLED')} className="cursor-pointer" size={20} />
-    </div>
+    <span>
+      <a
+        href="javascript:;"
+        onClick={() => {
+          changeOrderStatusTo('READY');
+        }}
+        className="tw-text-primary"
+        style={{ marginRight: 8 }}
+      >
+        Onayla
+      </a>
+      <Popconfirm
+        title="Siparişi iptal etmek istediğinize emin misiniz?"
+        onConfirm={() => {
+          changeOrderStatusTo('CANCELLED');
+        }}
+      >
+        <a className="tw-text-primary">İptal et</a>
+      </Popconfirm>
+    </span>
   );
 };
 

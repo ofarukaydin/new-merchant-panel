@@ -7,6 +7,7 @@ export enum orderStatus {
   REFUNDED = 'İade',
 }
 
-export interface IOrderStatusRow {
-  [key: string]: keyof typeof orderStatus;
+export enum orderDir {
+  ascend = 'asc',
+  descend = 'desc',
 }

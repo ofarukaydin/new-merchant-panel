@@ -2,74 +2,80 @@ import React from 'react';
 import OrderActionsComponent from 'Containers/OrderList/OrderActionsComponent';
 import { isoToLocalDate } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
-import { orderStatus, IOrderStatusRow } from 'Util/Enums';
+import { orderStatus } from 'Util/Enums';
+import { ColumnProps } from 'antd/lib/table';
+import { Space, Popconfirm } from 'antd';
 
 export default function getOrderListColumns(params: SearchParams) {
-  const baseOrderListColumns = [
+  const baseOrderListColumns: Array<ColumnProps<any>> = [
     {
-      name: 'Sipariş Tarihi',
-      selector: 'orderDate',
-      sortable: true,
-      cell: (row: any) => isoToLocalDate(row.orderDate),
+      title: 'Sipariş Tarihi',
+      dataIndex: 'orderDate',
+      sorter: true,
+      render: (orderDate: any) => isoToLocalDate(orderDate),
     },
     {
-      name: 'Sipariş Numarası',
-      selector: 'orderNumber',
-      sortable: true,
+      title: 'Sipariş Numarası',
+      dataIndex: 'orderNumber',
+      sorter: true,
     },
     {
-      name: 'Alıcı',
-      selector: 'customer',
-      sortable: false,
+      title: 'Alıcı',
+      dataIndex: 'customer',
+      sorter: false,
     },
     {
-      name: 'Satış Fiyatı',
-      selector: 'amount',
-      sortable: true,
-      cell: (row: any) => <span className="tw-text-2xl tw-font-bold">{row.amount}₺</span>,
+      title: 'Satış Fiyatı',
+      dataIndex: 'amount',
+      sorter: true,
+      render: (amount: any) => <span className="tw-text-xl tw-font-bold">{amount}₺</span>,
     },
     {
-      name: 'Durum',
-      selector: 'orderStatus',
-      sortable: true,
-      cell: (row: IOrderStatusRow) => orderStatus[row.orderStatus],
+      title: 'Durum',
+      dataIndex: 'orderStatus',
+      sorter: true,
+      render: (order: keyof typeof orderStatus) => orderStatus[order],
     },
   ];
 
   if (params.page === 'cancelledOrders') {
     baseOrderListColumns.splice(baseOrderListColumns.length - 1, 0, {
-      name: 'İptal Nedeni',
-      selector: 'notes',
-      sortable: true,
+      title: 'İptal Nedeni',
+      dataIndex: 'notes',
+      sorter: true,
     });
   } else if (params.page === 'newOrders') {
     baseOrderListColumns.push({
-      name: 'İşlemler',
-      selector: 'actions',
-      sortable: false,
-      cell: (row: any) => <OrderActionsComponent params={params} row={row} />,
+      title: 'İşlemler',
+      dataIndex: 'actions',
+      sorter: false,
+      render: (_: any, record: any) => <OrderActionsComponent params={params} record={record} />,
     });
   } else {
     baseOrderListColumns.splice(1, 0, {
-      name: 'Teslimat Tarihi',
-      selector: 'deliveryDate',
-      sortable: true,
-      cell: (row: any) => isoToLocalDate(row.deliveryDate),
+      title: 'Teslimat Tarihi',
+      dataIndex: 'deliveryDate',
+      sorter: true,
+      render: (deliveryDate: any) => isoToLocalDate(deliveryDate),
     });
     baseOrderListColumns.splice(
       baseOrderListColumns.length - 1,
       0,
       {
-        name: 'Kargo Fiyatı',
-        selector: 'shippingPrice',
-        sortable: true,
-        cell: (row: any) => <span className="tw-text-2xl tw-font-bold">{row.shippingPrice}₺</span>,
+        title: 'Kargo Fiyatı',
+        dataIndex: 'shippingPrice',
+        sorter: true,
+        render: (shippingPrice: any) => (
+          <span className="tw-text-xl tw-font-bold">{shippingPrice}₺</span>
+        ),
       },
       {
-        name: 'Toplam Faturalandırılacak Fiyat',
-        selector: 'totalAmount',
-        sortable: true,
-        cell: (row: any) => <span className="tw-text-2xl tw-font-bold">{row.totalAmount}₺</span>,
+        title: 'Toplam Faturalandırılacak Fiyat',
+        dataIndex: 'totalAmount',
+        sorter: true,
+        render: (totalAmount: any) => (
+          <span className="tw-text-xl tw-font-bold">{totalAmount}₺</span>
+        ),
       },
     );
   }

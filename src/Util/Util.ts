@@ -24,7 +24,6 @@ export const isoToLocalDate = (dateString: string) => {
 };
 
 export const getIndex = (totalCount: number, paginatedData: any, params: SearchParams) => {
-  console.log(params, 'params');
   if (paginatedData && paginatedData.length > 0) {
     const startIndex = (params.pageIndex - 1) * params.pageSize + 1;
     const endIndex =

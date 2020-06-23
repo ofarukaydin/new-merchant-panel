@@ -1,14 +1,12 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
-
-const { Header } = Layout;
+import { Layout } from 'antd';
 
 type PropTypes = {
   authenticated: boolean;
 };
 
 const LayoutHeader = () => {
-  return <Header style={{ backgroundColor: 'white' }} />;
+  return <Layout.Header style={{ backgroundColor: 'white' }} />;
 };
 
 export default LayoutHeader;

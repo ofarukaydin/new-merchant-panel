@@ -14,8 +14,8 @@ const OrderListView = () => {
     pageIndex: 1,
     pageSize: 10,
     searchValue: '',
-    orderDir: '',
-    orderBy: '',
+    orderDir: 'desc',
+    orderBy: 'orderDate',
   };
 
   const params: SearchParams = {

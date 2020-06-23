@@ -1,56 +1,58 @@
 import React from 'react';
+import { ColumnProps } from 'antd/lib/table';
 
-export default function getProductListColumns() {
-  const baseProductListColumns = [
-    {
-      name: 'Ürün Resmi',
-      selector: 'imageUrl',
-      cell: (row: any) => <img src={row.imageUrl} height="100" width="100" alt={row.productName} />,
-    },
-    {
-      name: 'Ürün Adı',
-      selector: 'productName',
-      sortable: true,
-      cell: (row: any) => (
-        <p title={row.productName} className="tw-mb-0 tw-font-bold">
-          {row.productName}
-        </p>
-      ),
-    },
-    {
-      name: 'Kategori',
-      selector: 'categoryName',
-      sortable: true,
-    },
-    {
-      name: 'SKU',
-      selector: 'sku',
-      sortable: true,
-    },
-    {
-      name: 'Stok Adedi',
-      selector: 'stock',
-      sortable: true,
-    },
-    {
-      name: 'Fiyat',
-      selector: 'price',
-      sortable: true,
-      cell: (row: any) => <span className="tw-text-2xl tw-font-bold">{row.price}₺</span>,
-    },
-    {
-      name: 'Kampanya',
-      selector: 'campain',
-      sortable: true,
-      cell: (row: any) => (row.campain ? 'Evet' : 'Hayır'),
-    },
-    {
-      name: 'Hızlı Kargo',
-      selector: 'orderStatus',
-      sortable: true,
-      cell: (row: any) => (row.fastShipping ? 'Evet' : 'Hayır'),
-    },
-  ];
+const baseProductListColumns: Array<ColumnProps<any>> = [
+  {
+    title: 'Ürün Resmi',
+    dataIndex: 'imageUrl',
+    key: 'imageUrl',
+    render: (picture: any) => <img src={picture} height="100" width="100" />,
+  },
+  {
+    title: 'Ürün Adı',
+    dataIndex: 'productName',
+    key: 'productName',
+    sorter: true,
+  },
+  {
+    title: 'Kategori',
+    dataIndex: 'categoryName',
+    key: 'categoryName',
+    sorter: true,
+  },
+  {
+    title: 'SKU',
+    dataIndex: 'sku',
+    key: 'sku',
+    sorter: true,
+  },
+  {
+    title: 'Stok Adedi',
+    dataIndex: 'stock',
+    key: 'stock',
+    sorter: true,
+  },
+  {
+    title: 'Fiyat',
+    dataIndex: 'price',
+    key: 'price',
+    render: (price: any) => <span className="tw-text-xl tw-font-bold">{price}₺</span>,
+    sorter: true,
+  },
+  {
+    title: 'Kampanya',
+    dataIndex: 'campain',
+    key: 'campain',
+    render: (campain: any) => (campain ? 'Evet' : 'Hayır'),
+    sorter: true,
+  },
+  {
+    title: 'Hızlı Kargo',
+    dataIndex: 'orderStatus',
+    key: 'orderStatus',
+    render: (fastShipping: any) => (fastShipping ? 'Evet' : 'Hayır'),
+    sorter: true,
+  },
+];
 
-  return baseProductListColumns;
-}
+export default baseProductListColumns;

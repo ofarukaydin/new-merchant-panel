@@ -6,6 +6,7 @@ import { asyncGetOrders } from 'Redux/OrderListSlice';
 import Api from 'Util/Api';
 import { notification, Popconfirm } from 'antd';
 import { SearchParams } from 'Util/Types';
+import { CSSObject } from '@emotion/core';
 
 type PropTypes = {
   record: any;
@@ -46,7 +47,7 @@ const OrderActionsComponent = (props: PropTypes) => {
         onClick={() => {
           changeOrderStatusTo('READY');
         }}
-        style={{ marginRight: 8 }}
+        css={styles.confirm}
       >
         Onayla
       </a>
@@ -60,6 +61,10 @@ const OrderActionsComponent = (props: PropTypes) => {
       </Popconfirm>
     </span>
   );
+};
+
+const styles: CSSObject = {
+  confirm: { marginRight: 8 },
 };
 
 export default memo(OrderActionsComponent);

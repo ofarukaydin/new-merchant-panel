@@ -5,6 +5,7 @@ import LayoutHeader from 'Components/Layout/Header';
 import LayoutBreadcrumb from 'Components/Layout/Breadcrumb';
 import LayoutFooter from 'Components/Layout/Footer';
 import { checkAuthState } from 'Util/Auth';
+import { CSSObject } from '@emotion/core';
 
 const { Content } = Layout;
 
@@ -16,11 +17,11 @@ const LayoutUI = (props: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout css={styles.container}>
       <LayoutSideMenu collapsed={collapsed} onCollapse={() => setCollapsed(!collapsed)} />
       <Layout>
         <LayoutHeader />
-        <Content style={{ margin: '0 16px' }}>
+        <Content css={styles.contentContainer}>
           <LayoutBreadcrumb />
           {props.children}
         </Content>
@@ -28,6 +29,11 @@ const LayoutUI = (props: { children: React.ReactNode }) => {
       </Layout>
     </Layout>
   );
+};
+
+const styles: CSSObject = {
+  container: { minHeight: '100vh' },
+  contentContainer: { margin: '0 16px' },
 };
 
 export default LayoutUI;

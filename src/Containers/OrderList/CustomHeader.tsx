@@ -3,6 +3,8 @@ import { SearchParams } from 'Util/Types';
 import Searchbar from 'Components/Searchbar';
 import ShippingStageHeader from 'Containers/OrderList/ShippingStageHeader';
 import CancelledOrdersHeader from 'Containers/OrderList/CancelledOrdersHeader';
+import { CSSObject } from '@emotion/core';
+import ThemeConfig from 'Util/ThemeConfig';
 
 type PropTypes = {
   handleSearch: (value: string) => void;
@@ -11,15 +13,30 @@ type PropTypes = {
 
 const CustomHeader = ({ handleSearch, params }: PropTypes) => {
   return (
-    <div className="tw-flex tw-justify-between tw-w-full tw-pb-4">
+    <div css={styles.container}>
       {params.page === 'shippingStage' && <ShippingStageHeader />}
       {params.page === 'cancelledOrders' && <CancelledOrdersHeader />}
       <div />
-      <div className="tw-flex">
-        <Searchbar className="tw-ml-2" onChange={(e) => handleSearch(e)} />
+      <div css={styles.searchBarContainer}>
+        <Searchbar css={styles.searchBar} onChange={(e) => handleSearch(e)} />
       </div>
     </div>
   );
+};
+
+const styles: CSSObject = {
+  container: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingBottom: ThemeConfig.spacing[4],
+  },
+  searchBarContainer: {
+    display: 'flex',
+  },
+  searchBar: {
+    marginLeft: ThemeConfig.spacing[2],
+  },
 };
 
 export default memo(CustomHeader);

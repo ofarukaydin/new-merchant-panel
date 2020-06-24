@@ -4,6 +4,8 @@ import { isoToLocalDate } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
 import { orderStatus } from 'Util/Enums';
 import { ColumnProps } from 'antd/lib/table';
+import ThemeConfig from 'Util/ThemeConfig';
+import { CSSObject } from '@emotion/core';
 
 export default function getOrderListColumns(params: SearchParams) {
   const baseOrderListColumns: Array<ColumnProps<any>> = [
@@ -27,7 +29,7 @@ export default function getOrderListColumns(params: SearchParams) {
       title: 'Satış Fiyatı',
       dataIndex: 'amount',
       sorter: true,
-      render: (amount: any) => <span className="tw-text-xl tw-font-bold">{amount}₺</span>,
+      render: (amount: any) => <span css={styles.price}>{amount}₺</span>,
     },
     {
       title: 'Durum',
@@ -64,20 +66,23 @@ export default function getOrderListColumns(params: SearchParams) {
         title: 'Kargo Fiyatı',
         dataIndex: 'shippingPrice',
         sorter: true,
-        render: (shippingPrice: any) => (
-          <span className="tw-text-xl tw-font-bold">{shippingPrice}₺</span>
-        ),
+        render: (shippingPrice: any) => <span css={styles.price}>{shippingPrice}₺</span>,
       },
       {
         title: 'Toplam Faturalandırılacak Fiyat',
         dataIndex: 'totalAmount',
         sorter: true,
-        render: (totalAmount: any) => (
-          <span className="tw-text-xl tw-font-bold">{totalAmount}₺</span>
-        ),
+        render: (totalAmount: any) => <span css={styles.price}>{totalAmount}₺</span>,
       },
     );
   }
 
   return baseOrderListColumns;
 }
+
+const styles: CSSObject = {
+  price: {
+    fontSize: ThemeConfig.fontSize.xl,
+    fontWeight: ThemeConfig.fontWeight.bold,
+  },
+};

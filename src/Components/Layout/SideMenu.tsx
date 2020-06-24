@@ -4,6 +4,8 @@ import SubMenu from 'antd/lib/menu/SubMenu';
 import { UserOutlined, LaptopOutlined, HomeOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from 'Components/Logo';
+import ThemeConfig from 'Util/ThemeConfig';
+import { CSSObject } from '@emotion/core';
 
 type PropTypes = {
   collapsed: boolean;
@@ -13,12 +15,12 @@ type PropTypes = {
 const LayoutSideMenu = (props: PropTypes) => {
   return (
     <Layout.Sider
-      css={{ overflow: 'auto', height: '100vh', position: 'sticky', top: 0, left: 0 }}
+      css={styles.sideMenu}
       collapsible
       collapsed={props.collapsed}
       onCollapse={props.onCollapse}
     >
-      <div className="tw-items-center tw-justify-center tw-flex tw-py-2">
+      <div css={styles.logo}>
         <Logo />
       </div>
       <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']}>
@@ -47,6 +49,16 @@ const LayoutSideMenu = (props: PropTypes) => {
       </Menu>
     </Layout.Sider>
   );
+};
+const styles: CSSObject = {
+  sideMenu: { overflow: 'auto', height: '100vh', position: 'sticky', top: 0, left: 0 },
+  logo: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: ThemeConfig.spacing[2],
+    marginTop: ThemeConfig.spacing[2],
+  },
 };
 
 export default LayoutSideMenu;

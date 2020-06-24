@@ -11,6 +11,8 @@ import {
   ClockCircleOutlined,
 } from '@ant-design/icons';
 import StatisticsCard from 'Components/StatisticsCard';
+import { CSSObject } from '@emotion/core';
+import ThemeConfig from 'Util/ThemeConfig';
 
 const Dashboard = () => {
   const [orderedCount, setOrderedCount] = useState(0);
@@ -45,7 +47,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1 className="tw-text-3xl tw-font-bold tw-py-2">Siparişler</h1>
+      <h1 css={styles.h1}>Siparişler</h1>
       <Row gutter={24} justify="space-between">
         <Col span={8}>
           <StatisticsCard title="Yeni Sipariş" value={orderedCount} icon={<AlertOutlined />} />
@@ -63,7 +65,7 @@ const Dashboard = () => {
           />
         </Col>
       </Row>
-      <h1 className="tw-text-3xl tw-font-bold tw-py-2">Müşteri Talepleri</h1>
+      <h1 css={styles.h1}>Müşteri Talepleri</h1>
       <Row gutter={24} justify="space-between">
         <Col span={6}>
           <StatisticsCard title="İade" value={0} icon={<RollbackOutlined />} />
@@ -83,14 +85,23 @@ const Dashboard = () => {
       </Row>
       <Row>
         <Col span={12}>
-          <h1 className="tw-text-3xl tw-font-bold tw-py-2">Mağaza Bilgileri</h1>
+          <h1 css={styles.h1}>Mağaza Bilgileri</h1>
         </Col>
         <Col span={12}>
-          <h1 className="tw-text-3xl tw-font-bold tw-py-2">Muhasebe Bildirisi</h1>
+          <h1 css={styles.h1}>Muhasebe Bildirisi</h1>
         </Col>
       </Row>
     </>
   );
+};
+
+const styles: CSSObject = {
+  h1: {
+    fontSize: ThemeConfig.fontSize['3xl'],
+    fontWeight: ThemeConfig.fontWeight.bold,
+    marginTop: ThemeConfig.spacing[2],
+    marginBottom: ThemeConfig.spacing[2],
+  },
 };
 
 export default Dashboard;

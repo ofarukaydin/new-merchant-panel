@@ -1,5 +1,14 @@
 import React from 'react';
 import { ColumnProps } from 'antd/lib/table';
+import { CSSObject } from '@emotion/core';
+import ThemeConfig from 'Util/ThemeConfig';
+
+const styles: CSSObject = {
+  price: {
+    fontSize: ThemeConfig.fontSize.xl,
+    fontWeight: ThemeConfig.fontWeight.bold,
+  },
+};
 
 const baseProductListColumns: Array<ColumnProps<any>> = [
   {
@@ -36,7 +45,7 @@ const baseProductListColumns: Array<ColumnProps<any>> = [
     title: 'Fiyat',
     dataIndex: 'price',
     key: 'price',
-    render: (price: any) => <span className="tw-text-xl tw-font-bold">{price}₺</span>,
+    render: (price: any) => <span css={styles.price}>{price}₺</span>,
     sorter: true,
   },
   {

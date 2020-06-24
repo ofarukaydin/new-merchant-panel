@@ -46,7 +46,6 @@ const OrderActionsComponent = (props: PropTypes) => {
         onClick={() => {
           changeOrderStatusTo('READY');
         }}
-        className="tw-text-primary"
         style={{ marginRight: 8 }}
       >
         Onayla
@@ -57,7 +56,7 @@ const OrderActionsComponent = (props: PropTypes) => {
           changeOrderStatusTo('CANCELLED');
         }}
       >
-        <a className="tw-text-primary">İptal et</a>
+        <a>İptal et</a>
       </Popconfirm>
     </span>
   );

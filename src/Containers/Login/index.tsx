@@ -5,6 +5,8 @@ import { Actions, Selectors } from 'edkk-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'Util/Auth';
 import history from 'Util/History';
+import { CSSObject } from '@emotion/core';
+import ThemeConfig from 'Util/ThemeConfig';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -35,13 +37,12 @@ const Login = () => {
   };
 
   return (
-    <div className="tw-flex tw-items-center tw-justify-center tw-min-h-screen tw-bg-gray-500">
-      <div className="tw-flex tw-text-black tw-bg-white tw-rounded-lg tw-shadow-lg">
+    <div css={styles.container}>
+      <div css={styles.cardContainer}>
         <img src={loginImg} alt="loginImg" />
-
-        <div className="tw-mx-8 tw-my-2">
-          <h1 className="tw-text-2xl tw-font-bold">Giriş</h1>
-          <p className="tw-my-2">Tekrar hoşgeldiniz, Lütfen hesabınızla giriş yapın.</p>
+        <div css={styles.rightSideContainer}>
+          <h1 css={styles.h1}>Giriş</h1>
+          <p css={styles.p}>Tekrar hoşgeldiniz, Lütfen hesabınızla giriş yapın.</p>
           <Form
             name="basic"
             layout="vertical"
@@ -79,6 +80,37 @@ const Login = () => {
       </div>
     </div>
   );
+};
+
+const styles: CSSObject = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100vh',
+    backgroundColor: ThemeConfig.color.gray500,
+  },
+  cardContainer: {
+    display: 'flex',
+    color: ThemeConfig.color.black,
+    backgroundColor: ThemeConfig.color.white,
+    borderRadius: ThemeConfig.borderRadius.default,
+    boxShadow: ThemeConfig.boxShadow.lg,
+  },
+  rightSideContainer: {
+    marginBottom: ThemeConfig.spacing[2],
+    marginTop: ThemeConfig.spacing[2],
+    marginLeft: ThemeConfig.spacing[8],
+    marginRight: ThemeConfig.spacing[8],
+  },
+  h1: {
+    fontSize: ThemeConfig.fontSize['2xl'],
+    fontWeight: ThemeConfig.fontWeight.bold,
+  },
+  p: {
+    marginBottom: ThemeConfig.spacing[2],
+    marginTop: ThemeConfig.spacing[2],
+  },
 };
 
 export default Login;

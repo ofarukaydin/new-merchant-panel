@@ -12,6 +12,7 @@ import { navigateTo } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
 import getProductListColumns from 'Containers/ProductList/ProductListColumns';
+import CustomHeader from 'Containers/ProductList/CustomHeader';
 
 const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();
@@ -21,11 +22,17 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const loading: boolean = useSelector(loadingSelector);
 
   const mutatedParams = { ...params };
+
   useDeepCompareEffect(() => {
     dispatch(asyncGetProducts(mutatedParams));
   }, [mutatedParams]);
 
-  const handlePaginationAndFilterAndSort = (
+  const handleSearch = (searchValue: string) => {
+    mutatedParams.searchValue = searchValue;
+    navigateTo('/products', mutatedParams);
+  };
+
+  const handleChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, ReactText[] | null>,
     sorter: any,
@@ -39,8 +46,9 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   };
   return (
     <>
+      <CustomHeader handleSearch={handleSearch} />
       <Table
-        onChange={handlePaginationAndFilterAndSort}
+        onChange={handleChange}
         columns={getProductListColumns}
         rowKey={(row) => row.productId}
         dataSource={paginatedData}

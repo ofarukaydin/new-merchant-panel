@@ -26,7 +26,7 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
     dispatch(asyncGetOrders(mutatedParams));
   }, [mutatedParams]);
 
-  const handlePaginationAndFilterAndSort = (
+  const handleChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, ReactText[] | null>,
     sorter: any,
@@ -48,7 +48,7 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
     <>
       <CustomHeader handleSearch={handleSearch} params={params} />
       <Table
-        onChange={handlePaginationAndFilterAndSort}
+        onChange={handleChange}
         columns={getOrderListColumns(params)}
         rowKey={(row) => row.id}
         dataSource={paginatedData}

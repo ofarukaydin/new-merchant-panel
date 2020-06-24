@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { X, Check } from 'react-feather';
 import { orderStatus } from 'Util/Enums';
 import { useDispatch } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';

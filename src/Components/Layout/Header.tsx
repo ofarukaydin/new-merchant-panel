@@ -1,15 +1,27 @@
 import React from 'react';
-import { Layout } from 'antd';
-import { CSSObject } from '@emotion/core';
-
-type PropTypes = {
-  authenticated: boolean;
-};
+import { PageHeader } from 'antd';
+import history from 'Util/History';
+import queryString from 'query-string';
+import { pageTitleNameMap, queryPageNameMap } from 'Util/Enums';
+import { useLocation } from 'react-router-dom';
 
 const LayoutHeader = () => {
-  return <Layout.Header css={styles.header} />;
-};
+  const location = useLocation();
 
-const styles: CSSObject = { header: { backgroundColor: 'white' } };
+  const parsedQueryParams = queryString.parse(location.search);
+  const pageFromSearchQuery = parsedQueryParams.page as keyof typeof queryPageNameMap;
+  const currentPageTitle = pageTitleNameMap[location.pathname as keyof typeof pageTitleNameMap];
+
+  return (
+    <>
+      <PageHeader
+        ghost={true}
+        onBack={() => history.goBack()}
+        title={currentPageTitle}
+        subTitle={queryPageNameMap[pageFromSearchQuery]}
+      />
+    </>
+  );
+};
 
 export default LayoutHeader;

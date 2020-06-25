@@ -1,11 +1,12 @@
 import React from 'react';
 import { Menu, Layout } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
-import { UserOutlined, LaptopOutlined, HomeOutlined } from '@ant-design/icons';
+import { UserOutlined, LaptopOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from 'Components/Logo';
 import ThemeConfig from 'Util/ThemeConfig';
 import { CSSObject } from '@emotion/core';
+import { logout } from 'Util/Auth';
 
 type PropTypes = {
   collapsed: boolean;
@@ -20,8 +21,8 @@ const LayoutSideMenu = (props: PropTypes) => {
       collapsed={props.collapsed}
       onCollapse={props.onCollapse}
     >
-      <div css={styles.logo}>
-        <Logo />
+      <div css={styles.logoContainer}>
+        <Logo css={styles.logo} />
       </div>
       <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']}>
         <Menu.Item key="1" icon={<HomeOutlined />}>
@@ -46,18 +47,24 @@ const LayoutSideMenu = (props: PropTypes) => {
             <Link to="/orders?page=refundedOrders&status=REFUNDED">İade / Eksik Ürün</Link>
           </Menu.Item>
         </SubMenu>
+        <Menu.Item key="14" icon={<LogoutOutlined />} onClick={logout}>
+          <Link to="#">Çıkış Yap</Link>
+        </Menu.Item>
       </Menu>
     </Layout.Sider>
   );
 };
 const styles: CSSObject = {
   sideMenu: { overflow: 'auto', height: '100vh', position: 'sticky', top: 0, left: 0 },
-  logo: {
+  logoContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: ThemeConfig.spacing[2],
-    marginTop: ThemeConfig.spacing[2],
+    paddingTop: ThemeConfig.spacing[4],
+    paddingBottom: ThemeConfig.spacing[4],
+  },
+  logo: {
+    width: '70%',
   },
 };
 

@@ -1,4 +1,4 @@
-import React, { memo, ReactText } from 'react';
+import React, { memo, ReactText, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
 import { Table } from 'antd';
@@ -24,6 +24,14 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const mutatedParams = { ...params };
   useDeepCompareEffect(() => {
     dispatch(asyncGetOrders(mutatedParams));
+  }, [mutatedParams]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(asyncGetOrders(mutatedParams));
+    }, 10000);
+
+    return () => clearTimeout(timer);
   }, [mutatedParams]);
 
   const handleChange = (

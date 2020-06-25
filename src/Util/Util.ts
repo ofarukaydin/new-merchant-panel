@@ -14,8 +14,8 @@ export const isoToLocalDate = (dateString: string) => {
     timeZone: 'Europe/Istanbul',
     hour: 'numeric',
     minute: 'numeric',
+    month: 'long',
     year: 'numeric',
-    month: 'numeric',
     day: 'numeric',
   };
 

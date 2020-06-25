@@ -2,6 +2,7 @@ import React from 'react';
 import { ColumnProps } from 'antd/lib/table';
 import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
+import { Tag } from 'antd';
 
 const styles: CSSObject = {
   price: {
@@ -50,16 +51,20 @@ const baseProductListColumns: Array<ColumnProps<any>> = [
   },
   {
     title: 'Kampanya',
-    dataIndex: 'campain',
+    dataIndex: 'fastShipping',
     key: 'campain',
-    render: (campain: any) => (campain ? 'Evet' : 'Hayır'),
+    render: (campain: any) => (
+      <Tag color={campain ? 'green' : 'red'}>{campain ? 'Evet' : 'Hayır'}</Tag>
+    ),
     sorter: true,
   },
   {
     title: 'Hızlı Kargo',
     dataIndex: 'orderStatus',
     key: 'orderStatus',
-    render: (fastShipping: any) => (fastShipping ? 'Evet' : 'Hayır'),
+    render: (fastShipping: any) => (
+      <Tag color={fastShipping ? 'green' : 'red'}>{fastShipping ? 'Evet' : 'Hayır'}</Tag>
+    ),
     sorter: true,
   },
 ];

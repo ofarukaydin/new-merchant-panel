@@ -1,11 +1,14 @@
 import React, { memo } from 'react';
 import { orderStatus } from 'Util/Enums';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
 import Api from 'Util/Api';
-import { notification, Popconfirm } from 'antd';
+import { notification, Popconfirm, Button, Space } from 'antd';
 import { SearchParams } from 'Util/Types';
 import { CSSObject } from '@emotion/core';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { sliceTypes } from 'Redux/Helpers/SliceTypes';
+import { RootState } from 'Redux/Store';
 
 type PropTypes = {
   record: any;
@@ -14,6 +17,8 @@ type PropTypes = {
 
 const OrderActionsComponent = (props: PropTypes) => {
   const dispatch = useDispatch();
+
+  const loading = useSelector((state: RootState) => state[sliceTypes.orders].loading);
 
   const changeOrderStatusTo = (status: keyof typeof orderStatus) => {
     Api.post('/order/updateorderstatusasync', { orderId: props.record.id, orderStatus: status })
@@ -41,23 +46,35 @@ const OrderActionsComponent = (props: PropTypes) => {
 
   return (
     <span>
-      <a
-        href="javascript:;"
-        onClick={() => {
-          changeOrderStatusTo('READY');
-        }}
-        css={styles.confirm}
-      >
-        Onayla
-      </a>
-      <Popconfirm
-        title="Siparişi iptal etmek istediğinize emin misiniz?"
-        onConfirm={() => {
-          changeOrderStatusTo('CANCELLED');
-        }}
-      >
-        <a>İptal et</a>
-      </Popconfirm>
+      <Space>
+        <Popconfirm
+          title="Siparişi onaylamak istediğinize emin misiniz?"
+          onConfirm={() => {
+            changeOrderStatusTo('READY');
+          }}
+        >
+          <Button
+            disabled={loading}
+            loading={loading}
+            icon={<CheckOutlined />}
+            type="primary"
+            css={styles.confirm}
+          >
+            Onayla
+          </Button>
+        </Popconfirm>
+
+        <Popconfirm
+          title="Siparişi iptal etmek istediğinize emin misiniz?"
+          onConfirm={() => {
+            changeOrderStatusTo('CANCELLED');
+          }}
+        >
+          <Button disabled={loading} loading={loading} icon={<CloseOutlined />}>
+            İptal et
+          </Button>
+        </Popconfirm>
+      </Space>
     </span>
   );
 };

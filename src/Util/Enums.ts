@@ -7,6 +7,15 @@ export enum orderStatus {
   REFUNDED = 'İade',
 }
 
+export enum orderStatusColors {
+  ORDERED = 'orange',
+  READY = 'green',
+  SHIPPING = 'green',
+  DELIVERED = 'green',
+  CANCELLED = 'red',
+  REFUNDED = 'volcano',
+}
+
 export enum orderDir {
   ascend = 'asc',
   descend = 'desc',

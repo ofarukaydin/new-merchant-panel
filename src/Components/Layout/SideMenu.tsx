@@ -1,7 +1,17 @@
 import React from 'react';
 import { Menu, Layout } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
-import { UserOutlined, LaptopOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  LaptopOutlined,
+  HomeOutlined,
+  LogoutOutlined,
+  UnorderedListOutlined,
+  WarningOutlined,
+  StopOutlined,
+  AlertOutlined,
+  CarOutlined,
+} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from 'Components/Logo';
 import ThemeConfig from 'Util/ThemeConfig';
@@ -24,29 +34,32 @@ const LayoutSideMenu = (props: PropTypes) => {
       <div css={styles.logoContainer}>
         <Logo css={styles.logo} />
       </div>
+
       <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']}>
         <Menu.Item key="1" icon={<HomeOutlined />}>
           <Link to="/">Yönetim Paneli</Link>
         </Menu.Item>
         <SubMenu key="sub1" icon={<UserOutlined />} title="Ürün Yönetimi">
-          <Menu.Item key="13">
+          <Menu.Item key="13" icon={<UnorderedListOutlined />}>
             <Link to="/products">Ürün Listesi</Link>
           </Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" icon={<LaptopOutlined />} title="Sipariş Yönetimi">
-          <Menu.Item key="5">
+          <Menu.Item key="5" icon={<AlertOutlined />}>
             <Link to="/orders?page=newOrders&status=ORDERED">Yeni Siparişler</Link>
           </Menu.Item>
-          <Menu.Item key="6">
+          <Menu.Item key="6" icon={<CarOutlined />}>
             <Link to="/orders?page=shippingStage&status=READY">Kargo Aşamasında</Link>
           </Menu.Item>
-          <Menu.Item key="7">
+          <Menu.Item key="7" icon={<StopOutlined />}>
             <Link to="/orders?page=cancelledOrders&status=CANCELLED">İptal Edilenler</Link>
           </Menu.Item>
-          <Menu.Item key="8">
+          <Menu.Item key="8" icon={<WarningOutlined />}>
             <Link to="/orders?page=refundedOrders&status=REFUNDED">İade / Eksik Ürün</Link>
           </Menu.Item>
         </SubMenu>
+      </Menu>
+      <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']}>
         <Menu.Item key="14" icon={<LogoutOutlined />} onClick={logout}>
           <Link to="#">Çıkış Yap</Link>
         </Menu.Item>

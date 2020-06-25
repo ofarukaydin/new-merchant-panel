@@ -17,7 +17,9 @@ const StatisticsCard = (props: PropTypes) => {
           <span css={styles.value}>{props.value}</span>
           <div>{props.title}</div>
         </div>
-        <div css={styles.icon}>{props.icon}</div>
+        <div css={styles.iconContainer}>
+          <div css={styles.icon}>{props.icon}</div>
+        </div>
       </div>
     </Card>
   );
@@ -37,6 +39,15 @@ const styles: CSSObject = {
   icon: {
     color: ThemeConfig.color.primary,
     fontSize: ThemeConfig.fontSize['3xl'],
+  },
+  iconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: ThemeConfig.color.gray200,
+    borderRadius: ThemeConfig.borderRadius.full,
+    height: ThemeConfig.fontSize['6xl'],
+    width: ThemeConfig.fontSize['6xl'],
   },
 };
 

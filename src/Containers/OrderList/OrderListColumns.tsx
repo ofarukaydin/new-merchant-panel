@@ -2,10 +2,12 @@ import React from 'react';
 import OrderActionsComponent from 'Containers/OrderList/OrderActionsComponent';
 import { isoToLocalDate } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
-import { orderStatus } from 'Util/Enums';
+import { orderStatus, orderStatusColors } from 'Util/Enums';
 import { ColumnProps } from 'antd/lib/table';
 import ThemeConfig from 'Util/ThemeConfig';
 import { CSSObject } from '@emotion/core';
+import { Tag } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
 
 export default function getOrderListColumns(params: SearchParams) {
   const baseOrderListColumns: Array<ColumnProps<any>> = [
@@ -35,7 +37,11 @@ export default function getOrderListColumns(params: SearchParams) {
       title: 'Durum',
       dataIndex: 'orderStatus',
       sorter: true,
-      render: (order: keyof typeof orderStatus) => orderStatus[order],
+      render: (order: keyof typeof orderStatus) => (
+        <Tag icon={order == 'ORDERED' && <ClockCircleOutlined />} color={orderStatusColors[order]}>
+          {orderStatus[order]}
+        </Tag>
+      ),
     },
   ];
 
@@ -53,12 +59,6 @@ export default function getOrderListColumns(params: SearchParams) {
       render: (_: any, record: any) => <OrderActionsComponent params={params} record={record} />,
     });
   } else {
-    baseOrderListColumns.splice(1, 0, {
-      title: 'Teslimat Tarihi',
-      dataIndex: 'deliveryDate',
-      sorter: true,
-      render: (deliveryDate: any) => isoToLocalDate(deliveryDate),
-    });
     baseOrderListColumns.splice(
       baseOrderListColumns.length - 1,
       0,

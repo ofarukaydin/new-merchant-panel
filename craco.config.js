@@ -1,22 +1,20 @@
-const { POSTCSS_MODES } = require("@craco/craco");
+const { POSTCSS_MODES } = require('@craco/craco');
 const CracoLessPlugin = require('craco-less');
 const emotionPresetOptions = {};
 
-const emotionBabelPreset = require("@emotion/babel-preset-css-prop").default(
+const emotionBabelPreset = require('@emotion/babel-preset-css-prop').default(
   undefined,
-  emotionPresetOptions
+  emotionPresetOptions,
 );
 
 module.exports = {
   babel: {
-    plugins: [
-      ...emotionBabelPreset.plugins
-    ]
+    plugins: [...emotionBabelPreset.plugins],
   },
   style: {
     postcss: {
-      mode: POSTCSS_MODES.file
-    }
+      mode: POSTCSS_MODES.file,
+    },
   },
   plugins: [
     {
@@ -24,7 +22,7 @@ module.exports = {
       options: {
         lessLoaderOptions: {
           lessOptions: {
-            modifyVars: { '@primary-color': '#1DA57A' },
+            modifyVars: { '@primary-color': '#1DA57A', '@border-radius-base': '16px' },
             javascriptEnabled: true,
           },
         },

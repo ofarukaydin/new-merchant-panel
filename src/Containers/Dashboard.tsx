@@ -83,14 +83,14 @@ const Dashboard = () => {
           <StatisticsCard title="İhtilaflı" value={0} icon={<InfoCircleOutlined />} />
         </Col>
       </Row>
-      <Row>
+      {/*       <Row>
         <Col span={12}>
           <h1 css={styles.h1}>Mağaza Bilgileri</h1>
         </Col>
         <Col span={12}>
           <h1 css={styles.h1}>Muhasebe Bildirisi</h1>
         </Col>
-      </Row>
+      </Row> */}
     </>
   );
 };

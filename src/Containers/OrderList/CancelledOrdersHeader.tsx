@@ -22,24 +22,12 @@ const CancelledOrdersHeader = () => {
           navigateTo('/orders', {
             page: 'cancelledOrders',
             status: 'CANCELLED',
-            userType: 'merchant',
+            userType: 'merchantBranch',
           })
         }
         value="b"
       >
         Mağaza Tarafından
-      </Radio.Button>
-      <Radio.Button
-        onChange={() =>
-          navigateTo('/orders', {
-            page: 'cancelledOrders',
-            status: 'CANCELLED',
-            userType: 'service',
-          })
-        }
-        value="c"
-      >
-        Edakik Tarafından
       </Radio.Button>
     </Radio.Group>
   );

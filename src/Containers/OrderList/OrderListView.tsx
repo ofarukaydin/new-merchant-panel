@@ -14,7 +14,7 @@ const OrderListView = () => {
     pageIndex: 1,
     pageSize: 10,
     searchValue: '',
-    orderDir: 'desc',
+    orderDir: 'descend',
     orderBy: 'orderDate',
   };
 

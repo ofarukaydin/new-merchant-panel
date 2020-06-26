@@ -17,8 +17,8 @@ export enum orderStatusColors {
 }
 
 export enum orderDir {
-  ascend = 'asc',
-  descend = 'desc',
+  ascend = 'ascend',
+  descend = 'descend',
 }
 
 export enum pageTitleNameMap {

@@ -1,12 +1,13 @@
 import React, { memo, ReactText, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { asyncGetOrders } from 'Redux/OrderListSlice';
-import { Table } from 'antd';
+import { asyncGetOrders, asyncGetOrdersFake } from 'Redux/OrderListSlice';
+import { Table, notification } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
   totalRecordsSelector,
   paginatedDataSelector,
   loadingSelector,
+  oldTotalRecordsSelector,
 } from 'Containers/OrderList/Selectors';
 import { navigateTo } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
@@ -20,16 +21,29 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const paginatedData: any = useSelector(paginatedDataSelector);
   const totalRecords: number = useSelector(totalRecordsSelector);
   const loading: boolean = useSelector(loadingSelector);
+  const oldTotalRecords = useSelector(oldTotalRecordsSelector);
 
   const mutatedParams = { ...params };
+
   useDeepCompareEffect(() => {
     dispatch(asyncGetOrders(mutatedParams));
   }, [mutatedParams]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(asyncGetOrders(mutatedParams));
-    }, 10000);
+    if (
+      oldTotalRecords &&
+      totalRecords !== oldTotalRecords &&
+      totalRecords !== 0 &&
+      mutatedParams.page === 'newOrders'
+    ) {
+      notification.success({ message: 'Yeni sipariş geldi' });
+    }
+  }, [totalRecords, oldTotalRecords]);
+
+  useDeepCompareEffect(() => {
+    const timer = setInterval(() => {
+      dispatch(asyncGetOrdersFake(mutatedParams));
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [mutatedParams]);
@@ -42,7 +56,7 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
     mutatedParams.pageIndex = pagination.current || mutatedParams.pageIndex;
     mutatedParams.pageSize = pagination.pageSize || mutatedParams.pageSize;
     mutatedParams.orderBy = sorter.field || mutatedParams.orderBy;
-    mutatedParams.orderDir = sorter.order === 'ascend' ? 'asc' : 'desc';
+    mutatedParams.orderDir = sorter.order || mutatedParams.orderDir;
 
     navigateTo('/orders', mutatedParams);
   };

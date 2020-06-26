@@ -48,16 +48,16 @@ const Dashboard = () => {
   return (
     <>
       <h1 css={styles.h1}>Siparişler</h1>
-      <Row gutter={24} justify="space-between">
-        <Col span={8}>
+      <Row gutter={[24, 24]} justify="space-between">
+        <Col xs={24} lg={8}>
           <StatisticsCard title="Yeni Sipariş" value={orderedCount} icon={<AlertOutlined />} />
         </Col>
 
-        <Col span={8}>
+        <Col xs={24} lg={8}>
           <StatisticsCard title="Hazır" value={readyCount} icon={<CheckCircleOutlined />} />
         </Col>
 
-        <Col span={8}>
+        <Col xs={24} lg={8}>
           <StatisticsCard
             title="Taşıma Durumunda"
             value={shippingCount}
@@ -66,20 +66,20 @@ const Dashboard = () => {
         </Col>
       </Row>
       <h1 css={styles.h1}>Müşteri Talepleri</h1>
-      <Row gutter={24} justify="space-between">
-        <Col span={6}>
+      <Row gutter={[24, 24]} justify="space-between">
+        <Col xs={24} md={12} lg={6}>
           <StatisticsCard title="İade" value={0} icon={<RollbackOutlined />} />
         </Col>
 
-        <Col span={6}>
+        <Col xs={24} md={12} lg={6}>
           <StatisticsCard title="Eksik/Hatalı Ürün" value={0} icon={<StopOutlined />} />
         </Col>
 
-        <Col span={6}>
+        <Col xs={24} md={12} lg={6}>
           <StatisticsCard title="Aksiyon Bekliyor" value={0} icon={<ClockCircleOutlined />} />
         </Col>
 
-        <Col span={6}>
+        <Col xs={24} md={12} lg={6}>
           <StatisticsCard title="İhtilaflı" value={0} icon={<InfoCircleOutlined />} />
         </Col>
       </Row>

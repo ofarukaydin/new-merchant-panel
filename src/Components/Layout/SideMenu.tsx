@@ -17,6 +17,7 @@ import Logo from 'Components/Logo';
 import ThemeConfig from 'Util/ThemeConfig';
 import { CSSObject } from '@emotion/core';
 import { logout } from 'Util/Auth';
+import { Breakpoint } from 'antd/lib/_util/responsiveObserve';
 
 type PropTypes = {
   collapsed: boolean;

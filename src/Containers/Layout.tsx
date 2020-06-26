@@ -1,16 +1,23 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { Layout } from 'antd';
+import { Layout, Grid } from 'antd';
 import LayoutSideMenu from 'Components/Layout/SideMenu';
 import LayoutHeader from 'Components/Layout/Header';
-import LayoutBreadcrumb from 'Components/Layout/Breadcrumb';
 import LayoutFooter from 'Components/Layout/Footer';
 import { checkAuthState } from 'Util/Auth';
 import { CSSObject } from '@emotion/core';
+import LayoutDrawer from 'Components/Layout/Drawer';
 
 const { Content } = Layout;
 
 const LayoutUI = (props: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+
+  const screens = Grid.useBreakpoint();
+
+  console.log(screens, 'screens');
+
+  const smallScreen = !!screens.xs;
 
   useLayoutEffect(() => {
     checkAuthState();
@@ -18,13 +25,17 @@ const LayoutUI = (props: { children: React.ReactNode }) => {
 
   return (
     <Layout css={styles.container}>
-      <LayoutSideMenu collapsed={collapsed} onCollapse={() => setCollapsed(!collapsed)} />
+      {smallScreen ? (
+        <LayoutDrawer onClose={() => setIsDrawerVisible(false)} visible={isDrawerVisible} />
+      ) : (
+        <LayoutSideMenu collapsed={collapsed} onCollapse={() => setCollapsed(!collapsed)} />
+      )}
       <Layout>
-        <LayoutHeader />
-        <Content css={styles.contentContainer}>
-          <LayoutBreadcrumb />
-          {props.children}
-        </Content>
+        <LayoutHeader
+          toggleDrawer={() => setIsDrawerVisible(!isDrawerVisible)}
+          visibleBurger={smallScreen}
+        />
+        <Content css={styles.contentContainer}>{props.children}</Content>
         <LayoutFooter />
       </Layout>
     </Layout>
@@ -32,7 +43,7 @@ const LayoutUI = (props: { children: React.ReactNode }) => {
 };
 
 const styles: CSSObject = {
-  container: { minHeight: '100vh' },
+  container: { minHeight: '100vh', position: 'relative' },
   contentContainer: { margin: '0 16px' },
 };
 

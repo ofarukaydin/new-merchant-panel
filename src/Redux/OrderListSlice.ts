@@ -36,6 +36,18 @@ export const asyncGetOrders = createAsyncThunk(
   },
 );
 
+export const asyncGetOrdersFake = createAsyncThunk(
+  thunkActionTypes.getOrdersFake,
+  async (params: SearchParams, thunkAPI) => {
+    try {
+      const response = await Api.post('/Order/SearchOrderAsync', params);
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue('rejected');
+    }
+  },
+);
+
 export const orderListSlice = createSlice({
   name: sliceNames.orderList,
   initialState,
@@ -51,6 +63,15 @@ export const orderListSlice = createSlice({
     });
     builder.addCase(asyncGetOrders.pending, (state, action) => {
       state.loading = true;
+      state.params = action.meta.arg;
+    });
+
+    builder.addCase(asyncGetOrdersFake.fulfilled, (state, action) => {
+      state.paginatedData = action.payload.response;
+      state.totalCount = action.payload.totalCount;
+    });
+    builder.addCase(asyncGetOrdersFake.rejected, (state, action) => {});
+    builder.addCase(asyncGetOrdersFake.pending, (state, action) => {
       state.params = action.meta.arg;
     });
   },

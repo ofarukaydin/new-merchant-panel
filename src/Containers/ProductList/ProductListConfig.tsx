@@ -40,7 +40,7 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
     mutatedParams.pageIndex = pagination.current || mutatedParams.pageIndex;
     mutatedParams.pageSize = pagination.pageSize || mutatedParams.pageSize;
     mutatedParams.orderBy = sorter.field || mutatedParams.orderBy;
-    mutatedParams.orderDir = sorter.order === 'ascend' ? 'asc' : 'desc';
+    mutatedParams.orderDir = sorter.order || mutatedParams.orderDir;
 
     navigateTo('/orders', mutatedParams);
   };

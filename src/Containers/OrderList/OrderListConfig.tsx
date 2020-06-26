@@ -7,7 +7,6 @@ import {
   totalRecordsSelector,
   paginatedDataSelector,
   loadingSelector,
-  oldTotalRecordsSelector,
 } from 'Containers/OrderList/Selectors';
 import { navigateTo } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
@@ -21,24 +20,12 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const paginatedData: any = useSelector(paginatedDataSelector);
   const totalRecords: number = useSelector(totalRecordsSelector);
   const loading: boolean = useSelector(loadingSelector);
-  const oldTotalRecords = useSelector(oldTotalRecordsSelector);
 
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
     dispatch(asyncGetOrders(mutatedParams));
   }, [mutatedParams]);
-
-  useEffect(() => {
-    if (
-      oldTotalRecords &&
-      totalRecords !== oldTotalRecords &&
-      totalRecords !== 0 &&
-      mutatedParams.page === 'newOrders'
-    ) {
-      notification.success({ message: 'Yeni sipariş geldi' });
-    }
-  }, [totalRecords, oldTotalRecords]);
 
   useDeepCompareEffect(() => {
     const timer = setInterval(() => {

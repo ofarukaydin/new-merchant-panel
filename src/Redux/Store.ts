@@ -5,13 +5,12 @@ import orderListSlice from 'Redux/OrderListSlice';
 import { sliceTypes } from './Helpers/SliceTypes';
 import reactotron from 'Util/Config/Reactotron';
 import { addReducerToListReducer } from 'edkk-redux';
-import undoable from 'redux-undo';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const combinedReducers = addReducerToListReducer({
   [sliceTypes.products]: productListSlice,
-  [sliceTypes.orders]: undoable(orderListSlice),
+  [sliceTypes.orders]: orderListSlice,
 });
 
 export const store = configureStore({

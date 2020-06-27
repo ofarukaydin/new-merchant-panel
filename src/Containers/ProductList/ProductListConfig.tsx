@@ -1,4 +1,6 @@
 import React, { memo, ReactText } from 'react';
+import getProductListColumns from 'Containers/ProductList/ProductListColumns';
+import CustomHeader from 'Containers/ProductList/CustomHeader';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncGetProducts } from 'Redux/ProductListSlice';
 import { Table } from 'antd';
@@ -11,8 +13,6 @@ import {
 import { navigateTo } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
-import getProductListColumns from 'Containers/ProductList/ProductListColumns';
-import CustomHeader from 'Containers/ProductList/CustomHeader';
 
 const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();

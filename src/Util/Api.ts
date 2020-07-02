@@ -1,5 +1,8 @@
-import { AxiosClient } from 'edkk-redux';
+import axios from 'axios';
 
-const Api = AxiosClient;
+const Api = axios.create({
+  baseURL: process.env.REACT_APP_BACKEND_API_URL,
+  responseType: 'json',
+});
 
 export default Api;

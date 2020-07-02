@@ -7,12 +7,16 @@ import { login } from 'Util/Auth';
 import history from 'Util/History';
 import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
+import { verifyUser } from 'Redux/AuthSlice';
+import { RootState } from 'Redux/Store';
+import { sliceTypes } from 'Redux/Helpers/SliceTypes';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const token: string = useSelector(Selectors.Auth.tokenSelector);
-  const loading: boolean = useSelector(Selectors.Auth.loadingSelector);
-  const userDetailError: any = useSelector(Selectors.Auth.userDetailErrorSelector);
+  const token = useSelector(
+    (state: RootState) => state[sliceTypes.auth].userDetail.response?.token,
+  );
+  const loading = useSelector((state: RootState) => state[sliceTypes.auth].userDetail.loading);
 
   useEffect(() => {
     if (token) {
@@ -24,7 +28,7 @@ const Login = () => {
   const onFinish = (values: any) => {
     console.log('Success:', values);
     dispatch(
-      Actions.Auth.verifyUser({
+      verifyUser({
         username: values.username,
         password: values.password,
         userTypeId: 3,
@@ -71,7 +75,7 @@ const Login = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button loading={loading} disabled={loading} type="primary" htmlType="submit">
+              <Button loading={!!loading} disabled={!!loading} type="primary" htmlType="submit">
                 Giriş
               </Button>
             </Form.Item>

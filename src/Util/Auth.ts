@@ -1,9 +1,7 @@
-import { AuthSliceActions } from 'edkk-redux/slices/AuthSlice';
 import { decode } from 'jsonwebtoken';
 import { store } from 'Redux/Store';
 import history from 'Util/History';
-
-const { setToken, setUserDetail } = AuthSliceActions;
+import { setToken, getUserDetails } from 'Redux/AuthSlice';
 
 export const logout = () => {
   localStorage.removeItem('token');
@@ -16,8 +14,7 @@ export const login = (token: string, configObj?: { loginWithLocalStorage: any })
   const decodedToken = decode(token);
   if (configObj?.loginWithLocalStorage) {
     store.dispatch(setToken(token));
-    store.dispatch(setUserDetail(decodedToken));
-    /*     store.dispatch(Actions.Auth.getUserDetails()); */
+    store.dispatch(getUserDetails());
   } else {
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', decodedToken?.exp);

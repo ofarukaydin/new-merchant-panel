@@ -1,11 +1,16 @@
-import { createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
+import {
+  createSlice,
+  createAsyncThunk,
+  AsyncThunkPayloadCreatorReturnValue,
+} from '@reduxjs/toolkit';
+import { AxiosError, AxiosResponse } from 'axios';
 import { ResponseModel, IAuthState, IApi } from 'Redux/Helpers/IApi';
 import { endpoints } from 'Redux/Helpers/Endpoints';
-import Api from 'Util/Api';
+import Api, { generateThunk } from 'Util/Api';
 import { actionTypes, sliceNames } from 'Redux/Helpers/SliceTypes';
 
 const INITIAL_STATE: IAuthState = {
+  token: '',
   userDetail: ResponseModel,
   registerUser: ResponseModel,
   createForgotPassword: ResponseModel,
@@ -13,33 +18,42 @@ const INITIAL_STATE: IAuthState = {
   updateForgotPassword: ResponseModel,
 };
 
+export const test = generateThunk<
+  IApi['ValidateUserRequestDTO'],
+  IApi['ValidateUserResponseDTOOperationResultDTO']
+>({ url: '', method: 'GET', data: null });
+
 export const verifyUser = createAsyncThunk<
   IApi['ValidateUserResponseDTOOperationResultDTO'],
   IApi['ValidateUserRequestDTO'],
-  {
-    rejectValue: IApi['OperationResultDTO'];
-  }
+  any
 >(actionTypes.verifyUser, async (data, thunkAPI) => {
-  try {
-    const response = await Api.post<IApi['ValidateUserResponseDTOOperationResultDTO']>(
-      endpoints.auth.validateUser,
-      data,
-    );
+  async function testFunc<Params, ThunkConfig, Returned extends IApi['OperationResultDTO']>(
+    data: Params,
+    thunkAPI: ThunkConfig,
+  ): Promise<AsyncThunkPayloadCreatorReturnValue<Returned, ThunkConfig>> {
+    try {
+      const response = await Api.post<Returned>(endpoints.auth.validateUser, data);
+      if (!response.data.result) {
+        return thunkAPI.rejectWithValue(response.data);
+      }
 
-    if (!response.data.result) {
-      return thunkAPI.rejectWithValue(response.data);
+      return response.data;
+    } catch (err) {
+      const error: AxiosError<IApi['OperationResultDTO']> = err;
+
+      if (!error.response) {
+        throw err;
+      }
+
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-
-    return response.data;
-  } catch (err) {
-    const error: AxiosError<IApi['OperationResultDTO']> = err;
-
-    if (!error.response) {
-      throw err;
-    }
-
-    return thunkAPI.rejectWithValue(error.response.data);
   }
+
+  return testFunc<typeof data, typeof thunkAPI, IApi['ValidateUserResponseDTOOperationResultDTO']>(
+    data,
+    thunkAPI,
+  );
 });
 
 export const getUserDetails = createAsyncThunk<
@@ -178,14 +192,12 @@ const AuthSlice = createSlice({
     });
 
     builder.addCase(verifyUser.pending, (state, action) => {
-      state.userDetail.loading = true;
+      state.userDetail = INITIAL_STATE.userDetail;
     });
 
     builder.addCase(getUserDetails.fulfilled, (state, action) => {
-      const token = state.userDetail.response?.token;
       state.userDetail = action.payload;
       state.userDetail.loading = false;
-      state.userDetail.response!.token = token;
     });
 
     builder.addCase(getUserDetails.rejected, (state, action) => {

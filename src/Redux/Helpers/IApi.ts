@@ -17,6 +17,7 @@ export const ResponseModel = {
 };
 
 export interface IAuthState {
+  token: string;
   userDetail: IResponse<IApi['ValidateUserResponseDTO']>;
   registerUser: IResponse<IApi['RegisterUserResponseDTO']>;
   createForgotPassword: IResponse<IApi['OperationResultDTO']>;

@@ -1,11 +1,15 @@
-import { components } from './interfaces';
-
-export type IApi = components['schemas'];
+import {
+  ValidateUserResponseDTO,
+  RegisterUserResponseDTO,
+  GetUserDetailsResponseDTO,
+  OperationResultDTO,
+  OperationResultMessage,
+} from 'Redux/Helpers/ApiTypes';
 
 export interface IResponse<T> {
   response?: T | null;
   loading?: Boolean;
-  messages?: IApi['OperationResultMessage'][] | null;
+  messages?: OperationResultMessage[] | null;
   result?: boolean;
 }
 
@@ -17,10 +21,10 @@ export const ResponseModel = {
 };
 
 export interface IAuthState {
-  validateUser: IResponse<IApi['ValidateUserResponseDTO']>;
-  registerUser: IResponse<IApi['RegisterUserResponseDTO']>;
-  userDetails: IResponse<IApi['GetUserDetailsResponseDTO']>;
-  createForgetPasswordRequest: IResponse<IApi['OperationResultDTO']>;
-  validateForgetPasswordRequest: IResponse<IApi['OperationResultDTO']>;
-  updateForgetPasswordRequest: IResponse<IApi['OperationResultDTO']>;
+  validateUser: IResponse<ValidateUserResponseDTO>;
+  registerUser: IResponse<RegisterUserResponseDTO>;
+  userDetails: IResponse<GetUserDetailsResponseDTO>;
+  createForgetPasswordRequest: IResponse<OperationResultDTO>;
+  validateForgetPasswordRequest: IResponse<OperationResultDTO>;
+  updateForgetPasswordRequest: IResponse<OperationResultDTO>;
 }

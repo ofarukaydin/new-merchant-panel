@@ -1,13 +1,13 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { IApi } from 'Redux/Helpers/IApi';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { OperationResultDTO } from 'Redux/Helpers/ApiTypes';
 
 const Api = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_API_URL,
   responseType: 'json',
 });
 
-export const generateThunk = <RequestDTO, ResponseDTO extends IApi['OperationResultDTO']>(options: {
+export const generateThunk = <RequestDTO, ResponseDTO extends OperationResultDTO>(options: {
   actionType: string;
   url: string;
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -16,7 +16,7 @@ export const generateThunk = <RequestDTO, ResponseDTO extends IApi['OperationRes
     ResponseDTO,
     RequestDTO,
     {
-      rejectValue: IApi['OperationResultDTO'];
+      rejectValue: OperationResultDTO;
     }
   >(options.actionType, async (data, thunkAPI) => {
     try {
@@ -28,7 +28,7 @@ export const generateThunk = <RequestDTO, ResponseDTO extends IApi['OperationRes
 
       return response.data;
     } catch (err) {
-      const error: AxiosError<IApi['OperationResultDTO']> = err;
+      const error: AxiosError<OperationResultDTO> = err;
 
       if (!error.response) {
         throw err;

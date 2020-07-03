@@ -1,8 +1,17 @@
 import { createSlice, AnyAction, SerializedError, PayloadAction } from '@reduxjs/toolkit';
-import { ResponseModel, IApi, IAuthState } from 'Redux/Helpers/IApi';
+import { ResponseModel, IAuthState } from 'Redux/Helpers/IApi';
 import { endpoints } from 'Redux/Helpers/Endpoints';
 import { generateThunk } from 'Util/Api';
 import { thunkActionTypes, sliceNames } from 'Redux/Helpers/Enums';
+import {
+  ValidateUserRequestDTO,
+  ValidateUserResponseDTOOperationResultDTO,
+  GetUserDetailsResponseDTOOperationResultDTO,
+  CreateForgetPasswordRequestDTO,
+  OperationResultDTO,
+  ValidateForgetPasswordRequestDTO,
+  ChangeForgetPasswordRequestDTO,
+} from 'Redux/Helpers/ApiTypes';
 
 const INITIAL_STATE: IAuthState = {
   validateUser: ResponseModel,
@@ -14,18 +23,17 @@ const INITIAL_STATE: IAuthState = {
 };
 
 export const verifyUser = generateThunk<
-  IApi['ValidateUserRequestDTO'],
-  IApi['ValidateUserResponseDTOOperationResultDTO']
+  ValidateUserRequestDTO,
+  ValidateUserResponseDTOOperationResultDTO
 >({ url: endpoints.auth.validateUser, method: 'POST', actionType: thunkActionTypes.validateUser });
 
-export const getUserDetails = generateThunk<
-  undefined,
-  IApi['GetUserDetailsResponseDTOOperationResultDTO']
->({ url: endpoints.auth.userDetails, method: 'GET', actionType: thunkActionTypes.userDetails });
+export const getUserDetails = generateThunk<undefined, GetUserDetailsResponseDTOOperationResultDTO>(
+  { url: endpoints.auth.userDetails, method: 'GET', actionType: thunkActionTypes.userDetails },
+);
 
 export const createForgotPassword = generateThunk<
-  IApi['CreateForgetPasswordRequestDTO'],
-  IApi['OperationResultDTO']
+  CreateForgetPasswordRequestDTO,
+  OperationResultDTO
 >({
   url: endpoints.auth.createForgetPasswordRequest,
   method: 'POST',
@@ -33,8 +41,8 @@ export const createForgotPassword = generateThunk<
 });
 
 export const validateForgotPassword = generateThunk<
-  IApi['ValidateForgetPasswordRequestDTO'],
-  IApi['OperationResultDTO']
+  ValidateForgetPasswordRequestDTO,
+  OperationResultDTO
 >({
   url: endpoints.auth.validateForgetPasswordRequest,
   method: 'POST',
@@ -42,8 +50,8 @@ export const validateForgotPassword = generateThunk<
 });
 
 export const updateForgetPassword = generateThunk<
-  IApi['ChangeForgetPasswordRequestDTO'],
-  IApi['OperationResultDTO']
+  ChangeForgetPasswordRequestDTO,
+  OperationResultDTO
 >({
   url: endpoints.auth.updateForgetPasswordRequest,
   method: 'POST',

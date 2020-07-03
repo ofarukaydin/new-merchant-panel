@@ -17,10 +17,10 @@ export const ResponseModel = {
 };
 
 export interface IAuthState {
-  token: string;
-  userDetail: IResponse<IApi['ValidateUserResponseDTO']>;
+  validateUser: IResponse<IApi['ValidateUserResponseDTO']>;
   registerUser: IResponse<IApi['RegisterUserResponseDTO']>;
-  createForgotPassword: IResponse<IApi['OperationResultDTO']>;
-  validateForgotPassword: IResponse<IApi['OperationResultDTO']>;
-  updateForgotPassword: IResponse<IApi['OperationResultDTO']>;
+  userDetails: IResponse<IApi['GetUserDetailsResponseDTO']>;
+  createForgetPasswordRequest: IResponse<IApi['OperationResultDTO']>;
+  validateForgetPasswordRequest: IResponse<IApi['OperationResultDTO']>;
+  updateForgetPasswordRequest: IResponse<IApi['OperationResultDTO']>;
 }

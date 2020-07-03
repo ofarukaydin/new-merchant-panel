@@ -1,7 +1,7 @@
-import React, { memo, ReactText, useEffect } from 'react';
+import React, { memo, ReactText } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { asyncGetOrders, asyncGetOrdersFake } from 'Redux/OrderListSlice';
-import { Table, notification } from 'antd';
+import { asyncGetOrders } from 'Redux/OrderListSlice';
+import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
   totalRecordsSelector,
@@ -25,14 +25,6 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
 
   useDeepCompareEffect(() => {
     dispatch(asyncGetOrders(mutatedParams));
-  }, [mutatedParams]);
-
-  useDeepCompareEffect(() => {
-    const timer = setInterval(() => {
-      dispatch(asyncGetOrdersFake(mutatedParams));
-    }, 4000);
-
-    return () => clearTimeout(timer);
   }, [mutatedParams]);
 
   const handleChange = (

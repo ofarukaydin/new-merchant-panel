@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { sliceTypes } from 'Redux/Helpers/SliceTypes';
+import { sliceTypes } from 'Redux/Helpers/Enums';
 import { RootState } from 'Redux/Store';
 
 export const totalRecordsSelector = createSelector(

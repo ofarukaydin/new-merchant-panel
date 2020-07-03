@@ -7,7 +7,7 @@ import { notification, Popconfirm, Button, Space } from 'antd';
 import { SearchParams } from 'Util/Types';
 import { CSSObject } from '@emotion/core';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { sliceTypes } from 'Redux/Helpers/SliceTypes';
+import { sliceTypes } from 'Redux/Helpers/Enums';
 import { RootState } from 'Redux/Store';
 
 type PropTypes = {

@@ -14,14 +14,12 @@ export enum thunkActionTypes {
   getProducts = 'products/getProducts',
   getOrders = 'orders/getOrders',
   getOrdersFake = 'orders/getOrdersFake',
-}
-
-export enum actionTypes {
   insertAddress = 'address/insertAddress',
   getAddressList = 'address/getAddressList',
-  verifyUser = 'auth/verifyUser',
-  getUserDetails = 'auth/getUserDetails',
-  createForgetPassword = 'auth/createForgetPassword',
-  validateForgetPassword = 'auth/validateForgetPassword',
-  updateForgetPassword = 'auth/updateForgetPassword',
+  registerUser = 'auth/registerUser',
+  validateUser = 'auth/validateUser',
+  userDetails = 'auth/userDetails',
+  createForgetPasswordRequest = 'auth/createForgetPasswordRequest',
+  validateForgetPasswordRequest = 'auth/validateForgetPasswordRequest',
+  updateForgetPasswordRequest = 'auth/updateForgetPasswordRequest',
 }

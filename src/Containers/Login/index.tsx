@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import loginImg from 'Assets/login.png';
-import { Actions, Selectors } from 'edkk-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'Util/Auth';
 import history from 'Util/History';
@@ -9,14 +8,14 @@ import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
 import { verifyUser } from 'Redux/AuthSlice';
 import { RootState } from 'Redux/Store';
-import { sliceTypes } from 'Redux/Helpers/SliceTypes';
+import { sliceTypes } from 'Redux/Helpers/Enums';
 
 const Login = () => {
   const dispatch = useDispatch();
   const token = useSelector(
-    (state: RootState) => state[sliceTypes.auth].userDetail.response?.token,
+    (state: RootState) => state[sliceTypes.auth].validateUser.response?.token,
   );
-  const loading = useSelector((state: RootState) => state[sliceTypes.auth].userDetail.loading);
+  const loading = useSelector((state: RootState) => state[sliceTypes.auth].validateUser.loading);
 
   useEffect(() => {
     if (token) {

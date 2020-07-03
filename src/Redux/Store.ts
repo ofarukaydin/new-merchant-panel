@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action, getDefaultMiddleware } from '@redu
 import productListSlice from 'Redux/ProductListSlice';
 import orderListSlice from 'Redux/OrderListSlice';
 import authSlice from 'Redux/AuthSlice';
-import { sliceTypes } from './Helpers/SliceTypes';
+import { sliceTypes } from './Helpers/Enums';
 import reactotron from 'Util/Config/Reactotron';
 
 const isDev = process.env.NODE_ENV !== 'production';

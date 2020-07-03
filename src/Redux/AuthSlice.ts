@@ -1,173 +1,53 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  AsyncThunkPayloadCreatorReturnValue,
-} from '@reduxjs/toolkit';
-import { AxiosError, AxiosResponse } from 'axios';
+import { createSlice, AnyAction, SerializedError } from '@reduxjs/toolkit';
 import { ResponseModel, IAuthState, IApi } from 'Redux/Helpers/IApi';
 import { endpoints } from 'Redux/Helpers/Endpoints';
-import Api, { generateThunk } from 'Util/Api';
-import { actionTypes, sliceNames } from 'Redux/Helpers/SliceTypes';
+import { generateThunk } from 'Util/Api';
+import { thunkActionTypes, sliceNames } from 'Redux/Helpers/Enums';
 
 const INITIAL_STATE: IAuthState = {
-  token: '',
-  userDetail: ResponseModel,
+  validateUser: ResponseModel,
+  userDetails: ResponseModel,
   registerUser: ResponseModel,
-  createForgotPassword: ResponseModel,
-  validateForgotPassword: ResponseModel,
-  updateForgotPassword: ResponseModel,
+  createForgetPasswordRequest: ResponseModel,
+  validateForgetPasswordRequest: ResponseModel,
+  updateForgetPasswordRequest: ResponseModel,
 };
 
-export const test = generateThunk<
+export const verifyUser = generateThunk<
   IApi['ValidateUserRequestDTO'],
   IApi['ValidateUserResponseDTOOperationResultDTO']
->({ url: '', method: 'GET', data: null });
+>({ url: endpoints.auth.validateUser, method: 'POST', actionType: thunkActionTypes.validateUser });
 
-export const verifyUser = createAsyncThunk<
-  IApi['ValidateUserResponseDTOOperationResultDTO'],
-  IApi['ValidateUserRequestDTO'],
-  any
->(actionTypes.verifyUser, async (data, thunkAPI) => {
-  async function testFunc<Params, ThunkConfig, Returned extends IApi['OperationResultDTO']>(
-    data: Params,
-    thunkAPI: ThunkConfig,
-  ): Promise<AsyncThunkPayloadCreatorReturnValue<Returned, ThunkConfig>> {
-    try {
-      const response = await Api.post<Returned>(endpoints.auth.validateUser, data);
-      if (!response.data.result) {
-        return thunkAPI.rejectWithValue(response.data);
-      }
-
-      return response.data;
-    } catch (err) {
-      const error: AxiosError<IApi['OperationResultDTO']> = err;
-
-      if (!error.response) {
-        throw err;
-      }
-
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  }
-
-  return testFunc<typeof data, typeof thunkAPI, IApi['ValidateUserResponseDTOOperationResultDTO']>(
-    data,
-    thunkAPI,
-  );
-});
-
-export const getUserDetails = createAsyncThunk<
-  IApi['GetUserDetailsResponseDTOOperationResultDTO'],
+export const getUserDetails = generateThunk<
   undefined,
-  {
-    rejectValue: IApi['OperationResultDTO'];
-  }
->(actionTypes.getUserDetails, async (_, thunkAPI) => {
-  try {
-    const response = await Api.get<IApi['GetUserDetailsResponseDTOOperationResultDTO']>(
-      endpoints.auth.userDetails,
-    );
+  IApi['GetUserDetailsResponseDTOOperationResultDTO']
+>({ url: endpoints.auth.userDetails, method: 'GET', actionType: thunkActionTypes.userDetails });
 
-    if (!response.data.result) {
-      return thunkAPI.rejectWithValue(response.data);
-    }
-
-    return response.data;
-  } catch (err) {
-    const error: AxiosError<IApi['OperationResultDTO']> = err;
-
-    if (!error.response) {
-      throw err;
-    }
-
-    return thunkAPI.rejectWithValue(error.response.data);
-  }
-});
-
-export const createForgotPassword = createAsyncThunk<
-  IApi['OperationResultDTO'],
+export const createForgotPassword = generateThunk<
   IApi['CreateForgetPasswordRequestDTO'],
-  {
-    rejectValue: IApi['OperationResultDTO'];
-  }
->(actionTypes.createForgetPassword, async (data, thunkAPI) => {
-  try {
-    const response = await Api.post<IApi['OperationResultDTO']>(
-      endpoints.auth.createForgetPasswordRequest,
-      data,
-    );
-
-    if (!response.data.result) {
-      return thunkAPI.rejectWithValue(response.data);
-    }
-
-    return response.data;
-  } catch (err) {
-    const error: AxiosError<IApi['OperationResultDTO']> = err;
-
-    if (!error.response) {
-      throw err;
-    }
-    return thunkAPI.rejectWithValue(error.response.data);
-  }
+  IApi['OperationResultDTO']
+>({
+  url: endpoints.auth.createForgetPasswordRequest,
+  method: 'POST',
+  actionType: thunkActionTypes.createForgetPasswordRequest,
 });
 
-export const validateForgotPassword = createAsyncThunk<
-  IApi['OperationResultDTO'],
+export const validateForgotPassword = generateThunk<
   IApi['ValidateForgetPasswordRequestDTO'],
-  {
-    rejectValue: IApi['OperationResultDTO'];
-  }
->(actionTypes.validateForgetPassword, async (data, thunkAPI) => {
-  try {
-    const response = await Api.post<IApi['OperationResultDTO']>(
-      endpoints.auth.validateForgetPasswordRequest,
-      data,
-    );
-
-    if (!response.data.result) {
-      return thunkAPI.rejectWithValue(response.data);
-    }
-
-    return response.data;
-  } catch (err) {
-    const error: AxiosError = err;
-
-    if (!error.response) {
-      throw err;
-    }
-
-    return thunkAPI.rejectWithValue(error.response.data);
-  }
+  IApi['OperationResultDTO']
+>({
+  url: endpoints.auth.validateForgetPasswordRequest,
+  method: 'POST',
+  actionType: thunkActionTypes.validateForgetPasswordRequest,
 });
 
-export const updateForgetPassword = createAsyncThunk<
-  IApi['OperationResultDTO'],
-  IApi['UpdateOrderRequestDTO'],
-  {
-    rejectValue: IApi['OperationResultDTO'];
-  }
->(actionTypes.updateForgetPassword, async (data, thunkAPI) => {
-  try {
-    const response = await Api.post<IApi['OperationResultDTO']>(
-      endpoints.auth.updateForgetPasswordRequest,
-      data,
-    );
-
-    if (!response.data.result) {
-      return thunkAPI.rejectWithValue(response.data);
-    }
-
-    return response.data;
-  } catch (err) {
-    const error: AxiosError<IApi['OperationResultDTO']> = err;
-
-    if (!error.response) {
-      throw err;
-    }
-
-    return thunkAPI.rejectWithValue(error.response.data);
-  }
+export const updateForgetPassword = generateThunk<
+  IApi['ChangeForgetPasswordRequestDTO'],
+  IApi['OperationResultDTO']
+>({
+  url: endpoints.auth.updateForgetPasswordRequest,
+  method: 'POST',
+  actionType: thunkActionTypes.updateForgetPasswordRequest,
 });
 
 const AuthSlice = createSlice({
@@ -175,118 +55,47 @@ const AuthSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     setToken: (state, action) => {
-      state.userDetail.response!.token = action.payload;
+      state.validateUser.response!.token = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(verifyUser.fulfilled, (state, action) => {
-      state.userDetail = action.payload;
-      state.userDetail.loading = false;
-    });
-    builder.addCase(verifyUser.rejected, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('auth') && action.type.endsWith('/fulfilled'),
+      (state, action) => {
+        const subSlice = action.type.split('/')[1] as keyof typeof endpoints.auth;
 
-    builder.addCase(verifyUser.pending, (state, action) => {
-      state.userDetail = INITIAL_STATE.userDetail;
-    });
+        state[subSlice] = action.payload;
+        state[subSlice].loading = false;
+      },
+    );
 
-    builder.addCase(getUserDetails.fulfilled, (state, action) => {
-      state.userDetail = action.payload;
-      state.userDetail.loading = false;
-    });
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('auth') && action.type.endsWith('/pending'),
+      (state, action) => {
+        const subSlice = action.type.split('/')[1] as keyof typeof endpoints.auth;
 
-    builder.addCase(getUserDetails.rejected, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
-    builder.addCase(getUserDetails.pending, (state, action) => {
-      state.userDetail.loading = true;
-    });
+        state[subSlice] = { ...INITIAL_STATE[subSlice] };
+        state[subSlice].loading = true;
+      },
+    );
 
-    builder.addCase(createForgotPassword.fulfilled, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
-    builder.addCase(createForgotPassword.rejected, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
-    builder.addCase(createForgotPassword.pending, (state, action) => {
-      state.userDetail.loading = true;
-    });
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('auth') && action.type.endsWith('/rejected'),
+      (state, action) => {
+        const subSlice = action.type.split('/')[1] as keyof typeof endpoints.auth;
 
-    builder.addCase(updateForgetPassword.fulfilled, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
-    builder.addCase(updateForgetPassword.rejected, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
-    builder.addCase(updateForgetPassword.pending, (state, action) => {
-      state.userDetail.loading = true;
-    });
-
-    builder.addCase(validateForgotPassword.fulfilled, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
-    builder.addCase(validateForgotPassword.rejected, (state, action) => {
-      state.userDetail = {
-        ...state.userDetail,
-        ...action.payload,
-        loading: false,
-      };
-    });
-    builder.addCase(validateForgotPassword.pending, (state, action) => {
-      state.userDetail.loading = true;
-    });
+        state[subSlice] = {
+          ...state[subSlice],
+          ...action.payload,
+          loading: false,
+        };
+      },
+    );
   },
 });
-
-/* const setData = (thunk, builder: ActionReducerMapBuilder<typeof thunk>) => {
-  builder.addCase(verifyUser.fulfilled, (state, action) => {
-    state.userDetail = {
-      ...state.userDetail,
-      ...action.payload,
-      loading: false,
-    };
-  });
-  builder.addCase(verifyUser.rejected, (state, action) => {
-    state.userDetail = {
-      ...state.userDetail,
-      ...action.payload,
-      loading: false,
-    };
-  });
-  builder.addCase(verifyUser.pending, (state, action) => {
-    state.userDetail.loading = true;
-  });
-};
- */
 
 export const { setToken } = AuthSlice.actions;
 

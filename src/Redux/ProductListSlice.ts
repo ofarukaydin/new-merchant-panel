@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sliceNames, thunkActionTypes } from 'Redux/Helpers/SliceTypes';
+import { sliceNames, thunkActionTypes } from 'Redux/Helpers/Enums';
 import { SearchParams } from 'Util/Types';
 import Api from 'Util/Api';
 
@@ -28,7 +28,9 @@ export const asyncGetProducts = createAsyncThunk(
   thunkActionTypes.getProducts,
   async (params: SearchParams, thunkAPI) => {
     try {
-      const response = await Api.post('/product/getproductfilterlistasync', params);
+      const response = await Api.get('/product/getproductfilterlistasync', {
+        params,
+      });
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue('rejected');

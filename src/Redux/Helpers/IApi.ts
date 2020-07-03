@@ -12,7 +12,7 @@ export interface IResponse<T> {
 export const ResponseModel = {
   response: {},
   loading: false,
-  messages: [],
+  messages: [{}],
   result: false,
 };
 

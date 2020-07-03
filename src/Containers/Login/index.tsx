@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import loginImg from 'Assets/login.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'Util/Auth';
@@ -16,6 +16,10 @@ const Login = () => {
     (state: RootState) => state[sliceTypes.auth].validateUser.response?.token,
   );
   const loading = useSelector((state: RootState) => state[sliceTypes.auth].validateUser.loading);
+
+  const errorMessage = useSelector(
+    (state: RootState) => state[sliceTypes.auth].validateUser.messages![0].message,
+  );
 
   useEffect(() => {
     if (token) {
@@ -46,6 +50,7 @@ const Login = () => {
         <div css={styles.rightSideContainer}>
           <h1 css={styles.h1}>Giriş</h1>
           <p css={styles.p}>Tekrar hoşgeldiniz, Lütfen hesabınızla giriş yapın.</p>
+          {errorMessage && <Alert message={errorMessage} type="error" />}
           <Form
             name="basic"
             layout="vertical"

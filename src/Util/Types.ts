@@ -4,5 +4,6 @@ export type SearchParams = {
   searchValue: string;
   orderDir: 'ascend' | 'descend' | '';
   orderBy: string;
+  merchantBranchId?: number;
   page?: 'shippingStage' | 'cancelledOrders' | 'refundedOrders' | 'newOrders';
 };

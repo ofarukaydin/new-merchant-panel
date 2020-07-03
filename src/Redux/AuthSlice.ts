@@ -1,5 +1,5 @@
-import { createSlice, AnyAction, SerializedError } from '@reduxjs/toolkit';
-import { ResponseModel, IAuthState, IApi } from 'Redux/Helpers/IApi';
+import { createSlice, AnyAction, SerializedError, PayloadAction } from '@reduxjs/toolkit';
+import { ResponseModel, IApi, IAuthState } from 'Redux/Helpers/IApi';
 import { endpoints } from 'Redux/Helpers/Endpoints';
 import { generateThunk } from 'Util/Api';
 import { thunkActionTypes, sliceNames } from 'Redux/Helpers/Enums';
@@ -57,13 +57,28 @@ const AuthSlice = createSlice({
     setToken: (state, action) => {
       state.validateUser.response!.token = action.payload;
     },
+    setDefault: (
+      state,
+      action: PayloadAction<{ subSlice: keyof IAuthState; fieldsToReset: string[] }>,
+    ) => {
+      /*       const subSlice: keyof IAuthState = action.payload.subSlice;
+      const fieldsToReset: string[] = action.payload.fieldsToReset;
+
+      if (!action.payload.fieldsToReset) {
+        state[subSlice] = INITIAL_STATE[subSlice];
+      } else {
+        fieldsToReset.forEach((field) => {
+          state[subSlice][field] = INITIAL_STATE[subSlice][field];
+        });
+      } */
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
       (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
         action.type.startsWith('auth') && action.type.endsWith('/fulfilled'),
       (state, action) => {
-        const subSlice = action.type.split('/')[1] as keyof typeof endpoints.auth;
+        const subSlice = action.type.split('/')[1] as keyof IAuthState;
 
         state[subSlice] = action.payload;
         state[subSlice].loading = false;
@@ -74,7 +89,7 @@ const AuthSlice = createSlice({
       (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
         action.type.startsWith('auth') && action.type.endsWith('/pending'),
       (state, action) => {
-        const subSlice = action.type.split('/')[1] as keyof typeof endpoints.auth;
+        const subSlice = action.type.split('/')[1] as keyof IAuthState;
 
         state[subSlice] = { ...INITIAL_STATE[subSlice] };
         state[subSlice].loading = true;
@@ -85,18 +100,15 @@ const AuthSlice = createSlice({
       (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
         action.type.startsWith('auth') && action.type.endsWith('/rejected'),
       (state, action) => {
-        const subSlice = action.type.split('/')[1] as keyof typeof endpoints.auth;
+        const subSlice = action.type.split('/')[1] as keyof IAuthState;
 
-        state[subSlice] = {
-          ...state[subSlice],
-          ...action.payload,
-          loading: false,
-        };
+        state[subSlice] = action.payload;
+        state[subSlice].loading = false;
       },
     );
   },
 });
 
-export const { setToken } = AuthSlice.actions;
+export const { setToken, setDefault } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

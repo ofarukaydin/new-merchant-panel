@@ -34,7 +34,12 @@ export const generateThunk = <RequestDTO, ResponseDTO extends IApi['OperationRes
         throw err;
       }
 
-      return thunkAPI.rejectWithValue(error.response.data);
+      const constructedErrorMessage = {
+        result: false,
+        messages: [{ code: error.code, message: error.message }],
+      };
+
+      return thunkAPI.rejectWithValue(constructedErrorMessage);
     }
   });
 };

@@ -17,8 +17,10 @@ const Login = () => {
   );
   const loading = useSelector((state: RootState) => state[sliceTypes.auth].validateUser.loading);
 
-  const errorMessage = useSelector(
-    (state: RootState) => state[sliceTypes.auth].validateUser.messages![0].message,
+  const errorMessage = useSelector((state: RootState) =>
+    state[sliceTypes.auth].validateUser.messages
+      ? state[sliceTypes.auth].validateUser.messages![0].message
+      : null,
   );
 
   useEffect(() => {
@@ -29,7 +31,6 @@ const Login = () => {
   }, [token]);
 
   const onFinish = (values: any) => {
-    console.log('Success:', values);
     dispatch(
       verifyUser({
         username: values.username,

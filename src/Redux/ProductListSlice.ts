@@ -28,10 +28,8 @@ export const asyncGetProducts = createAsyncThunk(
   thunkActionTypes.getProducts,
   async (params: SearchParams, thunkAPI) => {
     try {
-      const response = await Api.get('/product/getproductfilterlistasync', {
-        params,
-      });
-      return response.data;
+      const response = await Api.v1ProductGetproductfilterlistList();
+      return response;
     } catch (err) {
       return thunkAPI.rejectWithValue('rejected');
     }
@@ -46,7 +44,7 @@ export const productListSlice = createSlice({
     builder.addCase(asyncGetProducts.fulfilled, (state, action) => {
       state.loading = false;
       state.paginatedData = action.payload.response;
-      state.totalCount = action.payload.totalCount;
+      state.totalCount = action.payload.totalCount as number;
     });
     builder.addCase(asyncGetProducts.rejected, (state, action) => {
       state.loading = false;

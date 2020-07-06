@@ -17,9 +17,9 @@ import CustomHeader from 'Containers/OrderList/CustomHeader';
 const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();
 
-  const paginatedData: any = useSelector(paginatedDataSelector);
-  const totalRecords: number = useSelector(totalRecordsSelector);
-  const loading: boolean = useSelector(loadingSelector);
+  const paginatedData = useSelector(paginatedDataSelector) ?? [];
+  const totalRecords = useSelector(totalRecordsSelector);
+  const loading = useSelector(loadingSelector);
 
   const mutatedParams = { ...params };
 

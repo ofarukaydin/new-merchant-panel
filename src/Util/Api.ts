@@ -1,47 +1,49 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { OperationResultDTO } from 'Redux/Helpers/ApiTypes';
+import { OperationResultDTO, RequestParams } from 'Redux/Helpers/ApiTypes';
+import { Api } from 'Redux/Helpers/ApiTypes';
 
-const Api = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_API_URL,
-  responseType: 'json',
+export const GeneratedApi = new Api({
+  baseUrl: process.env.REACT_APP_BACKEND_API_URL,
+  baseApiParams: {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  },
 });
 
-export const generateThunk = <RequestDTO, ResponseDTO extends OperationResultDTO>(options: {
-  actionType: string;
-  url: string;
-  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-}) => {
-  return createAsyncThunk<
+export const generateThunk = <RequestDTO, ResponseDTO extends OperationResultDTO>(
+  actionType: string,
+  fetchFn: (data: RequestDTO, params?: RequestParams) => Promise<ResponseDTO>,
+) => {
+  const thunk = createAsyncThunk<
     ResponseDTO,
     RequestDTO,
     {
       rejectValue: OperationResultDTO;
     }
-  >(options.actionType, async (data, thunkAPI) => {
+  >(actionType, async (data, thunkAPI) => {
     try {
-      const response: AxiosResponse<ResponseDTO> = await Api({ ...options, data });
-
-      if (!response.data.result) {
-        return thunkAPI.rejectWithValue(response.data);
+      const response = await fetchFn(data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      if (!response.result) {
+        return thunkAPI.rejectWithValue(response);
       }
 
-      return response.data;
-    } catch (err) {
-      const error: AxiosError<OperationResultDTO> = err;
-
-      if (!error.response) {
-        throw err;
-      }
-
+      return response;
+    } catch (error) {
       const constructedErrorMessage = {
         result: false,
-        messages: [{ code: error.code, message: error.message }],
+        messages: [{ code: '600', message: 'Bir hata oluştu' }],
       };
 
       return thunkAPI.rejectWithValue(constructedErrorMessage);
     }
   });
+  return thunk;
 };
 
-export default Api;
+export default GeneratedApi.api;

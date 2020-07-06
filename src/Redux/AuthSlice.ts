@@ -1,19 +1,9 @@
 import { createSlice, AnyAction, SerializedError, PayloadAction } from '@reduxjs/toolkit';
-import { ResponseModel, IAuthState } from 'Redux/Helpers/IApi';
-import { endpoints } from 'Redux/Helpers/Endpoints';
-import { generateThunk } from 'Util/Api';
+import { ResponseModel, IAuthState } from 'Redux/Helpers/StateTypes';
+import Api, { generateThunk } from 'Util/Api';
 import { thunkActionTypes, sliceNames } from 'Redux/Helpers/Enums';
-import {
-  ValidateUserRequestDTO,
-  ValidateUserResponseDTOOperationResultDTO,
-  GetUserDetailsResponseDTOOperationResultDTO,
-  CreateForgetPasswordRequestDTO,
-  OperationResultDTO,
-  ValidateForgetPasswordRequestDTO,
-  ChangeForgetPasswordRequestDTO,
-} from 'Redux/Helpers/ApiTypes';
 
-const INITIAL_STATE: IAuthState = {
+const initialState: IAuthState = {
   validateUser: ResponseModel,
   userDetails: ResponseModel,
   registerUser: ResponseModel,
@@ -22,63 +12,55 @@ const INITIAL_STATE: IAuthState = {
   updateForgetPasswordRequest: ResponseModel,
 };
 
-export const verifyUser = generateThunk<
-  ValidateUserRequestDTO,
-  ValidateUserResponseDTOOperationResultDTO
->({ url: endpoints.auth.validateUser, method: 'POST', actionType: thunkActionTypes.validateUser });
-
-export const getUserDetails = generateThunk<undefined, GetUserDetailsResponseDTOOperationResultDTO>(
-  { url: endpoints.auth.userDetails, method: 'GET', actionType: thunkActionTypes.userDetails },
+export const verifyUser = generateThunk(
+  thunkActionTypes.validateUser,
+  Api.v1AuthenticationValidateuserCreate,
 );
 
-export const createForgotPassword = generateThunk<
-  CreateForgetPasswordRequestDTO,
-  OperationResultDTO
->({
-  url: endpoints.auth.createForgetPasswordRequest,
-  method: 'POST',
-  actionType: thunkActionTypes.createForgetPasswordRequest,
-});
+export const getUserDetails = generateThunk(
+  thunkActionTypes.userDetails,
+  Api.v1AuthenticationGetuserdetailsList,
+);
 
-export const validateForgotPassword = generateThunk<
-  ValidateForgetPasswordRequestDTO,
-  OperationResultDTO
->({
-  url: endpoints.auth.validateForgetPasswordRequest,
-  method: 'POST',
-  actionType: thunkActionTypes.validateForgetPasswordRequest,
-});
+export const createForgotPassword = generateThunk(
+  thunkActionTypes.createForgetPasswordRequest,
+  Api.v1AuthenticationCreateforgetpasswordrequestCreate,
+);
 
-export const updateForgetPassword = generateThunk<
-  ChangeForgetPasswordRequestDTO,
-  OperationResultDTO
->({
-  url: endpoints.auth.updateForgetPasswordRequest,
-  method: 'POST',
-  actionType: thunkActionTypes.updateForgetPasswordRequest,
-});
+export const validateForgotPassword = generateThunk(
+  thunkActionTypes.validateForgetPasswordRequest,
+  Api.v1AuthenticationValidateforgetpasswordrequestCreate,
+);
+
+export const updateForgetPassword = generateThunk(
+  thunkActionTypes.updateForgetPasswordRequest,
+  Api.v1AuthenticationUpdateforgetpasswordrequestUpdate,
+);
 
 const AuthSlice = createSlice({
   name: sliceNames.auth,
-  initialState: INITIAL_STATE,
+  initialState: initialState,
   reducers: {
     setToken: (state, action) => {
       state.validateUser.response!.token = action.payload;
     },
     setDefault: (
       state,
-      action: PayloadAction<{ subSlice: keyof IAuthState; fieldsToReset: string[] }>,
+      action: PayloadAction<{
+        subSlice: keyof IAuthState;
+        fieldsToReset: IAuthState[keyof IAuthState]['response'];
+      }>,
     ) => {
-      /*       const subSlice: keyof IAuthState = action.payload.subSlice;
-      const fieldsToReset: string[] = action.payload.fieldsToReset;
+      /*    const subSlice: keyof IAuthState = action.payload.subSlice;
+      const fieldsToReset = action.payload.fieldsToReset;
 
       if (!action.payload.fieldsToReset) {
-        state[subSlice] = INITIAL_STATE[subSlice];
+        state[subSlice] = initialState[subSlice];
       } else {
         fieldsToReset.forEach((field) => {
-          state[subSlice][field] = INITIAL_STATE[subSlice][field];
+          state[subSlice][field] = initialState[subSlice][field];
         });
-      } */
+      }  */
     },
   },
   extraReducers: (builder) => {
@@ -86,7 +68,7 @@ const AuthSlice = createSlice({
       (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
         action.type.startsWith('auth') && action.type.endsWith('/fulfilled'),
       (state, action) => {
-        const subSlice = action.type.split('/')[1] as keyof IAuthState;
+        const subSlice: keyof IAuthState = action.type.split('/')[1];
 
         state[subSlice] = action.payload;
         state[subSlice].loading = false;
@@ -97,9 +79,9 @@ const AuthSlice = createSlice({
       (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
         action.type.startsWith('auth') && action.type.endsWith('/pending'),
       (state, action) => {
-        const subSlice = action.type.split('/')[1] as keyof IAuthState;
+        const subSlice: keyof IAuthState = action.type.split('/')[1];
 
-        state[subSlice] = { ...INITIAL_STATE[subSlice] };
+        state[subSlice] = { ...initialState[subSlice] };
         state[subSlice].loading = true;
       },
     );
@@ -108,7 +90,7 @@ const AuthSlice = createSlice({
       (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
         action.type.startsWith('auth') && action.type.endsWith('/rejected'),
       (state, action) => {
-        const subSlice = action.type.split('/')[1] as keyof IAuthState;
+        const subSlice: keyof IAuthState = action.type.split('/')[1];
 
         state[subSlice] = action.payload;
         state[subSlice].loading = false;

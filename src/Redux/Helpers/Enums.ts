@@ -12,8 +12,7 @@ export enum sliceNames {
 
 export enum thunkActionTypes {
   getProducts = 'products/getProducts',
-  getOrders = 'orders/getOrders',
-  getOrdersFake = 'orders/getOrdersFake',
+  getOrders = 'orders/searchOrderAsync',
   insertAddress = 'address/insertAddress',
   getAddressList = 'address/getAddressList',
   registerUser = 'auth/registerUser',

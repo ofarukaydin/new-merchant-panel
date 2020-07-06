@@ -4,13 +4,14 @@ import {
   GetUserDetailsResponseDTO,
   OperationResultDTO,
   OperationResultMessage,
+  OrderResponseDTOPagingOperationResultDTO,
 } from 'Redux/Helpers/ApiTypes';
 
 export interface IResponse<T> {
   response?: T | null;
-  loading?: Boolean;
-  messages?: OperationResultMessage[] | null;
-  result?: boolean;
+  loading: boolean;
+  messages: OperationResultMessage[] | null;
+  result: boolean;
 }
 
 export const ResponseModel = {
@@ -27,4 +28,8 @@ export interface IAuthState {
   createForgetPasswordRequest: IResponse<OperationResultDTO>;
   validateForgetPasswordRequest: IResponse<OperationResultDTO>;
   updateForgetPasswordRequest: IResponse<OperationResultDTO>;
+}
+
+export interface IOrderState {
+  searchOrderAsync: IResponse<OrderResponseDTOPagingOperationResultDTO>;
 }

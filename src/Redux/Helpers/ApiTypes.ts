@@ -933,7 +933,7 @@ export interface GetProductDetailResponseDTOOperationResultDTO {
   messages?: OperationResultMessage[] | null | null;
 }
 
-export type RequestParams = Omit<RequestInit, "body" | "method"> & {
+export type RequestParams = Omit<RequestInit, 'body' | 'method'> & {
   secure?: boolean;
 };
 
@@ -945,22 +945,22 @@ type ApiConfig<SecurityDataType> = {
   securityWorker?: (securityData: SecurityDataType) => RequestParams;
 };
 
-const enum BodyType {
+enum BodyType {
   Json,
 }
 
 class HttpClient<SecurityDataType> {
-  public baseUrl: string = "";
+  public baseUrl: string = '';
   private securityData: SecurityDataType = null as any;
-  private securityWorker: ApiConfig<SecurityDataType>["securityWorker"] = (() => {}) as any;
+  private securityWorker: ApiConfig<SecurityDataType>['securityWorker'] = (() => {}) as any;
 
   private baseApiParams: RequestParams = {
-    credentials: "same-origin",
+    credentials: 'same-origin',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
   };
 
   constructor({ baseUrl, baseApiParams, securityWorker }: ApiConfig<SecurityDataType> = {}) {
@@ -975,29 +975,34 @@ class HttpClient<SecurityDataType> {
 
   private addQueryParam(query: RequestQueryParamsType, key: string) {
     return (
-      encodeURIComponent(key) + "=" + encodeURIComponent(Array.isArray(query[key]) ? query[key].join(",") : query[key])
+      encodeURIComponent(key) +
+      '=' +
+      encodeURIComponent(Array.isArray(query[key]) ? query[key].join(',') : query[key])
     );
   }
 
   protected addQueryParams(rawQuery?: RequestQueryParamsType): string {
     const query = rawQuery || {};
-    const keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
+    const keys = Object.keys(query).filter((key) => 'undefined' !== typeof query[key]);
     return keys.length
       ? `?${keys
           .map((key) =>
-            typeof query[key] === "object" && !Array.isArray(query[key])
+            typeof query[key] === 'object' && !Array.isArray(query[key])
               ? this.addQueryParams(query[key] as object).substring(1)
               : this.addQueryParam(query, key),
           )
-          .join("&")}`
-      : "";
+          .join('&')}`
+      : '';
   }
 
   private bodyFormatters: Record<BodyType, (input: any) => any> = {
     [BodyType.Json]: JSON.stringify,
   };
 
-  private mergeRequestOptions(params: RequestParams, securityParams?: RequestParams): RequestParams {
+  private mergeRequestOptions(
+    params: RequestParams,
+    securityParams?: RequestParams,
+  ): RequestParams {
     return {
       ...this.baseApiParams,
       ...params,
@@ -1026,7 +1031,10 @@ class HttpClient<SecurityDataType> {
   ): Promise<T> =>
     fetch(`${this.baseUrl}${path}`, {
       // @ts-ignore
-      ...this.mergeRequestOptions(params, (secureByDefault || secure) && this.securityWorker(this.securityData)),
+      ...this.mergeRequestOptions(
+        params,
+        ((secureByDefault || secure) as undefined) && this.securityWorker!(this.securityData),
+      ),
       method,
       body: body ? this.bodyFormatters[bodyType || BodyType.Json](body) : null,
     }).then(async (response) => {
@@ -1051,7 +1059,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1AuthenticationUpdateuserUpdate: (data: UpdateUserRequestDTO, params?: RequestParams) =>
       this.request<UpdateUserResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/updateuser`,
-        "PUT",
+        'PUT',
         params,
         data,
         BodyType.Json,
@@ -1064,10 +1072,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request POST:/api/v1/authentication/insertuseraddress
      * @secure
      */
-    v1AuthenticationInsertuseraddressCreate: (data: InsertUserAddressRequestDTO, params?: RequestParams) =>
+    v1AuthenticationInsertuseraddressCreate: (
+      data: InsertUserAddressRequestDTO,
+      params?: RequestParams,
+    ) =>
       this.request<InsertUserAddressResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/insertuseraddress`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1080,10 +1091,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request PUT:/api/v1/authentication/updateuseraddress
      * @secure
      */
-    v1AuthenticationUpdateuseraddressUpdate: (data: UpdateUserAddressRequestDTO, params?: RequestParams) =>
+    v1AuthenticationUpdateuseraddressUpdate: (
+      data: UpdateUserAddressRequestDTO,
+      params?: RequestParams,
+    ) =>
       this.request<UpdateUserAddressResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/updateuseraddress`,
-        "PUT",
+        'PUT',
         params,
         data,
         BodyType.Json,
@@ -1098,7 +1112,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1AuthenticationRegisterCreate: (data: RegisterUserRequestDTO, params?: RequestParams) =>
       this.request<RegisterUserResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/register`,
-        "POST",
+        'POST',
         params,
         data,
       ),
@@ -1112,7 +1126,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1AuthenticationGetuserdetailsList: (params?: RequestParams) =>
       this.request<GetUserDetailsResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/getuserdetails`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1128,7 +1142,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1AuthenticationGetuseraddressesList: (params?: RequestParams) =>
       this.request<UserAddressItemResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/getuseraddresses`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1144,7 +1158,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1AuthenticationGetcurrentuseraddressList: (params?: RequestParams) =>
       this.request<UserAddressItemResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/getcurrentuseraddress`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1157,10 +1171,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request PUT:/api/v1/authentication/setcurrentuseraddress
      * @secure
      */
-    v1AuthenticationSetcurrentuseraddressUpdate: (query?: { addressId?: number }, params?: RequestParams) =>
+    v1AuthenticationSetcurrentuseraddressUpdate: (
+      query?: { addressId?: number },
+      params?: RequestParams,
+    ) =>
       this.request<any, any>(
         `/api/v1/authentication/setcurrentuseraddress${this.addQueryParams(query)}`,
-        "PUT",
+        'PUT',
         params,
         null,
         BodyType.Json,
@@ -1176,7 +1193,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1AuthenticationDeleteuserDelete: (data: DeleteUserRequestDTO, params?: RequestParams) =>
       this.request<UserAddressItemResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/deleteuser`,
-        "DELETE",
+        'DELETE',
         params,
         data,
         BodyType.Json,
@@ -1191,7 +1208,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1AuthenticationValidateuserCreate: (data: ValidateUserRequestDTO, params?: RequestParams) =>
       this.request<ValidateUserResponseDTOOperationResultDTO, any>(
         `/api/v1/authentication/validateuser`,
-        "POST",
+        'POST',
         params,
         data,
       ),
@@ -1201,8 +1218,16 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @name v1AuthenticationCreateforgetpasswordrequestCreate
      * @request POST:/api/v1/authentication/createforgetpasswordrequest
      */
-    v1AuthenticationCreateforgetpasswordrequestCreate: (data: CreateForgetPasswordRequestDTO, params?: RequestParams) =>
-      this.request<OperationResultDTO, any>(`/api/v1/authentication/createforgetpasswordrequest`, "POST", params, data),
+    v1AuthenticationCreateforgetpasswordrequestCreate: (
+      data: CreateForgetPasswordRequestDTO,
+      params?: RequestParams,
+    ) =>
+      this.request<OperationResultDTO, any>(
+        `/api/v1/authentication/createforgetpasswordrequest`,
+        'POST',
+        params,
+        data,
+      ),
 
     /**
      * @tags Authentication
@@ -1215,7 +1240,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     ) =>
       this.request<OperationResultDTO, any>(
         `/api/v1/authentication/validateforgetpasswordrequest`,
-        "POST",
+        'POST',
         params,
         data,
       ),
@@ -1225,8 +1250,16 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @name v1AuthenticationUpdateforgetpasswordrequestUpdate
      * @request PUT:/api/v1/authentication/updateforgetpasswordrequest
      */
-    v1AuthenticationUpdateforgetpasswordrequestUpdate: (data: ChangeForgetPasswordRequestDTO, params?: RequestParams) =>
-      this.request<OperationResultDTO, any>(`/api/v1/authentication/updateforgetpasswordrequest`, "PUT", params, data),
+    v1AuthenticationUpdateforgetpasswordrequestUpdate: (
+      data: ChangeForgetPasswordRequestDTO,
+      params?: RequestParams,
+    ) =>
+      this.request<OperationResultDTO, any>(
+        `/api/v1/authentication/updateforgetpasswordrequest`,
+        'PUT',
+        params,
+        data,
+      ),
 
     /**
      * @tags Authentication
@@ -1234,10 +1267,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request PUT:/api/v1/authentication/updatepasswordrequest
      * @secure
      */
-    v1AuthenticationUpdatepasswordrequestUpdate: (data: UpdatePasswordRequest, params?: RequestParams) =>
+    v1AuthenticationUpdatepasswordrequestUpdate: (
+      data: UpdatePasswordRequest,
+      params?: RequestParams,
+    ) =>
       this.request<OperationResultDTO, any>(
         `/api/v1/authentication/updatepasswordrequest`,
-        "PUT",
+        'PUT',
         params,
         data,
         BodyType.Json,
@@ -1253,7 +1289,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1BasketInsertbasketitemCreate: (data: InsertBasketItemRequestDTO, params?: RequestParams) =>
       this.request<BasketInfoDTOOperationResultDTO, any>(
         `/api/v1/basket/insertbasketitem`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1266,10 +1302,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request GET:/api/v1/basket/getuserbasketbyaddressidasync
      * @secure
      */
-    v1BasketGetuserbasketbyaddressidasyncList: (query?: { AddressId?: number }, params?: RequestParams) =>
+    v1BasketGetuserbasketbyaddressidasyncList: (
+      query?: { AddressId?: number },
+      params?: RequestParams,
+    ) =>
       this.request<BasketInfoDTOOperationResultDTO, any>(
         `/api/v1/basket/getuserbasketbyaddressidasync${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1285,7 +1324,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1BasketRemovebasketitemasyncDelete: (data: RemoveBasketItemDTO, params?: RequestParams) =>
       this.request<StringOperationResultDTO, any>(
         `/api/v1/basket/removebasketitemasync`,
-        "DELETE",
+        'DELETE',
         params,
         data,
         BodyType.Json,
@@ -1301,7 +1340,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1BasketRemoveuserbasketasyncDelete: (query?: { AddressId?: number }, params?: RequestParams) =>
       this.request<StringOperationResultDTO, any>(
         `/api/v1/basket/removeuserbasketasync${this.addQueryParams(query)}`,
-        "DELETE",
+        'DELETE',
         params,
         null,
         BodyType.Json,
@@ -1317,7 +1356,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CarrierInsertcarrierCreate: (data: InsertCarrierRequestDTO, params?: RequestParams) =>
       this.request<InsertCarrierResponseDTOOperationResultDTO, any>(
         `/api/v1/carrier/insertcarrier`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1333,7 +1372,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CarrierUpdatecarrierUpdate: (data: UpdateCarrierRequestDTO, params?: RequestParams) =>
       this.request<UpdateCarrierResponseDTOOperationResultDTO, any>(
         `/api/v1/carrier/updatecarrier`,
-        "PUT",
+        'PUT',
         params,
         data,
         BodyType.Json,
@@ -1349,7 +1388,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CarrierGetcarrierList: (query?: { carrierId?: number }, params?: RequestParams) =>
       this.request<GetCarrierResponseDTOOperationResultDTO, any>(
         `/api/v1/carrier/getcarrier${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1365,7 +1404,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CarrierGetcarriersCreate: (data: GetCarrierListRequestDTO, params?: RequestParams) =>
       this.request<GetCarrierResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/carrier/getcarriers`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1381,7 +1420,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CarrierSearchcarrierCreate: (data: SearchCarrierRequestDTO, params?: RequestParams) =>
       this.request<GetCarrierResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/carrier/searchcarrier`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1397,7 +1436,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CarrierDeletecarrierDelete: (query?: { carrierId?: number }, params?: RequestParams) =>
       this.request<OperationResultDTO, any>(
         `/api/v1/carrier/deletecarrier${this.addQueryParams(query)}`,
-        "DELETE",
+        'DELETE',
         params,
         null,
         BodyType.Json,
@@ -1410,10 +1449,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request POST:/api/v1/carrier/insertorderdeliverycode
      * @secure
      */
-    v1CarrierInsertorderdeliverycodeCreate: (data: InsertOrderDeliveryCodeRequestDTO, params?: RequestParams) =>
+    v1CarrierInsertorderdeliverycodeCreate: (
+      data: InsertOrderDeliveryCodeRequestDTO,
+      params?: RequestParams,
+    ) =>
       this.request<InsertOrderDeliveryCodeResponseDTOOperationResultDTO, any>(
         `/api/v1/carrier/insertorderdeliverycode`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1426,10 +1468,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request PUT:/api/v1/carrier/updatecarriertrakinginfo
      * @secure
      */
-    v1CarrierUpdatecarriertrakinginfoUpdate: (data: UpdateCarrierTrackingInfoRequestDTO, params?: RequestParams) =>
+    v1CarrierUpdatecarriertrakinginfoUpdate: (
+      data: UpdateCarrierTrackingInfoRequestDTO,
+      params?: RequestParams,
+    ) =>
       this.request<UpdateCarrierTrackingInfoResponseDTOOperationResultDTO, any>(
         `/api/v1/carrier/updatecarriertrakinginfo`,
-        "PUT",
+        'PUT',
         params,
         data,
         BodyType.Json,
@@ -1442,10 +1487,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request POST:/api/v1/carrier/getcarriertrakinginfo
      * @secure
      */
-    v1CarrierGetcarriertrakinginfoCreate: (data: GetCarrierTrackingInfoRequestDTO, params?: RequestParams) =>
+    v1CarrierGetcarriertrakinginfoCreate: (
+      data: GetCarrierTrackingInfoRequestDTO,
+      params?: RequestParams,
+    ) =>
       this.request<GetCarrierTrackingInfoResponseDTOOperationResultDTO, any>(
         `/api/v1/carrier/getcarriertrakinginfo`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1458,10 +1506,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request POST:/api/v1/carrier/insertcarriertrackinginfo2
      * @secure
      */
-    v1CarrierInsertcarriertrackinginfo2Create: (data: UpdateUserResponseDTO, params?: RequestParams) =>
+    v1CarrierInsertcarriertrackinginfo2Create: (
+      data: UpdateUserResponseDTO,
+      params?: RequestParams,
+    ) =>
       this.request<InsertCarrierTrackingInfoResponseDTOOperationResultDTO, any>(
         `/api/v1/carrier/insertcarriertrackinginfo2`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1477,7 +1528,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignInsertCampaignCreate: (data: InsertCampaignRequestDTO, params?: RequestParams) =>
       this.request<CampaignResponseDTOOperationResultDTO, any>(
         `/api/v1/compaign/insert-campaign`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1493,7 +1544,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignUpdateCampaignUpdate: (data: UpdateCampaignRequestDTO, params?: RequestParams) =>
       this.request<CampaignResponseDTOOperationResultDTO, any>(
         `/api/v1/compaign/update-campaign`,
-        "PUT",
+        'PUT',
         params,
         data,
         BodyType.Json,
@@ -1509,7 +1560,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignCampaignList: (query?: { campaignId?: number }, params?: RequestParams) =>
       this.request<CampaignResponseDTOOperationResultDTO, any>(
         `/api/v1/compaign/campaign${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1525,7 +1576,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignCampaignsCreate: (data: GetCampaignsRequestDTO, params?: RequestParams) =>
       this.request<CampaignResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/compaign/campaigns`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1541,7 +1592,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignSearchCampaignCreate: (data: SearchCampaignsRequestDTO, params?: RequestParams) =>
       this.request<CampaignResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/compaign/search-campaign`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1557,7 +1608,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignDeleteCampaignDelete: (query?: { campaignId?: number }, params?: RequestParams) =>
       this.request<OperationResultDTO, any>(
         `/api/v1/compaign/delete-campaign${this.addQueryParams(query)}`,
-        "DELETE",
+        'DELETE',
         params,
         null,
         BodyType.Json,
@@ -1573,7 +1624,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignInsertSliderCreate: (data: InsertSliderRequestDTO, params?: RequestParams) =>
       this.request<SliderResponseDTOOperationResultDTO, any>(
         `/api/v1/compaign/insert-slider`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1589,7 +1640,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignUpdateSliderUpdate: (data: UpdateSliderRequestDTO, params?: RequestParams) =>
       this.request<SliderResponseDTOOperationResultDTO, any>(
         `/api/v1/compaign/update-slider`,
-        "PUT",
+        'PUT',
         params,
         data,
         BodyType.Json,
@@ -1605,7 +1656,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignSliderList: (query?: { sliderId?: number }, params?: RequestParams) =>
       this.request<SliderResponseDTOOperationResultDTO, any>(
         `/api/v1/compaign/slider${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1621,7 +1672,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignSlidersCreate: (data: GetSlidersRequestDTO, params?: RequestParams) =>
       this.request<SliderResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/compaign/sliders`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1637,7 +1688,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignSearchSliderCreate: (data: SearchSlidersRequestDTO, params?: RequestParams) =>
       this.request<SliderResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/compaign/search-slider`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1653,7 +1704,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1CompaignDeleteSliderDelete: (query?: { sliderId?: number }, params?: RequestParams) =>
       this.request<OperationResultDTO, any>(
         `/api/v1/compaign/delete-slider${this.addQueryParams(query)}`,
-        "DELETE",
+        'DELETE',
         params,
         null,
         BodyType.Json,
@@ -1667,7 +1718,14 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @secure
      */
     v1FileInsertfileasyncCreate: (data: FileRequestDTO, params?: RequestParams) =>
-      this.request<FileResponseDTO, any>(`/api/v1/file/insertfileasync`, "POST", params, data, BodyType.Json, true),
+      this.request<FileResponseDTO, any>(
+        `/api/v1/file/insertfileasync`,
+        'POST',
+        params,
+        data,
+        BodyType.Json,
+        true,
+      ),
 
     /**
      * @tags File
@@ -1678,7 +1736,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1FileTestCreate: (query?: { data?: number }, params?: RequestParams) =>
       this.request<boolean, any>(
         `/api/v1/file/test${this.addQueryParams(query)}`,
-        "POST",
+        'POST',
         params,
         null,
         BodyType.Json,
@@ -1694,7 +1752,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1MerchantGetmerchantbranchidbyaddressidDetail: (addressId: number, params?: RequestParams) =>
       this.request<Int64OperationResultDTO, any>(
         `/api/v1/merchant/getmerchantbranchidbyaddressid/${addressId}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1712,7 +1770,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     ) =>
       this.request<Int64OperationResultDTO, any>(
         `/api/v1/merchant/getmerchantbranchidbylatlong${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
       ),
 
@@ -1725,7 +1783,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1OrderInsertorderasyncCreate: (data: InsertOrderRequestDTO, params?: RequestParams) =>
       this.request<InsertOrderResponseDTOOperationResultDTO, any>(
         `/api/v1/order/insertorderasync`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1741,7 +1799,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1OrderGetorderbyidasyncList: (query?: { orderId?: number }, params?: RequestParams) =>
       this.request<OrderResponseDTOOperationResultDTO, any>(
         `/api/v1/order/getorderbyidasync${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1757,7 +1815,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1OrderGetordersbyuseridasyncList: (params?: RequestParams) =>
       this.request<GetOrderListResponseDTOOperationResultDTO, any>(
         `/api/v1/order/getordersbyuseridasync`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1773,7 +1831,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1OrderSearchorderasyncCreate: (data: SearchOrderRequestDTO, params?: RequestParams) =>
       this.request<OrderResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/order/searchorderasync`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1789,7 +1847,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1OrderUpdateorderasyncCreate: (data: UpdateOrderRequestDTO, params?: RequestParams) =>
       this.request<OrderResponseDTOOperationResultDTO, any>(
         `/api/v1/order/updateorderasync`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1802,10 +1860,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request POST:/api/v1/order/updateorderstatusasync
      * @secure
      */
-    v1OrderUpdateorderstatusasyncCreate: (data: UpdateOrderStatusRequestDTO, params?: RequestParams) =>
+    v1OrderUpdateorderstatusasyncCreate: (
+      data: UpdateOrderStatusRequestDTO,
+      params?: RequestParams,
+    ) =>
       this.request<OrderResponseDTOOperationResultDTO, any>(
         `/api/v1/order/updateorderstatusasync`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1821,7 +1882,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1OrderGetuseractiveorderList: (params?: RequestParams) =>
       this.request<UserActiveOrderDTOOperationResultDTO, any>(
         `/api/v1/order/getuseractiveorder`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1834,10 +1895,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request POST:/api/v1/order/getcarrierordersbyorderstatus
      * @secure
      */
-    v1OrderGetcarrierordersbyorderstatusCreate: (data: GetCarrierOrderDTO, params?: RequestParams) =>
+    v1OrderGetcarrierordersbyorderstatusCreate: (
+      data: GetCarrierOrderDTO,
+      params?: RequestParams,
+    ) =>
       this.request<CarrierOrderListItemOperationResultDTO[], any>(
         `/api/v1/order/getcarrierordersbyorderstatus`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1863,7 +1927,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     ) =>
       this.request<SubCategoryWithProductsDTOPagingOperationResultDTO, any>(
         `/api/v1/product/getsubcategorieswithproductsandcategory${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1889,7 +1953,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     ) =>
       this.request<ProductItemListDTOPagingOperationResultDTO, any>(
         `/api/v1/product/searchproductbymerchantbranch${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1902,10 +1966,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request GET:/api/v1/product/getproductlistbymerchantbranch
      * @secure
      */
-    v1ProductGetproductlistbymerchantbranchList: (query?: { MerchantBranchId?: number }, params?: RequestParams) =>
+    v1ProductGetproductlistbymerchantbranchList: (
+      query?: { MerchantBranchId?: number },
+      params?: RequestParams,
+    ) =>
       this.request<ProductItemListDTOPagingOperationResultDTO, any>(
         `/api/v1/product/getproductlistbymerchantbranch${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1931,7 +1998,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     ) =>
       this.request<ProductFilterResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/product/getproductfilterlist${this.addQueryParams(query)}`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -1949,7 +2016,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     ) =>
       this.request<ProductItemListDTOPagingOperationResultDTO, any>(
         `/api/v1/product/getproductlistbylatlong${this.addQueryParams(query)}`,
-        "POST",
+        'POST',
         params,
       ),
 
@@ -1959,10 +2026,13 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @request POST:/api/v1/product/searchproductsbylatlong
      * @secure
      */
-    v1ProductSearchproductsbylatlongCreate: (data: SearchProductsByLatLongRequestDTO, params?: RequestParams) =>
+    v1ProductSearchproductsbylatlongCreate: (
+      data: SearchProductsByLatLongRequestDTO,
+      params?: RequestParams,
+    ) =>
       this.request<ProductItemListDTOPagingOperationResultDTO, any>(
         `/api/v1/product/searchproductsbylatlong`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1978,7 +2048,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1ProductSearchcategoryasyncCreate: (data: SearchCategoryRequestDTO, params?: RequestParams) =>
       this.request<GetCategoryResponseDTOPagingOperationResultDTO, any>(
         `/api/v1/product/searchcategoryasync`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,
@@ -1994,7 +2064,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1ProductGetbasecategoriesList: (params?: RequestParams) =>
       this.request<GetBaseCategoriesResponseDTOOperationResultDTO, any>(
         `/api/v1/product/getbasecategories`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -2010,7 +2080,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1ProductGetsubcategoriesList: (params?: RequestParams) =>
       this.request<GetSubCategoriesResponseDTOOperationResultDTO, any>(
         `/api/v1/product/getsubcategories`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -2026,7 +2096,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1ProductGetsubcategorieswithproductList: (params?: RequestParams) =>
       this.request<GetSubCategoriesResponseDTOOperationResultDTO, any>(
         `/api/v1/product/getsubcategorieswithproduct`,
-        "GET",
+        'GET',
         params,
         null,
         BodyType.Json,
@@ -2042,7 +2112,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
     v1ProductGetproductdetailsCreate: (data: GetProductRequestDTO, params?: RequestParams) =>
       this.request<GetProductDetailResponseDTOOperationResultDTO, any>(
         `/api/v1/product/getproductdetails`,
-        "POST",
+        'POST',
         params,
         data,
         BodyType.Json,

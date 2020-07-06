@@ -30,7 +30,7 @@
     "test": "craco test",
     "eject": "craco eject",
     "format": "prettier-eslint --write $PWD/'src/**/*.[jt]s?(x)' && eslint --fix .",
-    "buildtypes": "swagger-typescript-api -p https://edakik-oldtarimkredi.azurewebsites.net/swagger/v1/swagger.json -o ./src/Redux/Helpers -n ApiTypes.ts"
+    "buildtypes": "swagger-typescript-api -p https://edakik-oldtarimkredi.azurewebsites.net/swagger/v1/swagger.json -o ./src/Redux/Helpers -n ApiTypes.ts --union-enums"
   },
   "eslintConfig": {
     "extends": "react-app"

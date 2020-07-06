@@ -1,39 +1,16 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, AnyAction, SerializedError } from '@reduxjs/toolkit';
 import { sliceNames, thunkActionTypes } from 'Redux/Helpers/Enums';
-import { SearchParams } from 'Util/Types';
-import Api from 'Util/Api';
+import Api, { generateThunk } from 'Util/Api';
+import { IOrderState, ResponseModel } from 'Redux/Helpers/StateTypes';
 
-export interface IOrderList {
-  paginatedData: any;
-  params: SearchParams;
-  totalCount: number;
-  loading: boolean;
-}
-
-const initialState: IOrderList = {
-  paginatedData: [],
-  params: {
-    pageIndex: 1,
-    pageSize: 10,
-    searchValue: '',
-    orderDir: '',
-    orderBy: '',
-  },
-  totalCount: 0,
-  loading: false,
+const initialState: IOrderState = {
+  searchOrderAsync: ResponseModel,
 };
 
-export const asyncGetOrders = createAsyncThunk(
+export const asyncGetOrders = generateThunk(
   thunkActionTypes.getOrders,
-  async (params: SearchParams, thunkAPI) => {
-    try {
-      const response = await Api.post('/Order/SearchOrderAsync', params);
-      return response.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue('rejected');
-    }
-  },
+  Api.v1OrderSearchorderasyncCreate,
 );
 
 export const orderListSlice = createSlice({
@@ -41,18 +18,34 @@ export const orderListSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(asyncGetOrders.fulfilled, (state, action) => {
-      state.loading = false;
-      state.paginatedData = action.payload.response;
-      state.totalCount = action.payload.totalCount;
-    });
-    builder.addCase(asyncGetOrders.rejected, (state, action) => {
-      state.loading = false;
-    });
-    builder.addCase(asyncGetOrders.pending, (state, action) => {
-      state.loading = true;
-      state.params = action.meta.arg;
-    });
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('order') && action.type.endsWith('/fulfilled'),
+      (state, action) => {
+        const subSlice: keyof IOrderState = action.type.split('/')[1];
+        state[subSlice] = { ...action.payload, loading: false };
+      },
+    );
+
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('order') && action.type.endsWith('/pending'),
+      (state, action) => {
+        const subSlice: keyof IOrderState = action.type.split('/')[1];
+
+        state[subSlice] = { ...initialState[subSlice], loading: true };
+      },
+    );
+
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('order') && action.type.endsWith('/rejected'),
+      (state, action) => {
+        const subSlice: keyof IOrderState = action.type.split('/')[1];
+
+        state[subSlice] = { ...action.payload, loading: false };
+      },
+    );
   },
 });
 

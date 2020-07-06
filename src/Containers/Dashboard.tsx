@@ -21,26 +21,26 @@ const Dashboard = () => {
 
   useEffect(() => {
     (() => {
-      Api.post('/Order/SearchOrderAsync', {
+      Api.v1OrderSearchorderasyncCreate({
         status: 'ORDERED',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response: any) => {
-        setOrderedCount(response.data.totalCount);
+      }).then((response) => {
+        setOrderedCount(response.totalCount!);
       });
-      Api.post('/Order/SearchOrderAsync', {
+      Api.v1OrderSearchorderasyncCreate({
         status: 'READY',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response: any) => {
-        setReadyCount(response.data.totalCount);
+      }).then((response) => {
+        setReadyCount(response.totalCount!);
       });
-      Api.post('/Order/SearchOrderAsync', {
+      Api.v1OrderSearchorderasyncCreate({
         status: 'SHIPPING',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response: any) => {
-        setShippingCount(response.data.totalCount);
+      }).then((response) => {
+        setShippingCount(response.totalCount!);
       });
     })();
   }, []);

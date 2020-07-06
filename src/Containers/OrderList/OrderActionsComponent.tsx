@@ -18,12 +18,14 @@ type PropTypes = {
 const OrderActionsComponent = (props: PropTypes) => {
   const dispatch = useDispatch();
 
-  const loading = useSelector((state: RootState) => state[sliceTypes.orders].loading);
+  const loading = useSelector(
+    (state: RootState) => state[sliceTypes.orders].searchOrderAsync.loading,
+  );
 
   const changeOrderStatusTo = (status: keyof typeof orderStatus) => {
-    Api.post('/order/updateorderstatusasync', { orderId: props.record.id, orderStatus: status })
-      .then((response: any) => {
-        if (response?.data?.result) {
+    Api.v1OrderUpdateorderstatusasyncCreate({ orderId: props.record.id, orderStatus: status })
+      .then((response) => {
+        if (response.result) {
           notification.success({
             message: 'Başarılı',
             description: `Sipariş "${orderStatus[status]}" durumuna geçirildi.`,

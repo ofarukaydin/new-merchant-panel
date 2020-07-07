@@ -2,14 +2,18 @@ import React from 'react';
 import OrderActionsComponent from 'Containers/OrderList/OrderActionsComponent';
 import { isoToLocalDate } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
-import { orderStatus, orderStatusColors } from 'Util/Enums';
+import { orderStatusColors, orderStatus } from 'Util/Enums';
 import { ColumnProps } from 'antd/lib/table';
 import ThemeConfig from 'Util/ThemeConfig';
 import { CSSObject } from '@emotion/core';
 import { Tag } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
+import { OrderResponseDTO } from 'Redux/Helpers/ApiTypes';
 
-export default function getOrderListColumns(params: SearchParams) {
+export default function getOrderListColumns(
+  params: SearchParams,
+  openDrawerWith: (arg: OrderResponseDTO) => void,
+) {
   const baseOrderListColumns: Array<ColumnProps<any>> = [
     {
       title: 'Sipariş Tarihi',
@@ -37,11 +41,19 @@ export default function getOrderListColumns(params: SearchParams) {
       title: 'Durum',
       dataIndex: 'orderStatus',
       sorter: true,
-      render: (order: keyof typeof orderStatus) => (
-        <Tag icon={order == 'ORDERED' && <ClockCircleOutlined />} color={orderStatusColors[order]}>
+      render: (order: keyof typeof orderStatusColors) => (
+        <Tag icon={order == 'NEW' && <ClockCircleOutlined />} color={orderStatusColors[order]}>
           {orderStatus[order]}
         </Tag>
       ),
+    },
+    {
+      title: 'Sipariş Detayı',
+      dataIndex: 'products',
+      sorter: false,
+      render: (_, record: OrderResponseDTO) => {
+        return <a onClick={() => openDrawerWith(record)}>Sipariş Detayı</a>;
+      },
     },
   ];
 
@@ -60,7 +72,7 @@ export default function getOrderListColumns(params: SearchParams) {
     });
   } else {
     baseOrderListColumns.splice(
-      baseOrderListColumns.length - 1,
+      baseOrderListColumns.length - 2,
       0,
       {
         title: 'Kargo Fiyatı',

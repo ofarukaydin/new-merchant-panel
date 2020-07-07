@@ -1,7 +1,7 @@
-import React, { memo, ReactText, useEffect } from 'react';
+import React, { memo, ReactText, useState, useRef, ReactInstance } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncGetOrders, asyncGetOrdersFake } from 'Redux/OrderListSlice';
-import { Table, notification } from 'antd';
+import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
   totalRecordsSelector,
@@ -13,9 +13,20 @@ import { SearchParams } from 'Util/Types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
 import getOrderListColumns from 'Containers/OrderList/OrderListColumns';
 import CustomHeader from 'Containers/OrderList/CustomHeader';
+import SideDrawer from 'Containers/OrderList/SideDrawer';
+import { OrderResponseDTO } from 'Redux/Helpers/ApiTypes';
+
+class EmptyComponent extends React.Component {
+  render() {
+    return null;
+  }
+}
 
 const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();
+
+  const [drawerData, setDrawerData] = useState<OrderResponseDTO>({});
+  const [showDrawer, setShowDrawer] = useState(false);
 
   const paginatedData: any = useSelector(paginatedDataSelector);
   const totalRecords: number = useSelector(totalRecordsSelector);
@@ -53,12 +64,22 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
     navigateTo('/orders', mutatedParams);
   };
 
+  const openDrawerWith = (orderData: OrderResponseDTO) => {
+    setDrawerData(orderData);
+    setShowDrawer(true);
+  };
+
   return (
     <>
       <CustomHeader handleSearch={handleSearch} params={params} />
+      <SideDrawer
+        orderData={drawerData}
+        onClose={() => setShowDrawer(false)}
+        visible={showDrawer}
+      />
       <Table
         onChange={handleChange}
-        columns={getOrderListColumns(params)}
+        columns={getOrderListColumns(params, openDrawerWith)}
         rowKey={(row) => row.id}
         dataSource={paginatedData}
         loading={loading}

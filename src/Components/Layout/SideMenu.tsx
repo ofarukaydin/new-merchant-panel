@@ -11,6 +11,7 @@ import {
   StopOutlined,
   AlertOutlined,
   CarOutlined,
+  ClockCircleOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from 'Components/Logo';
@@ -31,6 +32,7 @@ const LayoutSideMenu = (props: PropTypes) => {
       collapsible
       collapsed={props.collapsed}
       onCollapse={props.onCollapse}
+      width={260}
     >
       <div css={styles.logoContainer}>
         <Logo css={styles.logo} />
@@ -47,7 +49,10 @@ const LayoutSideMenu = (props: PropTypes) => {
         </SubMenu>
         <SubMenu key="sub2" icon={<LaptopOutlined />} title="Sipariş Yönetimi">
           <Menu.Item key="5" icon={<AlertOutlined />}>
-            <Link to="/orders?page=newOrders&status=ORDERED">Yeni Siparişler</Link>
+            <Link to="/orders?page=newOrders&status=NEW">Yeni Siparişler</Link>
+          </Menu.Item>
+          <Menu.Item key="99" icon={<ClockCircleOutlined />}>
+            <Link to="/orders?page=preparing&status=PREPARING">Hazırlanan Siparişler</Link>
           </Menu.Item>
           <Menu.Item key="6" icon={<CarOutlined />}>
             <Link to="/orders?page=shippingStage&status=READY">Kargo Aşamasında</Link>

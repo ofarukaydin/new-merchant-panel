@@ -55,8 +55,8 @@ export const orderListSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(asyncGetOrders.fulfilled, (state, action) => {
       state.loading = false;
-      state.paginatedData = action.payload.response;
-      state.totalCount = action.payload.totalCount;
+      state.paginatedData = action.payload.response.data;
+      state.totalCount = action.payload.response.totalCount;
     });
     builder.addCase(asyncGetOrders.rejected, (state, action) => {
       state.loading = false;
@@ -67,8 +67,8 @@ export const orderListSlice = createSlice({
     });
 
     builder.addCase(asyncGetOrdersFake.fulfilled, (state, action) => {
-      state.paginatedData = action.payload.response;
-      state.totalCount = action.payload.totalCount;
+      state.paginatedData = action.payload.response.data;
+      state.totalCount = action.payload.response.totalCount;
     });
     builder.addCase(asyncGetOrdersFake.rejected, (state, action) => {});
     builder.addCase(asyncGetOrdersFake.pending, (state, action) => {

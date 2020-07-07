@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { orderStatus } from 'Util/Enums';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
 import Api from 'Util/Api';
@@ -9,6 +8,7 @@ import { CSSObject } from '@emotion/core';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { sliceTypes } from 'Redux/Helpers/SliceTypes';
 import { RootState } from 'Redux/Store';
+import { orderStatus } from 'Util/Enums';
 
 type PropTypes = {
   record: any;
@@ -48,7 +48,7 @@ const OrderActionsComponent = (props: PropTypes) => {
     <span>
       <Space>
         <Popconfirm
-          title="Siparişi onaylamak istediğinize emin misiniz?"
+          title="Siparişi hazırlamak istediğinize emin misiniz?"
           onConfirm={() => {
             changeOrderStatusTo('READY');
           }}
@@ -60,7 +60,7 @@ const OrderActionsComponent = (props: PropTypes) => {
             type="primary"
             css={styles.confirm}
           >
-            Onayla
+            Hazırla
           </Button>
         </Popconfirm>
 

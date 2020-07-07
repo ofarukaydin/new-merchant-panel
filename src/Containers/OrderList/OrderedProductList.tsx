@@ -2,7 +2,7 @@ import React from 'react';
 import { OrderResponseDTO } from 'Redux/Helpers/ApiTypes';
 import ThemeConfig from 'Util/ThemeConfig';
 import { CSSObject } from '@emotion/core';
-import { Space } from 'antd';
+import { Space, Divider } from 'antd';
 
 type PropTypes = { showImage?: boolean; orderData: OrderResponseDTO };
 
@@ -25,7 +25,7 @@ const OrderedProductsList = (props: PropTypes) => {
               </div>
             </Space>
           </div>
-          {props.orderData.products && index < props.orderData.products.length - 1 && <hr />}
+          <Divider />
         </>
       );
     });
@@ -34,10 +34,15 @@ const OrderedProductsList = (props: PropTypes) => {
     <>
       {products}
       {props.orderData.products && props.orderData.products.length && (
-        <div css={styles.totalPrice}>
-          <div>Satış Fiyatı: {props.orderData.amount}₺</div>
-          <div>Kargo Fiyatı: {props.orderData.shippingPrice}₺</div>
-          <div>Toplam Fiyat: {props.orderData.totalAmount}₺</div>
+        <div css={styles.totalAmountContainer}>
+          <div css={styles.gridContainerAmount}>
+            <span>Toplam</span>
+            <span css={styles.price}>{props.orderData.amount}₺</span>
+            <span>Getirmesi</span>
+            <span css={styles.price}>{props.orderData.shippingPrice || 0}₺</span>
+            <span>Genel Toplam</span>
+            <span css={styles.price}>{props.orderData.totalAmount || 0}₺</span>
+          </div>
         </div>
       )}
     </>
@@ -56,6 +61,18 @@ const styles: CSSObject = {
     fontWeight: ThemeConfig.fontWeight.bold,
     textAlign: 'right',
     marginTop: ThemeConfig.spacing[2],
+  },
+  gridContainerAmount: {
+    display: 'grid',
+    gridAutoFlow: 'row',
+    gridTemplateColumns: '1fr 1fr',
+    justifyContent: 'end',
+    gridGap: '5px 20px',
+  },
+  totalAmountContainer: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'row-reverse',
   },
 };
 

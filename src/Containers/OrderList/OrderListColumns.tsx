@@ -63,7 +63,7 @@ export default function getOrderListColumns(
       dataIndex: 'notes',
       sorter: true,
     });
-  } else if (params.page === 'newOrders') {
+  } else if (params.page === 'newOrders' || params.page === 'preparing') {
     baseOrderListColumns.push({
       title: 'İşlemler',
       dataIndex: 'actions',

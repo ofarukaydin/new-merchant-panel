@@ -41,4 +41,5 @@ export enum queryPageNameMap {
   shippingStage = 'Kargo Aşamasında',
   cancelledOrders = 'İptal Edilenler',
   refundedOrders = 'İade / Eksik Ürün',
+  preparing = 'Hazırlanıyor',
 }

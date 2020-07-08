@@ -1,17 +1,19 @@
 import React from 'react';
 import { OrderResponseDTO } from 'Redux/Helpers/ApiTypes';
-import { Drawer, Space, Button } from 'antd';
+import { Drawer } from 'antd';
 import { CSSObject } from '@emotion/core';
-import ThemeConfig from 'Util/ThemeConfig';
 import PrintComponents from 'react-print-components';
 import { PrinterOutlined } from '@ant-design/icons';
 import OrderedProductsList from 'Containers/OrderList/OrderedProductList';
 import PrintOrderedProducts from 'Containers/OrderList/PrintOrderedProducts';
+import OrderActionsComponent from 'Containers/OrderList/OrderActionsComponent';
+import { SearchParams } from 'Util/Types';
 
 type PropTypes = {
   orderData: OrderResponseDTO;
   onClose: () => void;
   visible: boolean;
+  params: SearchParams;
 };
 
 const SideDrawer = (props: PropTypes) => {
@@ -31,6 +33,15 @@ const SideDrawer = (props: PropTypes) => {
             <PrintOrderedProducts orderData={orderData} />
           </PrintComponents>
         </div>
+      }
+      footer={
+        (orderData.orderStatus === 'NEW' || orderData.orderStatus === 'PREPARING') && (
+          <OrderActionsComponent
+            closeDrawer={props.onClose}
+            record={props.orderData}
+            params={props.params}
+          />
+        )
       }
     >
       <OrderedProductsList showImage orderData={orderData} />

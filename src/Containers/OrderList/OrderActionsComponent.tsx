@@ -13,6 +13,7 @@ import { orderStatus } from 'Util/Enums';
 type PropTypes = {
   record: any;
   params: SearchParams;
+  closeDrawer?: () => void;
 };
 
 const OrderActionsComponent = (props: PropTypes) => {
@@ -23,6 +24,7 @@ const OrderActionsComponent = (props: PropTypes) => {
   const changeOrderStatusTo = (status: keyof typeof orderStatus) => {
     Api.post('/order/updateorderstatusasync', { orderId: props.record.id, orderStatus: status })
       .then((response: any) => {
+        props.closeDrawer && props.closeDrawer();
         if (response?.data?.result) {
           notification.success({
             message: 'Başarılı',
@@ -37,11 +39,22 @@ const OrderActionsComponent = (props: PropTypes) => {
         dispatch(asyncGetOrders(props.params));
       })
       .catch(() => {
+        props.closeDrawer && props.closeDrawer();
         notification.error({
           message: 'Başarısız',
           description: `Sipariş durumu değiştirilemedi`,
         });
       });
+  };
+
+  const getNextState = (page: any) => {
+    if (page === 'newOrders') return 'PREPARING';
+    else if (page === 'preparing') return 'READY';
+  };
+
+  const getButtonText = (page: any) => {
+    if (page === 'newOrders') return 'Hazırla';
+    else if (page === 'preparing') return 'Hazır';
   };
 
   return (
@@ -50,7 +63,7 @@ const OrderActionsComponent = (props: PropTypes) => {
         <Popconfirm
           title="Siparişi hazırlamak istediğinize emin misiniz?"
           onConfirm={() => {
-            changeOrderStatusTo('READY');
+            changeOrderStatusTo(getNextState(props.params.page) as any);
           }}
         >
           <Button
@@ -60,7 +73,7 @@ const OrderActionsComponent = (props: PropTypes) => {
             type="primary"
             css={styles.confirm}
           >
-            Hazırla
+            {getButtonText(props.params.page)}
           </Button>
         </Popconfirm>
 

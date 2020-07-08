@@ -15,9 +15,10 @@ import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
 
 const Dashboard = () => {
-  const [orderedCount, setOrderedCount] = useState(0);
+  const [newCount, setNewCount] = useState(0);
   const [readyCount, setReadyCount] = useState(0);
   const [shippingCount, setShippingCount] = useState(0);
+  const [preparingCount, setPreparingCount] = useState(0);
 
   useEffect(() => {
     (() => {
@@ -26,7 +27,7 @@ const Dashboard = () => {
         pageIndex: 1,
         pageSize: 10,
       }).then((response: any) => {
-        setOrderedCount(response.data.response.totalCount);
+        setNewCount(response.data.response.totalCount);
       });
       Api.post('/Order/SearchOrderAsync', {
         status: 'READY',
@@ -34,6 +35,13 @@ const Dashboard = () => {
         pageSize: 10,
       }).then((response: any) => {
         setReadyCount(response.data.response.totalCount);
+      });
+      Api.post('/Order/SearchOrderAsync', {
+        status: 'PREPARING',
+        pageIndex: 1,
+        pageSize: 10,
+      }).then((response: any) => {
+        setPreparingCount(response.data.response.totalCount);
       });
       Api.post('/Order/SearchOrderAsync', {
         status: 'SHIPPING',
@@ -50,15 +58,23 @@ const Dashboard = () => {
     <>
       <h1 css={styles.h1}>Siparişler</h1>
       <Row gutter={[24, 24]} justify="space-between">
-        <Col xs={24} lg={8}>
-          <StatisticsCard title="Yeni Sipariş" value={orderedCount} icon={<AlertOutlined />} />
+        <Col xs={24} lg={6}>
+          <StatisticsCard title="Yeni Sipariş" value={newCount} icon={<AlertOutlined />} />
         </Col>
 
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={6}>
+          <StatisticsCard
+            title="Hazırlanıyor"
+            value={preparingCount}
+            icon={<ClockCircleOutlined />}
+          />
+        </Col>
+
+        <Col xs={24} lg={6}>
           <StatisticsCard title="Hazır" value={readyCount} icon={<CheckCircleOutlined />} />
         </Col>
 
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={6}>
           <StatisticsCard
             title="Taşıma Durumunda"
             value={shippingCount}

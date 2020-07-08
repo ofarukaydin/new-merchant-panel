@@ -28,7 +28,9 @@ export const asyncGetProducts = createAsyncThunk(
   thunkActionTypes.getProducts,
   async (params: SearchParams, thunkAPI) => {
     try {
-      const response = await Api.post('/product/getproductfilterlistasync', params);
+      const response = await Api.get('product/getproductfilterlist', {
+        params: { ...params, merchantBranchId: 1 },
+      });
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue('rejected');

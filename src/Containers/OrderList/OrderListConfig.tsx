@@ -76,6 +76,7 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
         orderData={drawerData}
         onClose={() => setShowDrawer(false)}
         visible={showDrawer}
+        params={mutatedParams}
       />
       <Table
         onChange={handleChange}

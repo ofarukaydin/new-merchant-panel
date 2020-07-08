@@ -13,6 +13,7 @@ import {
 import StatisticsCard from 'Components/StatisticsCard';
 import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
+import { getHeadersForFetch } from 'Util/Util';
 
 const Dashboard = () => {
   const [newCount, setNewCount] = useState(0);
@@ -22,26 +23,35 @@ const Dashboard = () => {
 
   useEffect(() => {
     (() => {
-      Api.v1OrderSearchorderasyncCreate({
-        status: 'ORDERED',
-        pageIndex: 1,
-        pageSize: 10,
-      }).then((response: any) => {
-        setNewCount(response.data.response.totalCount);
+      Api.v1OrderSearchorderasyncCreate(
+        {
+          status: 'ORDERED',
+          pageIndex: 1,
+          pageSize: 10,
+        },
+        getHeadersForFetch(),
+      ).then((response) => {
+        setNewCount(response.response?.totalCount!);
       });
-      Api.v1OrderSearchorderasyncCreate({
-        status: 'READY',
-        pageIndex: 1,
-        pageSize: 10,
-      }).then((response: any) => {
-        setReadyCount(response.data.response.totalCount);
+      Api.v1OrderSearchorderasyncCreate(
+        {
+          status: 'READY',
+          pageIndex: 1,
+          pageSize: 10,
+        },
+        getHeadersForFetch(),
+      ).then((response) => {
+        setReadyCount(response.response?.totalCount!);
       });
-      Api.v1OrderSearchorderasyncCreate({
-        status: 'SHIPPING',
-        pageIndex: 1,
-        pageSize: 10,
-      }).then((response: any) => {
-        setShippingCount(response.data.response.totalCount);
+      Api.v1OrderSearchorderasyncCreate(
+        {
+          status: 'SHIPPING',
+          pageIndex: 1,
+          pageSize: 10,
+        },
+        getHeadersForFetch(),
+      ).then((response) => {
+        setShippingCount(response.response?.totalCount!);
       });
     })();
   }, []);

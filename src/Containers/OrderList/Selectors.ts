@@ -8,7 +8,7 @@ export const totalRecordsSelector = createSelector(
 );
 
 export const paginatedDataSelector = createSelector(
-  (state: RootState) => state[sliceTypes.orders].searchOrderAsync.response?.response,
+  (state: RootState) => state[sliceTypes.orders].searchOrderAsync.response?.data,
   (data) => data,
 );
 

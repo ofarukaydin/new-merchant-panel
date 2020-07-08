@@ -26,7 +26,7 @@ const OrderActionsComponent = (props: PropTypes) => {
   const changeOrderStatusTo = (status: keyof typeof orderStatus) => {
     Api.v1OrderUpdateorderstatusasyncCreate({ orderId: props.record.id, orderStatus: status })
       .then((response) => {
-        if (response?.data?.result) {
+        if (response.result) {
           notification.success({
             message: 'Başarılı',
             description: `Sipariş "${orderStatus[status]}" durumuna geçirildi.`,

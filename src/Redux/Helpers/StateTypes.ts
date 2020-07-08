@@ -4,7 +4,7 @@ import {
   GetUserDetailsResponseDTO,
   OperationResultDTO,
   OperationResultMessage,
-  OrderResponseDTOPagingOperationResultDTO,
+  OrderSearchResponseDTOPagingOperationDTO,
 } from 'Redux/Helpers/ApiTypes';
 
 export interface IResponse<T> {
@@ -31,5 +31,5 @@ export interface IAuthState {
 }
 
 export interface IOrderState {
-  searchOrderAsync: IResponse<OrderResponseDTOPagingOperationResultDTO>;
+  searchOrderAsync: IResponse<OrderSearchResponseDTOPagingOperationDTO>;
 }

@@ -28,9 +28,6 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const [drawerData, setDrawerData] = useState<OrderResponseDTO>({});
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const paginatedData: any = useSelector(paginatedDataSelector);
-  const totalRecords: number = useSelector(totalRecordsSelector);
-  const loading: boolean = useSelector(loadingSelector);
   const paginatedData = useSelector(paginatedDataSelector) ?? [];
   const totalRecords = useSelector(totalRecordsSelector);
   const loading = useSelector(loadingSelector);

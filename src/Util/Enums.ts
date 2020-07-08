@@ -32,7 +32,6 @@ export enum orderDir {
 export enum pageTitleNameMap {
   '/products' = 'Ürün Listesi',
   '/orders' = 'Sipariş Yönetimi',
-  '/newOrders' = 'Yeni Siparişler',
   '/' = 'Anasayfa',
 }
 

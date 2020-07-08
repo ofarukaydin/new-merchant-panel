@@ -13,12 +13,12 @@ import {
   CarOutlined,
   ClockCircleOutlined,
 } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from 'Components/Logo';
 import ThemeConfig from 'Util/ThemeConfig';
 import { CSSObject } from '@emotion/core';
 import { logout } from 'Util/Auth';
-import { Breakpoint } from 'antd/lib/_util/responsiveObserve';
+import queryString from 'query-string';
 
 type PropTypes = {
   collapsed: boolean;
@@ -26,6 +26,10 @@ type PropTypes = {
 };
 
 const LayoutSideMenu = (props: PropTypes) => {
+  const location = useLocation();
+  const parsedQueryParams = queryString.parse(location.search);
+  const pageFromSearchQuery = parsedQueryParams.page as string;
+
   return (
     <Layout.Sider
       css={styles.sideMenu}
@@ -33,34 +37,40 @@ const LayoutSideMenu = (props: PropTypes) => {
       collapsed={props.collapsed}
       onCollapse={props.onCollapse}
       width={260}
+      theme="dark"
     >
       <div css={styles.logoContainer}>
         <Logo css={styles.logo} />
       </div>
 
-      <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']}>
-        <Menu.Item key="1" icon={<HomeOutlined />}>
+      <Menu
+        mode="inline"
+        theme="dark"
+        defaultSelectedKeys={[pageFromSearchQuery, location.pathname]}
+        defaultOpenKeys={[location.pathname.slice(1)]}
+      >
+        <Menu.Item key="/" icon={<HomeOutlined />}>
           <Link to="/">Yönetim Paneli</Link>
         </Menu.Item>
-        <SubMenu key="sub1" icon={<UserOutlined />} title="Ürün Yönetimi">
-          <Menu.Item key="13" icon={<UnorderedListOutlined />}>
+        <SubMenu key="products" icon={<UserOutlined />} title="Ürün Yönetimi">
+          <Menu.Item key="/products" icon={<UnorderedListOutlined />}>
             <Link to="/products">Ürün Listesi</Link>
           </Menu.Item>
         </SubMenu>
-        <SubMenu key="sub2" icon={<LaptopOutlined />} title="Sipariş Yönetimi">
-          <Menu.Item key="5" icon={<AlertOutlined />}>
+        <SubMenu key="orders" icon={<LaptopOutlined />} title="Sipariş Yönetimi">
+          <Menu.Item key="newOrders" icon={<AlertOutlined />}>
             <Link to="/orders?page=newOrders&status=NEW">Yeni Siparişler</Link>
           </Menu.Item>
-          <Menu.Item key="99" icon={<ClockCircleOutlined />}>
+          <Menu.Item key="preparing" icon={<ClockCircleOutlined />}>
             <Link to="/orders?page=preparing&status=PREPARING">Hazırlanan Siparişler</Link>
           </Menu.Item>
-          <Menu.Item key="6" icon={<CarOutlined />}>
+          <Menu.Item key="shippingStage" icon={<CarOutlined />}>
             <Link to="/orders?page=shippingStage&status=READY">Kargo Aşamasında</Link>
           </Menu.Item>
-          <Menu.Item key="7" icon={<StopOutlined />}>
+          <Menu.Item key="cancelledOrders" icon={<StopOutlined />}>
             <Link to="/orders?page=cancelledOrders&status=CANCELLED">İptal Edilenler</Link>
           </Menu.Item>
-          <Menu.Item key="8" icon={<WarningOutlined />}>
+          <Menu.Item key="refundedOrders" icon={<WarningOutlined />}>
             <Link to="/orders?page=refundedOrders&status=REFUNDED">İade / Eksik Ürün</Link>
           </Menu.Item>
         </SubMenu>

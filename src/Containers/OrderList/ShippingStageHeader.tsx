@@ -9,13 +9,13 @@ const ShippingStageHeader = () => {
         onChange={() => navigateTo('/orders', { page: 'shippingStage', status: 'READY' })}
         value="a"
       >
-        Gönderime Hazır
+        Teslimata Hazır
       </Radio.Button>
       <Radio.Button
         onChange={() => navigateTo('/orders', { page: 'shippingStage', status: 'SHIPPING' })}
         value="b"
       >
-        Taşıma Durumunda
+        Teslimatta
       </Radio.Button>
       <Radio.Button
         onChange={() => navigateTo('/orders', { page: 'shippingStage', status: 'DELIVERED' })}

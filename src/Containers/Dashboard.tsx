@@ -15,9 +15,10 @@ import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
 
 const Dashboard = () => {
-  const [orderedCount, setOrderedCount] = useState(0);
+  const [newCount, setNewCount] = useState(0);
   const [readyCount, setReadyCount] = useState(0);
   const [shippingCount, setShippingCount] = useState(0);
+  const [preparingCount, setPreparingCount] = useState(0);
 
   useEffect(() => {
     (() => {
@@ -25,22 +26,22 @@ const Dashboard = () => {
         status: 'ORDERED',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response) => {
-        setOrderedCount(response.totalCount!);
+      }).then((response: any) => {
+        setNewCount(response.data.response.totalCount);
       });
       Api.v1OrderSearchorderasyncCreate({
         status: 'READY',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response) => {
-        setReadyCount(response.totalCount!);
+      }).then((response: any) => {
+        setReadyCount(response.data.response.totalCount);
       });
       Api.v1OrderSearchorderasyncCreate({
         status: 'SHIPPING',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response) => {
-        setShippingCount(response.totalCount!);
+      }).then((response: any) => {
+        setShippingCount(response.data.response.totalCount);
       });
     })();
   }, []);
@@ -49,15 +50,23 @@ const Dashboard = () => {
     <>
       <h1 css={styles.h1}>Siparişler</h1>
       <Row gutter={[24, 24]} justify="space-between">
-        <Col xs={24} lg={8}>
-          <StatisticsCard title="Yeni Sipariş" value={orderedCount} icon={<AlertOutlined />} />
+        <Col xs={24} lg={6}>
+          <StatisticsCard title="Yeni Sipariş" value={newCount} icon={<AlertOutlined />} />
         </Col>
 
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={6}>
+          <StatisticsCard
+            title="Hazırlanıyor"
+            value={preparingCount}
+            icon={<ClockCircleOutlined />}
+          />
+        </Col>
+
+        <Col xs={24} lg={6}>
           <StatisticsCard title="Hazır" value={readyCount} icon={<CheckCircleOutlined />} />
         </Col>
 
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={6}>
           <StatisticsCard
             title="Taşıma Durumunda"
             value={shippingCount}

@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { orderStatus } from 'Util/Enums';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
 import Api from 'Util/Api';
@@ -9,10 +8,12 @@ import { CSSObject } from '@emotion/core';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { sliceTypes } from 'Redux/Helpers/Enums';
 import { RootState } from 'Redux/Store';
+import { orderStatus } from 'Util/Enums';
 
 type PropTypes = {
   record: any;
   params: SearchParams;
+  closeDrawer?: () => void;
 };
 
 const OrderActionsComponent = (props: PropTypes) => {
@@ -25,7 +26,7 @@ const OrderActionsComponent = (props: PropTypes) => {
   const changeOrderStatusTo = (status: keyof typeof orderStatus) => {
     Api.v1OrderUpdateorderstatusasyncCreate({ orderId: props.record.id, orderStatus: status })
       .then((response) => {
-        if (response.result) {
+        if (response?.data?.result) {
           notification.success({
             message: 'Başarılı',
             description: `Sipariş "${orderStatus[status]}" durumuna geçirildi.`,
@@ -39,6 +40,7 @@ const OrderActionsComponent = (props: PropTypes) => {
         dispatch(asyncGetOrders(props.params));
       })
       .catch(() => {
+        props.closeDrawer && props.closeDrawer();
         notification.error({
           message: 'Başarısız',
           description: `Sipariş durumu değiştirilemedi`,
@@ -46,13 +48,23 @@ const OrderActionsComponent = (props: PropTypes) => {
       });
   };
 
+  const getNextState = (page: any) => {
+    if (page === 'newOrders') return 'PREPARING';
+    else if (page === 'preparing') return 'READY';
+  };
+
+  const getButtonText = (page: any) => {
+    if (page === 'newOrders') return 'Hazırla';
+    else if (page === 'preparing') return 'Hazır';
+  };
+
   return (
     <span>
       <Space>
         <Popconfirm
-          title="Siparişi onaylamak istediğinize emin misiniz?"
+          title="Siparişi hazırlamak istediğinize emin misiniz?"
           onConfirm={() => {
-            changeOrderStatusTo('READY');
+            changeOrderStatusTo(getNextState(props.params.page) as any);
           }}
         >
           <Button
@@ -62,7 +74,7 @@ const OrderActionsComponent = (props: PropTypes) => {
             type="primary"
             css={styles.confirm}
           >
-            Onayla
+            {getButtonText(props.params.page)}
           </Button>
         </Popconfirm>
 

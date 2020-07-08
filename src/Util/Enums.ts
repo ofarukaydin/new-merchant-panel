@@ -1,19 +1,27 @@
 export enum orderStatus {
-  ORDERED = 'Yeni',
+  NEW = 'Yeni',
+  PREPARING = 'Hazırlanıyor',
   READY = 'Hazır',
-  SHIPPING = 'Taşımada',
-  DELIVERED = 'Teslim edildi',
+  ASSIGNED = 'Kuryeye Atandı',
+  SHIPPING = 'Teslimatta',
+  DELIVERED = 'Teslim Edildi',
+  NOTDELIVERED = 'Teslim Edilemedi',
   CANCELLED = 'İptal',
   REFUNDED = 'İade',
+  COMPLETED = 'Tamamlandı',
 }
 
 export enum orderStatusColors {
-  ORDERED = 'orange',
+  NEW = 'orange',
+  PREPARING = 'orange',
   READY = 'green',
+  ASSIGNED = 'green',
   SHIPPING = 'green',
   DELIVERED = 'green',
+  NOTDELIVERED = 'red',
   CANCELLED = 'red',
   REFUNDED = 'volcano',
+  COMPLETED = 'green',
 }
 
 export enum orderDir {
@@ -24,7 +32,6 @@ export enum orderDir {
 export enum pageTitleNameMap {
   '/products' = 'Ürün Listesi',
   '/orders' = 'Sipariş Yönetimi',
-  '/newOrders' = 'Yeni Siparişler',
   '/' = 'Anasayfa',
 }
 
@@ -33,4 +40,5 @@ export enum queryPageNameMap {
   shippingStage = 'Kargo Aşamasında',
   cancelledOrders = 'İptal Edilenler',
   refundedOrders = 'İade / Eksik Ürün',
+  preparing = 'Hazırlanıyor',
 }

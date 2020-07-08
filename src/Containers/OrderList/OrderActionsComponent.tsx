@@ -54,14 +54,14 @@ const OrderActionsComponent = (props: PropTypes) => {
 
   const getButtonText = (page: any) => {
     if (page === 'newOrders') return 'Hazırla';
-    else if (page === 'preparing') return 'Hazır';
+    else if (page === 'preparing') return 'Hazırlandı';
   };
 
   return (
     <span>
       <Space>
         <Popconfirm
-          title="Siparişi hazırlamak istediğinize emin misiniz?"
+          title={`Siparişi ${getButtonText(props.params.page)} durumuna almak emin misiniz?`}
           onConfirm={() => {
             changeOrderStatusTo(getNextState(props.params.page) as any);
           }}

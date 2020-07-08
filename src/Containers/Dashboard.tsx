@@ -49,7 +49,6 @@ const Dashboard = () => {
         pageSize: 10,
       }).then((response: any) => {
         setShippingCount(response.data.response.totalCount);
-        setShippingCount(response.data.response.totalCount);
       });
     })();
   }, []);

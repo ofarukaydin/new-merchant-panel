@@ -42,7 +42,7 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
     mutatedParams.orderBy = sorter.field || mutatedParams.orderBy;
     mutatedParams.orderDir = sorter.order || mutatedParams.orderDir;
 
-    navigateTo('/orders', mutatedParams);
+    navigateTo('/products', mutatedParams);
   };
   return (
     <>

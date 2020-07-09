@@ -17,12 +17,6 @@ import SideDrawer from 'Containers/OrderList/SideDrawer';
 import { OrderResponseDTO } from 'Redux/Helpers/ApiTypes';
 import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 
-class EmptyComponent extends React.Component {
-  render() {
-    return null;
-  }
-}
-
 const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();
 

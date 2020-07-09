@@ -5,6 +5,7 @@ import {
   OperationResultDTO,
   OperationResultMessage,
   OrderSearchResponseDTOPagingOperationDTO,
+  ProductItemListDTOPagingOperationResultDTO,
 } from 'Redux/Helpers/ApiTypes';
 
 export interface IResponse<T> {
@@ -32,4 +33,8 @@ export interface IAuthState {
 
 export interface IOrderState {
   searchOrderAsync: IResponse<OrderSearchResponseDTOPagingOperationDTO>;
+}
+
+export interface IProductState {
+  getProductFilterList: IResponse<ProductItemListDTOPagingOperationResultDTO>;
 }

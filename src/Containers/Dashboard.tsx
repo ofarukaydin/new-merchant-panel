@@ -13,7 +13,6 @@ import {
 import StatisticsCard from 'Components/StatisticsCard';
 import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
-import { getHeadersForFetch } from 'Util/Util';
 
 const Dashboard = () => {
   const [newCount, setNewCount] = useState(0);

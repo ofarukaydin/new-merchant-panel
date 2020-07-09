@@ -11,7 +11,7 @@ export enum sliceNames {
 }
 
 export enum thunkActionTypes {
-  getProducts = 'products/getProducts',
+  getProducts = 'products/getProductFilterList',
   getOrders = 'orders/searchOrderAsync',
   insertAddress = 'address/insertAddress',
   getAddressList = 'address/getAddressList',

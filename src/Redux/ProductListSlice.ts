@@ -1,27 +1,11 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
-import { SearchParams } from 'Util/Types';
+import { createSlice, AnyAction, SerializedError } from '@reduxjs/toolkit';
 import Api, { generateThunk } from 'Util/Api';
 import { thunkActionTypes, sliceNames } from 'Redux/Helpers/Enums';
+import { ResponseModel, IProductState } from 'Redux/Helpers/StateTypes';
 
-export interface IProductList {
-  paginatedData: any;
-  params: SearchParams;
-  totalCount: number;
-  loading: boolean;
-}
-
-const initialState: IProductList = {
-  paginatedData: [],
-  params: {
-    pageIndex: 1,
-    pageSize: 10,
-    searchValue: '',
-    orderDir: '',
-    orderBy: '',
-  },
-  totalCount: 0,
-  loading: false,
+const initialState: IProductState = {
+  getProductFilterList: ResponseModel,
 };
 
 export const asyncGetProducts = generateThunk(
@@ -34,17 +18,34 @@ export const productListSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(asyncGetProducts.fulfilled, (state, action) => {
-      state.loading = false;
-      state.paginatedData = action.payload.response;
-      state.totalCount = action.payload.totalCount!;
-    });
-    builder.addCase(asyncGetProducts.rejected, (state, action) => {
-      state.loading = false;
-    });
-    builder.addCase(asyncGetProducts.pending, (state, action) => {
-      state.loading = true;
-    });
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('product') && action.type.endsWith('/fulfilled'),
+      (state, action) => {
+        const subSlice: keyof IProductState = action.type.split('/')[1];
+        state[subSlice] = { ...action.payload, loading: false };
+      },
+    );
+
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('product') && action.type.endsWith('/pending'),
+      (state, action) => {
+        const subSlice: keyof IProductState = action.type.split('/')[1];
+
+        state[subSlice] = { ...initialState[subSlice], loading: true };
+      },
+    );
+
+    builder.addMatcher(
+      (action: AnyAction): action is AnyAction & { meta: { error: SerializedError } } =>
+        action.type.startsWith('product') && action.type.endsWith('/rejected'),
+      (state, action) => {
+        const subSlice: keyof IProductState = action.type.split('/')[1];
+
+        state[subSlice] = { ...action.payload, loading: false };
+      },
+    );
   },
 });
 

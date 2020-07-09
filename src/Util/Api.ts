@@ -5,7 +5,6 @@ import { getHeadersForFetch } from 'Util/Util';
 
 export const GeneratedApi = new Api({
   baseUrl: process.env.REACT_APP_BACKEND_API_URL,
-  baseApiParams: getHeadersForFetch(),
 });
 
 export const withAuth = async <RequestDTO, ResponseDTO extends OperationResultDTO>(

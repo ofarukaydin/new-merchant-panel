@@ -18,15 +18,14 @@ import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();
 
-  const paginatedData = useTypedSelector(paginatedDataSelector);
+  const paginatedData = useTypedSelector(paginatedDataSelector) ?? [];
   const totalRecords = useTypedSelector(totalRecordsSelector);
   const loading = useTypedSelector(loadingSelector);
 
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
-    /*     dispatch(asyncGetProducts(mutatedParams));
-     */
+    /* dispatch(asyncGetProducts(mutatedParams)); */
   }, [mutatedParams]);
 
   const handleSearch = (searchValue: string) => {

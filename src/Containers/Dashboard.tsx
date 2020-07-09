@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Api from 'Util/Api';
+import Api, { withAuth } from 'Util/Api';
 import { Row, Col } from 'antd';
 import {
   AlertOutlined,
@@ -23,35 +23,33 @@ const Dashboard = () => {
 
   useEffect(() => {
     (() => {
-      Api.v1OrderSearchorderasyncCreate(
-        {
-          status: 'ORDERED',
-          pageIndex: 1,
-          pageSize: 10,
-        },
-        getHeadersForFetch(),
-      ).then((response) => {
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
+        status: 'NEW',
+        pageIndex: 1,
+        pageSize: 10,
+      }).then((response) => {
         setNewCount(response.response?.totalCount!);
       });
-      Api.v1OrderSearchorderasyncCreate(
-        {
-          status: 'READY',
-          pageIndex: 1,
-          pageSize: 10,
-        },
-        getHeadersForFetch(),
-      ).then((response) => {
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
+        status: 'READY',
+        pageIndex: 1,
+        pageSize: 10,
+      }).then((response) => {
         setReadyCount(response.response?.totalCount!);
       });
-      Api.v1OrderSearchorderasyncCreate(
-        {
-          status: 'SHIPPING',
-          pageIndex: 1,
-          pageSize: 10,
-        },
-        getHeadersForFetch(),
-      ).then((response) => {
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
+        status: 'SHIPPING',
+        pageIndex: 1,
+        pageSize: 10,
+      }).then((response) => {
         setShippingCount(response.response?.totalCount!);
+      });
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
+        status: 'PREPARING',
+        pageIndex: 1,
+        pageSize: 10,
+      }).then((response) => {
+        setPreparingCount(response.response?.totalCount!);
       });
     })();
   }, []);

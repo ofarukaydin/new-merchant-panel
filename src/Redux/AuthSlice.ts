@@ -1,4 +1,10 @@
-import { createSlice, AnyAction, SerializedError, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  AnyAction,
+  SerializedError,
+  PayloadAction,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
 import { ResponseModel, IAuthState } from 'Redux/Helpers/StateTypes';
 import Api, { generateThunk } from 'Util/Api';
 import { thunkActionTypes, sliceNames } from 'Redux/Helpers/Enums';
@@ -35,6 +41,14 @@ export const validateForgotPassword = generateThunk(
 export const updateForgetPassword = generateThunk(
   thunkActionTypes.updateForgetPasswordRequest,
   Api.v1AuthenticationUpdateforgetpasswordrequestUpdate,
+);
+
+export const fetchUserById = createAsyncThunk(
+  'users/fetchByIdStatus',
+  async (userId, { getState, requestId }) => {
+    const response = await Api.v1AuthenticationValidateuserCreate({});
+    return response;
+  },
 );
 
 const AuthSlice = createSlice({

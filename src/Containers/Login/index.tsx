@@ -1,23 +1,22 @@
 import React, { useEffect } from 'react';
 import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import loginImg from 'Assets/login.png';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from 'Util/Auth';
 import history from 'Util/History';
 import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
 import { verifyUser } from 'Redux/AuthSlice';
-import { RootState } from 'Redux/Store';
+import { AppDispatch } from 'Redux/Store';
 import { sliceTypes } from 'Redux/Helpers/Enums';
+import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const token = useSelector(
-    (state: RootState) => state[sliceTypes.auth].validateUser.response?.token,
-  );
-  const loading = useSelector((state: RootState) => state[sliceTypes.auth].validateUser.loading);
+  const dispatch: AppDispatch = useDispatch();
+  const token = useTypedSelector((state) => state[sliceTypes.auth].validateUser.response?.token);
+  const loading = useTypedSelector((state) => state[sliceTypes.auth].validateUser.loading);
 
-  const errorMessage = useSelector((state: RootState) =>
+  const errorMessage = useTypedSelector((state) =>
     state[sliceTypes.auth].validateUser.messages
       ? state[sliceTypes.auth].validateUser.messages![0].message
       : null,

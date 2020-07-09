@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
 import Api from 'Util/Api';
 import { notification, Popconfirm, Button, Space } from 'antd';
@@ -9,6 +9,7 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { sliceTypes } from 'Redux/Helpers/Enums';
 import { RootState } from 'Redux/Store';
 import { orderStatus } from 'Util/Enums';
+import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 
 type PropTypes = {
   record: any;
@@ -19,7 +20,7 @@ type PropTypes = {
 const OrderActionsComponent = (props: PropTypes) => {
   const dispatch = useDispatch();
 
-  const loading = useSelector(
+  const loading = useTypedSelector(
     (state: RootState) => state[sliceTypes.orders].searchOrderAsync.loading,
   );
 
@@ -55,14 +56,14 @@ const OrderActionsComponent = (props: PropTypes) => {
 
   const getButtonText = (page: any) => {
     if (page === 'newOrders') return 'Hazırla';
-    else if (page === 'preparing') return 'Hazır';
+    else if (page === 'preparing') return 'Hazırlandı';
   };
 
   return (
     <span>
       <Space>
         <Popconfirm
-          title="Siparişi hazırlamak istediğinize emin misiniz?"
+          title={`Siparişi ${getButtonText(props.params.page)} durumuna almak emin misiniz?`}
           onConfirm={() => {
             changeOrderStatusTo(getNextState(props.params.page) as any);
           }}

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { OperationResultDTO, RequestParams } from 'Redux/Helpers/ApiTypes';
+import { RequestParams, OperationResultDTO } from 'Redux/Helpers/ApiTypes';
 import { Api } from 'Redux/Helpers/ApiTypes';
 import { getHeadersForFetch } from 'Util/Util';
 
@@ -7,6 +7,16 @@ export const GeneratedApi = new Api({
   baseUrl: process.env.REACT_APP_BACKEND_API_URL,
   baseApiParams: getHeadersForFetch(),
 });
+
+export const withAuth = async <RequestDTO, ResponseDTO extends OperationResultDTO>(
+  fetchFn: (data: RequestDTO, params?: RequestParams) => Promise<ResponseDTO>,
+  data: RequestDTO,
+  params?: RequestParams,
+): Promise<ResponseDTO> => {
+  const response = await fetchFn(data, { ...params, ...getHeadersForFetch() });
+
+  return response;
+};
 
 export const generateThunk = <RequestDTO, ResponseDTO extends OperationResultDTO>(
   actionType: string,

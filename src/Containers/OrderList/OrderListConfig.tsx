@@ -1,5 +1,5 @@
 import React, { memo, ReactText, useState, useRef, ReactInstance } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { asyncGetOrders } from 'Redux/OrderListSlice';
 import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -15,6 +15,7 @@ import getOrderListColumns from 'Containers/OrderList/OrderListColumns';
 import CustomHeader from 'Containers/OrderList/CustomHeader';
 import SideDrawer from 'Containers/OrderList/SideDrawer';
 import { OrderResponseDTO } from 'Redux/Helpers/ApiTypes';
+import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 
 class EmptyComponent extends React.Component {
   render() {
@@ -28,9 +29,9 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const [drawerData, setDrawerData] = useState<OrderResponseDTO>({});
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const paginatedData = useSelector(paginatedDataSelector) ?? [];
-  const totalRecords = useSelector(totalRecordsSelector);
-  const loading = useSelector(loadingSelector);
+  const paginatedData = useTypedSelector(paginatedDataSelector) ?? [];
+  const totalRecords = useTypedSelector(totalRecordsSelector);
+  const loading = useTypedSelector(loadingSelector);
 
   const mutatedParams = { ...params };
 

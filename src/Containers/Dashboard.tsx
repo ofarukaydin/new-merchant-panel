@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Api from 'Util/Api';
+import Api, { withAuth } from 'Util/Api';
 import { Row, Col } from 'antd';
 import {
   AlertOutlined,
@@ -13,6 +13,7 @@ import {
 import StatisticsCard from 'Components/StatisticsCard';
 import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
+import { getHeadersForFetch } from 'Util/Util';
 
 const Dashboard = () => {
   const [newCount, setNewCount] = useState(0);
@@ -22,33 +23,33 @@ const Dashboard = () => {
 
   useEffect(() => {
     (() => {
-      Api.post('/Order/SearchOrderAsync', {
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
         status: 'NEW',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response: any) => {
-        setNewCount(response.data.response.totalCount);
+      }).then((response) => {
+        setNewCount(response.response?.totalCount!);
       });
-      Api.post('/Order/SearchOrderAsync', {
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
         status: 'READY',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response: any) => {
-        setReadyCount(response.data.response.totalCount);
+      }).then((response) => {
+        setReadyCount(response.response?.totalCount!);
       });
-      Api.post('/Order/SearchOrderAsync', {
-        status: 'PREPARING',
-        pageIndex: 1,
-        pageSize: 10,
-      }).then((response: any) => {
-        setPreparingCount(response.data.response.totalCount);
-      });
-      Api.post('/Order/SearchOrderAsync', {
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
         status: 'SHIPPING',
         pageIndex: 1,
         pageSize: 10,
-      }).then((response: any) => {
-        setShippingCount(response.data.response.totalCount);
+      }).then((response) => {
+        setShippingCount(response.response?.totalCount!);
+      });
+      withAuth(Api.v1OrderSearchorderasyncCreate, {
+        status: 'PREPARING',
+        pageIndex: 1,
+        pageSize: 10,
+      }).then((response) => {
+        setPreparingCount(response.response?.totalCount!);
       });
     })();
   }, []);

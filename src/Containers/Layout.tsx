@@ -15,8 +15,6 @@ const LayoutUI = (props: { children: React.ReactNode }) => {
 
   const screens = Grid.useBreakpoint();
 
-  console.log(screens, 'screens');
-
   const smallScreen = !!screens.xs;
 
   useLayoutEffect(() => {

@@ -1,18 +1,26 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import loginImg from 'Assets/login.png';
-import { Actions, Selectors } from 'edkk-redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from 'Util/Auth';
 import history from 'Util/History';
 import { CSSObject } from '@emotion/core';
 import ThemeConfig from 'Util/ThemeConfig';
+import { verifyUser } from 'Redux/AuthSlice';
+import { AppDispatch } from 'Redux/Store';
+import { sliceTypes } from 'Redux/Helpers/Enums';
+import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const token: string = useSelector(Selectors.Auth.tokenSelector);
-  const loading: boolean = useSelector(Selectors.Auth.loadingSelector);
-  const userDetailError: any = useSelector(Selectors.Auth.userDetailErrorSelector);
+  const dispatch: AppDispatch = useDispatch();
+  const token = useTypedSelector((state) => state[sliceTypes.auth].validateUser.response?.token);
+  const loading = useTypedSelector((state) => state[sliceTypes.auth].validateUser.loading);
+
+  const errorMessage = useTypedSelector((state) =>
+    state[sliceTypes.auth].validateUser.messages
+      ? state[sliceTypes.auth].validateUser.messages![0].message
+      : null,
+  );
 
   useEffect(() => {
     if (token) {
@@ -22,9 +30,8 @@ const Login = () => {
   }, [token]);
 
   const onFinish = (values: any) => {
-    console.log('Success:', values);
     dispatch(
-      Actions.Auth.verifyUser({
+      verifyUser({
         username: values.username,
         password: values.password,
         userTypeId: 3,
@@ -43,6 +50,7 @@ const Login = () => {
         <div css={styles.rightSideContainer}>
           <h1 css={styles.h1}>Giriş</h1>
           <p css={styles.p}>Tekrar hoşgeldiniz, Lütfen hesabınızla giriş yapın.</p>
+          {errorMessage && <Alert message={errorMessage} type="error" />}
           <Form
             name="basic"
             layout="vertical"
@@ -71,7 +79,7 @@ const Login = () => {
             </Form.Item>
 
             <Form.Item>
-              <Button loading={loading} disabled={loading} type="primary" htmlType="submit">
+              <Button loading={!!loading} disabled={!!loading} type="primary" htmlType="submit">
                 Giriş
               </Button>
             </Form.Item>

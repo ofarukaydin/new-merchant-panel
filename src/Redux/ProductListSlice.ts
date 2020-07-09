@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { sliceNames, thunkActionTypes } from 'Redux/Helpers/SliceTypes';
+import { createSlice } from '@reduxjs/toolkit';
 import { SearchParams } from 'Util/Types';
-import Api from 'Util/Api';
+import Api, { generateThunk } from 'Util/Api';
+import { thunkActionTypes, sliceNames } from 'Redux/Helpers/Enums';
 
 export interface IProductList {
   paginatedData: any;
@@ -24,18 +24,9 @@ const initialState: IProductList = {
   loading: false,
 };
 
-export const asyncGetProducts = createAsyncThunk(
+export const asyncGetProducts = generateThunk(
   thunkActionTypes.getProducts,
-  async (params: SearchParams, thunkAPI) => {
-    try {
-      const response = await Api.get('product/getproductfilterlist', {
-        params: { ...params, merchantBranchId: 1 },
-      });
-      return response.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue('rejected');
-    }
-  },
+  Api.v1ProductGetproductfilterlistList,
 );
 
 export const productListSlice = createSlice({
@@ -46,14 +37,13 @@ export const productListSlice = createSlice({
     builder.addCase(asyncGetProducts.fulfilled, (state, action) => {
       state.loading = false;
       state.paginatedData = action.payload.response;
-      state.totalCount = action.payload.totalCount;
+      state.totalCount = action.payload.totalCount!;
     });
     builder.addCase(asyncGetProducts.rejected, (state, action) => {
       state.loading = false;
     });
     builder.addCase(asyncGetProducts.pending, (state, action) => {
       state.loading = true;
-      state.params = action.meta.arg;
     });
   },
 });

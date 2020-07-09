@@ -21,3 +21,10 @@ export const isoToLocalDate = (dateString: string) => {
 
   return new Intl.DateTimeFormat('tr-TR', options).format(date);
 };
+
+export const getHeadersForFetch = () => ({
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});

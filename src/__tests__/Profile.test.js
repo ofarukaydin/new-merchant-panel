@@ -5,6 +5,5 @@ import Profile from 'Components/Profile';
 test('renders learn react link', () => {
   const { getByText } = render(<Profile />);
   const textElement = getByText(/Customer Support/i);
-  console.log(textElement);
   expect(textElement).toBeDefined();
 });

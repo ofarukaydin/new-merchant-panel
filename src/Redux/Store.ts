@@ -1,20 +1,20 @@
 import { configureStore, ThunkAction, Action, getDefaultMiddleware } from '@reduxjs/toolkit';
 import productListSlice from 'Redux/ProductListSlice';
 import orderListSlice from 'Redux/OrderListSlice';
-
-import { sliceTypes } from './Helpers/SliceTypes';
+import authSlice from 'Redux/AuthSlice';
+import { sliceTypes } from './Helpers/Enums';
 import reactotron from 'Util/Config/Reactotron';
-import { addReducerToListReducer } from 'edkk-redux';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-const combinedReducers = addReducerToListReducer({
+const reducers = {
+  [sliceTypes.auth]: authSlice,
   [sliceTypes.products]: productListSlice,
   [sliceTypes.orders]: orderListSlice,
-});
+};
 
 export const store = configureStore({
-  reducer: combinedReducers,
+  reducer: reducers,
   middleware: [...getDefaultMiddleware()],
   enhancers: (defaultEnhancers) =>
     (typeof reactotron.createEnhancer === 'function' && [
@@ -26,3 +26,4 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;
+export type AppDispatch = typeof store.dispatch;

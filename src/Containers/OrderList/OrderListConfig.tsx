@@ -1,6 +1,6 @@
 import React, { memo, ReactText, useState, useRef, ReactInstance } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { asyncGetOrders, asyncGetOrdersFake } from 'Redux/OrderListSlice';
+import { useDispatch } from 'react-redux';
+import { asyncGetOrders } from 'Redux/OrderListSlice';
 import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
@@ -15,6 +15,7 @@ import getOrderListColumns from 'Containers/OrderList/OrderListColumns';
 import CustomHeader from 'Containers/OrderList/CustomHeader';
 import SideDrawer from 'Containers/OrderList/SideDrawer';
 import { OrderResponseDTO } from 'Redux/Helpers/ApiTypes';
+import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 
 class EmptyComponent extends React.Component {
   render() {
@@ -28,22 +29,14 @@ const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const [drawerData, setDrawerData] = useState<OrderResponseDTO>({});
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const paginatedData: any = useSelector(paginatedDataSelector);
-  const totalRecords: number = useSelector(totalRecordsSelector);
-  const loading: boolean = useSelector(loadingSelector);
+  const paginatedData = useTypedSelector(paginatedDataSelector) ?? [];
+  const totalRecords = useTypedSelector(totalRecordsSelector);
+  const loading = useTypedSelector(loadingSelector);
 
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
     dispatch(asyncGetOrders(mutatedParams));
-  }, [mutatedParams]);
-
-  useDeepCompareEffect(() => {
-    const timer = setInterval(() => {
-      dispatch(asyncGetOrdersFake(mutatedParams));
-    }, 4000);
-
-    return () => clearTimeout(timer);
   }, [mutatedParams]);
 
   const handleChange = (

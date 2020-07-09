@@ -670,12 +670,39 @@ export interface SearchOrderRequestDTO {
   orderDir?: string | null;
 }
 
-export interface OrderResponseDTOPagingOperationResultDTO {
+export interface OrderSearchResponseDTO {
+  id?: number;
+  userId?: number;
+  customer?: string | null;
+  orderDate?: string;
+  orderNumber?: string | null;
+  deliveryType?: string | null;
+  deliveryStartDate?: string;
+  deliveryEndDate?: string;
+  deliveryDate?: string | null;
+  amount?: number;
+  totalAmount?: number;
+  shippingPrice?: number;
+  notes?: string | null;
+  merchantBranchId?: number;
+  orderStatus?: string | null;
+  statusDescription?: string | null;
+  lastStatusBysUser?: string | null;
+  carrierId?: number;
+  orderAddress?: string | null;
+  products?: OrderProductItemListDTO[] | null | null;
+}
+
+export interface OrderSearchResponseDTOPagingOperationDTO {
   totalCount?: number;
   pageIndex?: number;
   pageSize?: number;
   pageCount?: number;
-  response?: OrderResponseDTO[] | null | null;
+  data?: OrderSearchResponseDTO[] | null | null;
+}
+
+export interface OrderSearchResponseDTOPagingOperationDTOOperationResultDTO {
+  response?: OrderSearchResponseDTOPagingOperationDTO | null;
   result?: boolean;
   messages?: OperationResultMessage[] | null | null;
 }
@@ -751,8 +778,6 @@ export interface CarrierOrderListItemOperationResultDTO {
   result?: boolean;
   messages?: OperationResultMessage[] | null | null;
 }
-
-export type OrderDir = 0 | 1;
 
 export interface ProductItemListDTO {
   productItemId?: number;
@@ -1771,7 +1796,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
      * @secure
      */
     v1OrderSearchorderasyncCreate: (data: SearchOrderRequestDTO, params?: RequestParams) =>
-      this.request<OrderResponseDTOPagingOperationResultDTO, any>(
+      this.request<OrderSearchResponseDTOPagingOperationDTOOperationResultDTO, any>(
         `/api/v1/order/searchorderasync`,
         "POST",
         params,
@@ -1857,7 +1882,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
         PageIndex?: number;
         PageSize?: number;
         OrderBy?: string;
-        OrderDirEn?: OrderDir;
+        OrderDir?: string;
       },
       params?: RequestParams,
     ) =>
@@ -1883,7 +1908,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
         PageIndex?: number;
         PageSize?: number;
         OrderBy?: string;
-        OrderDirEn?: OrderDir;
+        OrderDir?: string;
       },
       params?: RequestParams,
     ) =>
@@ -1925,7 +1950,7 @@ export class Api<SecurityDataType = any> extends HttpClient<SecurityDataType> {
         PageIndex?: number;
         PageSize?: number;
         OrderBy?: string;
-        OrderDirEn?: OrderDir;
+        OrderDir?: string;
       },
       params?: RequestParams,
     ) =>

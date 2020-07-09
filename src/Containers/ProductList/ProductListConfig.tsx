@@ -1,7 +1,7 @@
 import React, { memo, ReactText } from 'react';
 import getProductListColumns from 'Containers/ProductList/ProductListColumns';
 import CustomHeader from 'Containers/ProductList/CustomHeader';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { asyncGetProducts } from 'Redux/ProductListSlice';
 import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -13,18 +13,20 @@ import {
 import { navigateTo } from 'Util/Util';
 import { SearchParams } from 'Util/Types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
+import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
 
 const ProductListConfig = ({ params }: { params: SearchParams }) => {
   const dispatch = useDispatch();
 
-  const paginatedData: any = useSelector(paginatedDataSelector);
-  const totalRecords: number = useSelector(totalRecordsSelector);
-  const loading: boolean = useSelector(loadingSelector);
+  const paginatedData = useTypedSelector(paginatedDataSelector);
+  const totalRecords = useTypedSelector(totalRecordsSelector);
+  const loading = useTypedSelector(loadingSelector);
 
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
-    dispatch(asyncGetProducts(mutatedParams));
+    /*     dispatch(asyncGetProducts(mutatedParams));
+     */
   }, [mutatedParams]);
 
   const handleSearch = (searchValue: string) => {

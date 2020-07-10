@@ -10,7 +10,7 @@
       "name": "Launch Chrome against localhost",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}",
-      "runtimeExecutable": "/usr/bin/chromium"
+      "runtimeExecutable": "/opt/google/chrome/chrome"
     }
   ]
 }

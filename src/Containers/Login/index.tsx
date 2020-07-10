@@ -2,24 +2,27 @@ import React, { useEffect } from 'react';
 import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import loginImg from 'Assets/login.png';
 import { useDispatch } from 'react-redux';
-import { login } from 'Util/Auth';
-import history from 'Util/History';
+import { login } from 'Util/auth';
+import { history } from 'Util/history';
 import { CSSObject } from '@emotion/core';
-import ThemeConfig from 'Util/ThemeConfig';
-import { verifyUser } from 'Redux/AuthSlice';
-import { AppDispatch } from 'Redux/Store';
-import { sliceTypes } from 'Redux/Helpers/Enums';
-import { useTypedSelector } from 'Redux/Helpers/HelperTypes';
+import { ThemeConfig } from 'Util/theme-config';
+import { verifyUser } from 'Redux/auth-slice';
+import { AppDispatch } from 'Redux/store';
+import { SliceTypes } from 'Util/enums';
+import { useTypedSelector } from 'Util/types';
+import { ValidateUserRequestDTO } from 'Redux/Helpers/api-types';
 
-const Login = () => {
+const onFinishFailed = (): void => {};
+
+export const Login = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
-  const token = useTypedSelector((state) => state[sliceTypes.auth].validateUser.response?.token);
-  const loading = useTypedSelector((state) => state[sliceTypes.auth].validateUser.loading);
+  const token = useTypedSelector((state) => state[SliceTypes.auth].validateUser.response?.token);
+  const loading = useTypedSelector((state) => state[SliceTypes.auth].validateUser.loading);
 
   const errorMessage = useTypedSelector((state) =>
-    state[sliceTypes.auth].validateUser.messages
-      ? state[sliceTypes.auth].validateUser.messages![0].message
-      : null,
+    state[SliceTypes.auth].validateUser.messages
+      ? state[SliceTypes.auth].validateUser.messages![0].message
+      : undefined,
   );
 
   useEffect(() => {
@@ -29,7 +32,8 @@ const Login = () => {
     }
   }, [token]);
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: ValidateUserRequestDTO): void => {
+    console.log(values, 'values');
     dispatch(
       verifyUser({
         username: values.username,
@@ -37,10 +41,6 @@ const Login = () => {
         userTypeId: 3,
       }),
     );
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
   };
 
   return (
@@ -96,29 +96,27 @@ const styles: CSSObject = {
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    backgroundColor: ThemeConfig.color.gray500,
+    backgroundColor: ThemeConfig.Color.gray500,
   },
   cardContainer: {
     display: 'flex',
-    color: ThemeConfig.color.black,
-    backgroundColor: ThemeConfig.color.white,
-    borderRadius: ThemeConfig.borderRadius.default,
-    boxShadow: ThemeConfig.boxShadow.lg,
+    color: ThemeConfig.Color.black,
+    backgroundColor: ThemeConfig.Color.white,
+    borderRadius: ThemeConfig.BorderRadius.default,
+    boxShadow: ThemeConfig.BoxShadow.lg,
   },
   rightSideContainer: {
-    marginBottom: ThemeConfig.spacing[2],
-    marginTop: ThemeConfig.spacing[2],
-    marginLeft: ThemeConfig.spacing[8],
-    marginRight: ThemeConfig.spacing[8],
+    marginBottom: ThemeConfig.Spacing[2],
+    marginTop: ThemeConfig.Spacing[2],
+    marginLeft: ThemeConfig.Spacing[8],
+    marginRight: ThemeConfig.Spacing[8],
   },
   h1: {
-    fontSize: ThemeConfig.fontSize['2xl'],
-    fontWeight: ThemeConfig.fontWeight.bold,
+    fontSize: ThemeConfig.FontSize['2xl'],
+    fontWeight: ThemeConfig.FontWeight.bold,
   },
   p: {
-    marginBottom: ThemeConfig.spacing[2],
-    marginTop: ThemeConfig.spacing[2],
+    marginBottom: ThemeConfig.Spacing[2],
+    marginTop: ThemeConfig.Spacing[2],
   },
 };
-
-export default Login;

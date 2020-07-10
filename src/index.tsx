@@ -1,19 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { store } from 'Redux/Store';
+import { store } from 'Redux/store';
 import { Provider } from 'react-redux';
-import App from './App';
 import { ConfigProvider } from 'antd';
 import trTR from 'antd/es/locale/tr_TR';
+import { App } from './app';
+
 import './index.less';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ConfigProvider locale={trTR}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ConfigProvider>
-  </React.StrictMode>,
-  document.getElementById('root'),
+  <ConfigProvider locale={trTR}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ConfigProvider>,
+  document.querySelector('#root'),
 );

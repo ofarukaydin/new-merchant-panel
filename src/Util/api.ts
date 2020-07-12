@@ -1,5 +1,4 @@
 import { getHeadersForFetch } from 'Util/util';
-import { RootState } from 'Redux/store';
 import { createAsyncThunk, AsyncThunk } from '@reduxjs/toolkit';
 import { RequestParams, OperationResultDTO, Api as ApiClass } from 'Redux/Helpers/api-types';
 
@@ -35,16 +34,14 @@ export const generateThunk = <RequestDTO, ResponseDTO extends OperationResultDTO
     }
   >(actionType, async (data, thunkAPI) => {
     try {
-      console.log('header', getHeadersForFetch(), actionType);
-      const response = await fetchFn(data, getHeadersForFetch());
+      const response = await fetchFn(data ?? (getHeadersForFetch() as any), getHeadersForFetch());
 
       if (!response.result) {
         return thunkAPI.rejectWithValue(response);
       }
 
       return response;
-    } catch (error) {
-      console.log(error, 'errorMsg');
+    } catch {
       const constructedErrorMessage = {
         result: false,
         messages: [{ code: '600', message: 'Bir hata oluştu' }],

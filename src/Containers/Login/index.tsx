@@ -33,7 +33,6 @@ export const Login = (): JSX.Element => {
   }, [token]);
 
   const onFinish = (values: ValidateUserRequestDTO): void => {
-    console.log(values, 'values');
     dispatch(
       verifyUser({
         username: values.username,

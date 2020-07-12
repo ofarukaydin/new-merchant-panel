@@ -3,7 +3,7 @@ import { ProductListConfig } from 'Containers/ProductList/config';
 import { Row, Col } from 'antd';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
-import { SearchParams, ProductSearchQueryParams } from 'Util/types';
+import { ProductSearchQueryParams } from 'Util/types';
 
 export const ProductListView = (): JSX.Element => {
   const location = useLocation();

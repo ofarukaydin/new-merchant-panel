@@ -23,7 +23,9 @@ export const isoToLocalDate = (dateString: string): string => {
   return new Intl.DateTimeFormat('tr-TR', options).format(date);
 };
 
-export const getHeadersForFetch = (): {
+export const getHeadersForFetch = (
+  token?: string | null | undefined,
+): {
   credentials: 'same-origin' | 'include' | 'omit' | undefined;
   headers: {
     'Content-Type': string;
@@ -45,7 +47,7 @@ export const getHeadersForFetch = (): {
   credentials: 'same-origin',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${token || localStorage.getItem('token') || ''}`,
   },
   redirect: 'follow',
   referrerPolicy: 'no-referrer',

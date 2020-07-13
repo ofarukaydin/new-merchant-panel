@@ -23,16 +23,16 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "reduxypat": "^1.0.6",
     "typescript": "^3.9.6",
     "use-deep-compare-effect": "^1.3.1"
   },
   "scripts": {
-    "start": "npm run buildtypes & craco start",
+    "start": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "format": "prettier-eslint --write $PWD/'src/**/*.[jt]s?(x)' && eslint --fix .",
-    "buildtypes": "swagger-typescript-api -p https://edakik.azurewebsites.net/swagger/v1/swagger.json -o ./src/Redux/Helpers -n api-types.ts --union-enums"
+    "format": "prettier-eslint --write $PWD/'src/**/*.[jt]s?(x)' && eslint --fix ."
   },
   "eslintConfig": {
     "extends": "react-app"

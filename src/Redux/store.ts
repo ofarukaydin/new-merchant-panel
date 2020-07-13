@@ -1,17 +1,10 @@
 import { configureStore, ThunkAction, Action, getDefaultMiddleware } from '@reduxjs/toolkit';
-import { productsSlice } from 'Redux/products-slice';
-import { ordersSlice } from 'Redux/orders-slice';
-import { authSlice } from 'Redux/auth-slice';
-import { SliceTypes } from 'Util/enums';
-import { statisticsSlice } from 'Redux/statistics-slice';
+import { Slices } from 'reduxypat';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const reducers = {
-  [SliceTypes.auth]: authSlice,
-  [SliceTypes.products]: productsSlice,
-  [SliceTypes.orders]: ordersSlice,
-  [SliceTypes.stats]: statisticsSlice,
+  ...Slices,
 };
 
 export const store = configureStore({

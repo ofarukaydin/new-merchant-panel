@@ -28,7 +28,6 @@ module.exports = {
   plugins: ['@typescript-eslint', 'eslint-comments', 'jest', 'promise', 'unicorn'],
   rules: {
     'no-console': ['error'],
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/destructuring-assignment': 0,
     'react/forbid-prop-types': 0,
     'react/state-in-constructor': 0,
@@ -46,11 +45,10 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'import/no-default-export': 'error',
     // Too restrictive: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/destructuring-assignment.md
-    'react/destructuring-assignment': 'off',
+    'react/destructuring-assignment': 'off', // Use function hoisting to improve code readability
     // No jsx extension: https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
-    'react/jsx-filename-extension': 'off',
-    // Use function hoisting to improve code readability
-    'no-use-before-define': 0,
+    /*     'react/jsx-filename-extension': 'off',
+     */ 'no-use-before-define': 0,
     // Makes no sense to allow type inferrence for expression parameters, but require typing the response
     '@typescript-eslint/explicit-function-return-type': [
       'error',
@@ -64,6 +62,7 @@ module.exports = {
       'error',
       { props: true, ignorePropertyModificationsForRegex: ['^state'] },
     ],
+    'import/no-cycle': 0,
   },
   settings: {
     'import/resolver': {

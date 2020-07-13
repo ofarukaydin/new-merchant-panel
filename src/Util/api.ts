@@ -1,6 +1,7 @@
 import { getHeadersForFetch } from 'Util/util';
 import { createAsyncThunk, AsyncThunk } from '@reduxjs/toolkit';
 import { RequestParams, OperationResultDTO, Api as ApiClass } from 'Redux/Helpers/api-types';
+import { RootState } from 'Redux/store';
 
 export const ApiInstance = new ApiClass({
   baseUrl: process.env.REACT_APP_BACKEND_API_URL,
@@ -34,7 +35,13 @@ export const generateThunk = <RequestDTO, ResponseDTO extends OperationResultDTO
     }
   >(actionType, async (data, thunkAPI) => {
     try {
-      const response = await fetchFn(data ?? (getHeadersForFetch() as any), getHeadersForFetch());
+      const state = thunkAPI.getState() as RootState;
+      const { token } = state.auth.validateUser.response;
+
+      const response = await fetchFn(
+        data ?? (getHeadersForFetch(token) as any),
+        getHeadersForFetch(token),
+      );
 
       if (!response.result) {
         return thunkAPI.rejectWithValue(response);

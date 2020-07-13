@@ -13,16 +13,18 @@ import {
 import { StatisticsCard } from 'Components/statistics-card';
 import { CSSObject } from '@emotion/core';
 import { ThemeConfig } from 'Util/theme-config';
-import { getStats } from 'Redux/statistics-slice';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from 'Util/types';
+import { Actions } from 'reduxypat';
 
 export const Dashboard = (): JSX.Element => {
   const dispatch = useDispatch();
-  const statisticsData = useTypedSelector((state) => state.stats.getMerchantBranchSummary.response);
+  const statisticsData = useTypedSelector(
+    (state) => state.orders.getMerchantBranchSummary.response,
+  );
 
   useEffect(() => {
-    dispatch(getStats());
+    dispatch(Actions.Order.getStats());
   }, [dispatch]);
 
   return (

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { asyncGetOrders } from 'Redux/orders-slice';
 import { Api } from 'Util/api';
 import { notification, Popconfirm, Button, Space } from 'antd';
 import { SearchParams, useTypedSelector } from 'Util/types';
@@ -9,6 +8,7 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { SliceTypes, OrderStatus } from 'Util/enums';
 import { RootState } from 'Redux/store';
 import { OrderResponseDTO } from 'Redux/Helpers/api-types';
+import { Actions } from 'reduxypat';
 
 type PropTypes = {
   record: OrderResponseDTO;
@@ -48,7 +48,7 @@ export const OrderActionsComponent = (props: PropTypes): JSX.Element => {
           });
         }
 
-        return dispatch(asyncGetOrders(props.params));
+        return dispatch(Actions.Order.asyncGetOrders(props.params));
       })
       .catch(() => {
         props.closeDrawer && props.closeDrawer();

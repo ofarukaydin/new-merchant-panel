@@ -6,11 +6,11 @@ import { login } from 'Util/auth';
 import { history } from 'Util/history';
 import { CSSObject } from '@emotion/core';
 import { ThemeConfig } from 'Util/theme-config';
-import { verifyUser } from 'Redux/auth-slice';
 import { AppDispatch } from 'Redux/store';
 import { SliceTypes } from 'Util/enums';
 import { useTypedSelector } from 'Util/types';
 import { ValidateUserRequestDTO } from 'Redux/Helpers/api-types';
+import { Actions } from 'reduxypat';
 
 const onFinishFailed = (): void => {};
 
@@ -34,7 +34,7 @@ export const Login = (): JSX.Element => {
 
   const onFinish = (values: ValidateUserRequestDTO): void => {
     dispatch(
-      verifyUser({
+      Actions.Auth.verifyUser({
         username: values.username,
         password: values.password,
         userTypeId: 3,

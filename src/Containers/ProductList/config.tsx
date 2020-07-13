@@ -1,6 +1,5 @@
 import React, { ReactText } from 'react';
 import { useDispatch } from 'react-redux';
-import { asyncGetProducts } from 'Redux/products-slice';
 import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
@@ -13,6 +12,7 @@ import { useTypedSelector, ProductSearchQueryParams } from 'Util/types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
 import { CustomHeader } from 'Containers/ProductList/header-container';
 import { baseProductListColumns } from 'Containers/ProductList/columns';
+import { Actions } from 'reduxypat';
 
 type PropTypes = {
   params: ProductSearchQueryParams;
@@ -28,7 +28,7 @@ export const ProductListConfig = ({ params }: PropTypes): JSX.Element => {
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
-    dispatch(asyncGetProducts(mutatedParams));
+    dispatch(Actions.Product.asyncGetProducts(mutatedParams));
   }, [mutatedParams]);
 
   const handleSearch = (searchValue: string): void => {

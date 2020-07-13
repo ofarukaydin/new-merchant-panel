@@ -1,20 +1,20 @@
 import { decode } from 'jsonwebtoken';
 import { store } from 'Redux/store';
 import { history } from 'Util/history';
-import { setToken, getUserDetails } from 'Redux/auth-slice';
+import { Actions } from 'reduxypat';
 
 export const logout = (): void => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationDate');
-  store.dispatch(setToken(undefined));
+  store.dispatch(Actions.Auth.setToken(undefined));
   history.push('/login');
 };
 
 export const login = (token: string, configObj?: { loginWithLocalStorage: boolean }): void => {
   const decodedToken = decode(token);
   if (configObj?.loginWithLocalStorage) {
-    store.dispatch(setToken(token));
-    store.dispatch(getUserDetails());
+    store.dispatch(Actions.Auth.setToken(token));
+    store.dispatch(Actions.Auth.getUserDetails());
   } else {
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', decodedToken?.exp);

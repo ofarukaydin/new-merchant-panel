@@ -1,6 +1,5 @@
 import React, { ReactText, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { asyncGetOrders, asyncGetOrdersFake } from 'Redux/orders-slice';
 import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {
@@ -15,6 +14,7 @@ import { SideDrawer } from 'Containers/OrderList/drawer';
 import { CustomHeader } from 'Containers/OrderList/header-container';
 import { getOrderListColumns } from 'Containers/OrderList/columns';
 import { OrderResponseDTO } from 'Redux/Helpers/api-types';
+import { Actions } from 'reduxypat';
 
 export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Element => {
   const dispatch = useDispatch();
@@ -29,12 +29,12 @@ export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Eleme
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
-    dispatch(asyncGetOrders(mutatedParams));
+    dispatch(Actions.Order.asyncGetOrders(mutatedParams));
   }, [mutatedParams]);
 
   useDeepCompareEffect(() => {
     const timer = setInterval(() => {
-      dispatch(asyncGetOrdersFake(mutatedParams));
+      dispatch(Actions.Order.asyncGetOrdersFake(mutatedParams));
     }, 4000);
 
     return () => clearTimeout(timer);

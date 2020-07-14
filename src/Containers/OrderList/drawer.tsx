@@ -1,5 +1,4 @@
 import React from 'react';
-import { OrderResponseDTO } from 'Redux/Helpers/api-types';
 import { Drawer } from 'antd';
 import { CSSObject } from '@emotion/core';
 import PrintComponents from 'react-print-components';
@@ -8,6 +7,7 @@ import { OrderedProductsList } from 'Containers/OrderList/ordered-list';
 import { PrintOrderedProducts } from 'Containers/OrderList/print-products';
 import { OrderActionsComponent } from 'Containers/OrderList/action-component';
 import { SearchParams } from 'Util/types';
+import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 type PropTypes = {
   orderData: OrderResponseDTO;
@@ -16,7 +16,7 @@ type PropTypes = {
   params: SearchParams;
 };
 
-export const SideDrawer = (props: PropTypes) => {
+export const SideDrawer = (props: PropTypes): JSX.Element => {
   const { orderData } = props;
 
   return (

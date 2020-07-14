@@ -6,15 +6,15 @@ import { Actions } from 'reduxypat';
 export const logout = (): void => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationDate');
-  store.dispatch(Actions.Auth.setToken(undefined));
+  store.dispatch(Actions.auth.setToken(undefined));
   history.push('/login');
 };
 
 export const login = (token: string, configObj?: { loginWithLocalStorage: boolean }): void => {
   const decodedToken = decode(token);
   if (configObj?.loginWithLocalStorage) {
-    store.dispatch(Actions.Auth.setToken(token));
-    store.dispatch(Actions.Auth.getUserDetails());
+    store.dispatch(Actions.auth.setToken(token));
+    store.dispatch(Actions.auth.getUserDetails());
   } else {
     localStorage.setItem('token', token);
     localStorage.setItem('expirationDate', decodedToken?.exp);

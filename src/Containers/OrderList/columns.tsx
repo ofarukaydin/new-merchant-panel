@@ -7,8 +7,8 @@ import { ThemeConfig } from 'Util/theme-config';
 import { CSSObject } from '@emotion/core';
 import { Tag, Button } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
-import { OrderResponseDTO } from 'Redux/Helpers/api-types';
 import { OrderActionsComponent } from 'Containers/OrderList/action-component';
+import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 export function getOrderListColumns(
   params: SearchParams,

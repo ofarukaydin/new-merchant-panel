@@ -1,8 +1,8 @@
 import React from 'react';
-import { OrderResponseDTO } from 'Redux/Helpers/api-types';
 import { ThemeConfig } from 'Util/theme-config';
 import { CSSObject } from '@emotion/core';
 import { Space, Divider } from 'antd';
+import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 type PropTypes = { showImage?: boolean; orderData: OrderResponseDTO };
 

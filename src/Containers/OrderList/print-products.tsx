@@ -1,10 +1,10 @@
 import React from 'react';
-import { OrderResponseDTO } from 'Redux/Helpers/api-types';
 import { CSSObject } from '@emotion/core';
 import { ThemeConfig } from 'Util/theme-config';
 import { isoToLocalDate } from 'Util/util';
 import { Space } from 'antd';
 import { Logo } from 'Components/logo';
+import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 type PropTypes = { orderData: OrderResponseDTO };
 

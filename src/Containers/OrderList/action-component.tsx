@@ -1,14 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Api } from 'Util/api';
 import { notification, Popconfirm, Button, Space } from 'antd';
 import { SearchParams, useTypedSelector } from 'Util/types';
 import { CSSObject } from '@emotion/core';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { SliceTypes, OrderStatus } from 'Util/enums';
+import { OrderStatus } from 'Util/enums';
 import { RootState } from 'Redux/store';
-import { OrderResponseDTO } from 'Redux/Helpers/api-types';
 import { Actions } from 'reduxypat';
+import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
+import { Api } from 'reduxypat/lib/Api/api';
 
 type PropTypes = {
   record: OrderResponseDTO;
@@ -29,9 +29,7 @@ const getButtonText = (page: SearchParams['page']): string | undefined => {
 export const OrderActionsComponent = (props: PropTypes): JSX.Element => {
   const dispatch = useDispatch();
 
-  const loading = useTypedSelector(
-    (state: RootState) => state[SliceTypes.orders].searchOrderAsync.loading,
-  );
+  const loading = useTypedSelector((state: RootState) => state.orders.searchOrderAsync.loading);
 
   const changeOrderStatusTo = (status: keyof typeof OrderStatus): void => {
     Api.v1OrderUpdateorderstatusasyncCreate({ orderId: props.record.id, orderStatus: status })
@@ -48,7 +46,7 @@ export const OrderActionsComponent = (props: PropTypes): JSX.Element => {
           });
         }
 
-        return dispatch(Actions.Order.asyncGetOrders(props.params));
+        return dispatch(Actions.orders.searchOrderAsync(props.params));
       })
       .catch(() => {
         props.closeDrawer && props.closeDrawer();

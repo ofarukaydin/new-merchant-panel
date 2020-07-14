@@ -24,7 +24,7 @@ export const Dashboard = (): JSX.Element => {
   );
 
   useEffect(() => {
-    dispatch(Actions.Order.getStats());
+    dispatch(Actions.orders.getMerchantBranchSummary());
   }, [dispatch]);
 
   return (

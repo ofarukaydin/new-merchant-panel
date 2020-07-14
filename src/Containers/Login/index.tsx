@@ -7,22 +7,19 @@ import { history } from 'Util/history';
 import { CSSObject } from '@emotion/core';
 import { ThemeConfig } from 'Util/theme-config';
 import { AppDispatch } from 'Redux/store';
-import { SliceTypes } from 'Util/enums';
 import { useTypedSelector } from 'Util/types';
-import { ValidateUserRequestDTO } from 'Redux/Helpers/api-types';
 import { Actions } from 'reduxypat';
+import { ValidateUserRequestDTO } from 'reduxypat/lib/Api/api-types';
 
 const onFinishFailed = (): void => {};
 
 export const Login = (): JSX.Element => {
   const dispatch: AppDispatch = useDispatch();
-  const token = useTypedSelector((state) => state[SliceTypes.auth].validateUser.response?.token);
-  const loading = useTypedSelector((state) => state[SliceTypes.auth].validateUser.loading);
+  const token = useTypedSelector((state) => state.auth.validateUser.response?.token);
+  const loading = useTypedSelector((state) => state.auth.validateUser.loading);
 
   const errorMessage = useTypedSelector((state) =>
-    state[SliceTypes.auth].validateUser.messages
-      ? state[SliceTypes.auth].validateUser.messages![0].message
-      : undefined,
+    state.auth.validateUser.messages ? state.auth.validateUser.messages![0].message : undefined,
   );
 
   useEffect(() => {
@@ -34,7 +31,7 @@ export const Login = (): JSX.Element => {
 
   const onFinish = (values: ValidateUserRequestDTO): void => {
     dispatch(
-      Actions.Auth.verifyUser({
+      Actions.auth.verifyUser({
         username: values.username,
         password: values.password,
         userTypeId: 3,

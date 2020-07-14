@@ -3,7 +3,7 @@ import { ColumnProps } from 'antd/lib/table';
 import { CSSObject } from '@emotion/core';
 import { ThemeConfig } from 'Util/theme-config';
 import { Tag } from 'antd';
-import { ProductFilterResponseDTO } from 'Redux/Helpers/api-types';
+import { ProductFilterResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 const styles: CSSObject = {
   price: {

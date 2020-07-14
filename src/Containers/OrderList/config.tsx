@@ -2,19 +2,15 @@ import React, { ReactText, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import {
-  totalRecordsSelector,
-  paginatedDataSelector,
-  loadingSelector,
-} from 'Containers/OrderList/selectors';
+
 import { navigateTo } from 'Util/util';
 import { SearchParams, useTypedSelector } from 'Util/types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
 import { SideDrawer } from 'Containers/OrderList/drawer';
 import { CustomHeader } from 'Containers/OrderList/header-container';
 import { getOrderListColumns } from 'Containers/OrderList/columns';
-import { OrderResponseDTO } from 'Redux/Helpers/api-types';
-import { Actions } from 'reduxypat';
+import { Actions, Selectors } from 'reduxypat';
+import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Element => {
   const dispatch = useDispatch();
@@ -22,19 +18,17 @@ export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Eleme
   const [drawerData, setDrawerData] = useState<OrderResponseDTO>({});
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const paginatedData = useTypedSelector(paginatedDataSelector) ?? [];
-  const totalRecords = useTypedSelector(totalRecordsSelector);
-  const loading = useTypedSelector(loadingSelector);
+  const orderTableData = useTypedSelector(Selectors.orders.orderTableSelector);
 
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
-    dispatch(Actions.Order.asyncGetOrders(mutatedParams));
+    dispatch(Actions.orders.searchOrderAsync(mutatedParams));
   }, [mutatedParams]);
 
   useDeepCompareEffect(() => {
     const timer = setInterval(() => {
-      dispatch(Actions.Order.asyncGetOrdersFake(mutatedParams));
+      dispatch(Actions.orders.searchOrderAsync(mutatedParams));
     }, 4000);
 
     return () => clearTimeout(timer);
@@ -76,11 +70,11 @@ export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Eleme
         onChange={handleChange}
         columns={getOrderListColumns(params, openDrawerWith)}
         rowKey={(row) => row.id!}
-        dataSource={paginatedData}
-        loading={loading}
+        dataSource={orderTableData.response?.data || []}
+        loading={orderTableData.loading}
         pagination={{
           pageSize: mutatedParams.pageSize,
-          total: totalRecords,
+          total: orderTableData.response?.totalCount,
           current: mutatedParams.pageIndex,
         }}
       />

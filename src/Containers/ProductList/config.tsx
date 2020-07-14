@@ -2,17 +2,12 @@ import React, { ReactText } from 'react';
 import { useDispatch } from 'react-redux';
 import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import {
-  totalRecordsSelector,
-  paginatedDataSelector,
-  loadingSelector,
-} from 'Containers/ProductList/selectors';
 import { navigateTo } from 'Util/util';
 import { useTypedSelector, ProductSearchQueryParams } from 'Util/types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
 import { CustomHeader } from 'Containers/ProductList/header-container';
 import { baseProductListColumns } from 'Containers/ProductList/columns';
-import { Actions } from 'reduxypat';
+import { Actions, Selectors } from 'reduxypat';
 
 type PropTypes = {
   params: ProductSearchQueryParams;
@@ -21,14 +16,12 @@ type PropTypes = {
 export const ProductListConfig = ({ params }: PropTypes): JSX.Element => {
   const dispatch = useDispatch();
 
-  const paginatedData = useTypedSelector(paginatedDataSelector) ?? [];
-  const totalRecords = useTypedSelector(totalRecordsSelector);
-  const loading = useTypedSelector(loadingSelector);
+  const productTableSelector = useTypedSelector(Selectors.products.productTableSelector);
 
   const mutatedParams = { ...params };
 
   useDeepCompareEffect(() => {
-    dispatch(Actions.Product.asyncGetProducts(mutatedParams));
+    dispatch(Actions.products.getProductFilterList(mutatedParams));
   }, [mutatedParams]);
 
   const handleSearch = (searchValue: string): void => {
@@ -56,11 +49,11 @@ export const ProductListConfig = ({ params }: PropTypes): JSX.Element => {
         onChange={handleChange}
         columns={baseProductListColumns}
         rowKey={(row) => row.productId!}
-        dataSource={paginatedData}
-        loading={loading}
+        dataSource={productTableSelector.response?.data || []}
+        loading={productTableSelector.loading}
         pagination={{
           pageSize: mutatedParams.pageSize,
-          total: totalRecords,
+          total: productTableSelector.response?.totalCount,
           current: mutatedParams.pageIndex,
         }}
       />

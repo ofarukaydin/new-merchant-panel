@@ -14,7 +14,7 @@ export const OrderListView = (): JSX.Element => {
     pageIndex: 1,
     pageSize: 10,
     searchValue: '',
-    orderDir: 'descend',
+    orderDir: 'DESCEND',
     orderBy: 'orderDate',
   };
 

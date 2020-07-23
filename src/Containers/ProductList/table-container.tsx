@@ -14,7 +14,7 @@ export const ProductListView = (): JSX.Element => {
     pageIndex: 1,
     pageSize: 10,
     searchValue: '',
-    orderDir: '',
+    orderDir: undefined,
     orderBy: '',
   };
 

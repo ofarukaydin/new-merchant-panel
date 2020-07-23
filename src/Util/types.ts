@@ -14,5 +14,5 @@ export type ProductSearchQueryParams = {
   pageIndex?: number;
   pageSize?: number;
   orderBy?: string;
-  orderDir?: string;
+  orderDir?: 'ASCEND' | 'DESCEND' | undefined;
 };

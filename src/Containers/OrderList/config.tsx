@@ -28,7 +28,7 @@ export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Eleme
 
   useDeepCompareEffect(() => {
     const timer = setInterval(() => {
-      dispatch(Actions.orders.searchOrderAsync(mutatedParams));
+      dispatch(Actions.orders.searchOrderAsyncFake(mutatedParams));
     }, 4000);
 
     return () => clearTimeout(timer);

@@ -6,7 +6,7 @@ import { CSSObject } from '@emotion/core';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { OrderStatus } from 'Util/enums';
 import { RootState } from 'Redux/store';
-import { Actions, withAuth } from 'reduxypat';
+import { Actions } from 'reduxypat';
 import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
 import { Api } from 'reduxypat/lib/Api/api';
 
@@ -32,7 +32,7 @@ export const OrderActionsComponent = (props: PropTypes): JSX.Element => {
   const loading = useTypedSelector((state: RootState) => state.orders.searchOrderAsync.loading);
 
   const changeOrderStatusTo = (status: keyof typeof OrderStatus): void => {
-    withAuth(Api.v1OrderUpdateorderstatusasyncCreate, {
+    Api.v1OrderUpdateorderstatusasyncCreate({
       orderId: props.record.id,
       orderStatus: status,
     })

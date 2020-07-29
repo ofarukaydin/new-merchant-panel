@@ -10736,10 +10736,10 @@ redux@^4.0.0:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
 
-reduxypat@1.0.18:
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/reduxypat/-/reduxypat-1.0.18.tgz#f700cd92bd69ba8d0670b2555ba3f22da5db7269"
-  integrity sha512-5SZqZj7IyBK0+a+SznXyAMZQBWgiV3Zm9WSeWq64KpsGHHjMnJWZv1LswmE0xRvrYBQuxQufm13ZvHYFMYVXkg==
+reduxypat@1.0.19:
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/reduxypat/-/reduxypat-1.0.19.tgz#fbbf60295e9ef449a5ce7c554398644eef8baada"
+  integrity sha512-OBoQbXW2yBchVtxygnQ158lcx60vqCjbjSJ2XxgNEwFUQdxvjD4W02HwI1a4zxDCzHyIWcUDSSJgTdKJL8DsiA==
   dependencies:
     "@reduxjs/toolkit" "^1.4.0"
     "@types/node" "^14.0.22"

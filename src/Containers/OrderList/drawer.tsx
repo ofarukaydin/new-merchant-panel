@@ -36,7 +36,7 @@ export const SideDrawer = (props: PropTypes): JSX.Element => {
       title={
         <div css={styles.header}>
           <div>Sipariş Detayı</div>
-          <PrintComponents trigger={<PrinterOutlined ref={clickRef} />}>
+          <PrintComponents trigger={<PrinterOutlined css={styles.printIcon} ref={clickRef} />}>
             <PrintOrderedProducts orderData={orderData} />
           </PrintComponents>
         </div>
@@ -64,4 +64,5 @@ const styles: CSSObject = {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  printIcon: { fontSize: 20 },
 };

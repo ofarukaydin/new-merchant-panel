@@ -6,7 +6,6 @@ import {
   ThunderboltOutlined,
   RollbackOutlined,
   StopOutlined,
-  InfoCircleOutlined,
   ClockCircleOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
@@ -64,7 +63,7 @@ export const Dashboard = (): JSX.Element => {
         </Col>
       </Row>
       <h1 css={styles.h1}>Müşteri Talepleri</h1>
-      <Row gutter={[24, 24]} justify="space-between">
+      <Row gutter={[24, 24]}>
         <Col xs={24} md={12} lg={6}>
           <StatisticsCard title="İade" value={0} icon={<RollbackOutlined />} />
         </Col>
@@ -73,13 +72,13 @@ export const Dashboard = (): JSX.Element => {
           <StatisticsCard title="Eksik/Hatalı Ürün" value={0} icon={<StopOutlined />} />
         </Col>
 
-        <Col xs={24} md={12} lg={6}>
+        {/*         <Col xs={24} md={12} lg={6}>
           <StatisticsCard title="Aksiyon Bekliyor" value={0} icon={<ClockCircleOutlined />} />
         </Col>
 
         <Col xs={24} md={12} lg={6}>
           <StatisticsCard title="İhtilaflı" value={0} icon={<InfoCircleOutlined />} />
-        </Col>
+        </Col> */}
       </Row>
 
       <h1 css={styles.h1}>Günlük İstatistikler</h1>

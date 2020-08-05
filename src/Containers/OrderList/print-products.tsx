@@ -4,9 +4,9 @@ import { ThemeConfig } from 'Util/theme-config';
 import { isoToLocalDate } from 'Util/util';
 import { Space } from 'antd';
 import { Logo } from 'Components/logo';
-import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
+import { OrderSearchResponseDTO } from 'reduxypat/lib/Api/api-types';
 
-type PropTypes = { orderData: OrderResponseDTO };
+type PropTypes = { orderData: OrderSearchResponseDTO };
 
 export const PrintOrderedProducts = (props: PropTypes): JSX.Element => {
   return (
@@ -27,7 +27,7 @@ export const PrintOrderedProducts = (props: PropTypes): JSX.Element => {
               <div>Müşteri: {props.orderData.customer}</div>
               <div>Sipariş No: {props.orderData.orderNumber}</div>
               <div>Ödeme Şekli: Kapıda Kredi Kartı</div>
-              <div>Adres: {props.orderData.fullAddress}</div>
+              <div>Adres: {props.orderData.orderAddress}</div>
             </div>
           </Space>
         </div>

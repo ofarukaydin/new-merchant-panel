@@ -1,6 +1,6 @@
 import React from 'react';
 import { isoToLocalDate } from 'Util/util';
-import { SearchParams } from 'Util/types';
+import { OrderSearchQueryParams } from 'Util/types';
 import { OrderStatusColors, OrderStatus } from 'Util/enums';
 import { ColumnProps } from 'antd/lib/table';
 import { ThemeConfig } from 'Util/theme-config';
@@ -8,18 +8,18 @@ import { CSSObject } from '@emotion/core';
 import { Tag, Button } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { OrderActionsComponent } from 'Containers/OrderList/action-component';
-import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
+import { OrderSearchResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 export function getOrderListColumns(
-  params: SearchParams,
-  openDrawerWith: (arg: OrderResponseDTO) => void,
-): Array<ColumnProps<OrderResponseDTO>> {
-  const baseOrderListColumns: Array<ColumnProps<OrderResponseDTO>> = [
+  params: OrderSearchQueryParams,
+  openDrawerWith: (arg: OrderSearchResponseDTO) => void,
+): Array<ColumnProps<OrderSearchResponseDTO>> {
+  const baseOrderListColumns: Array<ColumnProps<OrderSearchResponseDTO>> = [
     {
       title: 'Sipariş Tarihi',
       dataIndex: 'orderDate',
       sorter: true,
-      render: (orderDate: OrderResponseDTO['orderDate']) => isoToLocalDate(orderDate || ''),
+      render: (orderDate: OrderSearchResponseDTO['orderDate']) => isoToLocalDate(orderDate || ''),
     },
     {
       title: 'Sipariş Numarası',
@@ -51,7 +51,7 @@ export function getOrderListColumns(
       title: 'Sipariş Detayı',
       dataIndex: 'products',
       sorter: false,
-      render: (_, record: OrderResponseDTO): JSX.Element => {
+      render: (_, record: OrderSearchResponseDTO): JSX.Element => {
         return <Button onClick={() => openDrawerWith(record)}>Sipariş Detayı</Button>;
       },
     },
@@ -63,7 +63,7 @@ export function getOrderListColumns(
       dataIndex: 'notes',
       sorter: true,
     });
-  } else if (params.page === 'newOrders' || params.page === 'preparing') {
+  } else if (params.page === 'preparing') {
     baseOrderListColumns.push({
       title: 'İşlemler',
       dataIndex: 'actions',

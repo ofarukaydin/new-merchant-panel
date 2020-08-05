@@ -1,8 +1,8 @@
 import { history } from 'Util/history';
 import queryString from 'query-string';
-import { SearchParams } from 'Util/types';
+import { OrderSearchQueryParams } from 'Util/types';
 
-export const navigateTo = (pathname: string, navigationParams: SearchParams): void => {
+export const navigateTo = (pathname: string, navigationParams: OrderSearchQueryParams): void => {
   history.push({
     pathname,
     search: queryString.stringify(navigationParams),

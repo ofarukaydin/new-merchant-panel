@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Drawer } from 'antd';
 import { CSSObject } from '@emotion/core';
 import PrintComponents from 'react-print-components';
@@ -6,18 +6,25 @@ import { PrinterOutlined } from '@ant-design/icons';
 import { OrderedProductsList } from 'Containers/OrderList/ordered-list';
 import { PrintOrderedProducts } from 'Containers/OrderList/print-products';
 import { OrderActionsComponent } from 'Containers/OrderList/action-component';
-import { SearchParams } from 'Util/types';
-import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
+import { OrderSearchQueryParams } from 'Util/types';
+import { OrderSearchResponseDTO } from 'reduxypat/lib/Api/api-types';
 
 type PropTypes = {
-  orderData: OrderResponseDTO;
+  orderData: OrderSearchResponseDTO;
   onClose: () => void;
   visible: boolean;
-  params: SearchParams;
+  params: OrderSearchQueryParams;
 };
 
 export const SideDrawer = (props: PropTypes): JSX.Element => {
   const { orderData } = props;
+  const clickRef = useRef<HTMLSpanElement | null>(null);
+
+  const openPrintPage = (): void => {
+    if (clickRef) {
+      clickRef.current?.click();
+    }
+  };
 
   return (
     <Drawer
@@ -29,7 +36,7 @@ export const SideDrawer = (props: PropTypes): JSX.Element => {
       title={
         <div css={styles.header}>
           <div>Sipariş Detayı</div>
-          <PrintComponents trigger={<PrinterOutlined />}>
+          <PrintComponents trigger={<PrinterOutlined ref={clickRef} />}>
             <PrintOrderedProducts orderData={orderData} />
           </PrintComponents>
         </div>
@@ -40,6 +47,7 @@ export const SideDrawer = (props: PropTypes): JSX.Element => {
             closeDrawer={props.onClose}
             record={props.orderData}
             params={props.params}
+            openPrintPage={openPrintPage}
           />
         )
       }

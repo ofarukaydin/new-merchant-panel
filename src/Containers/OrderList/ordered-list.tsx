@@ -2,9 +2,9 @@ import React from 'react';
 import { ThemeConfig } from 'Util/theme-config';
 import { CSSObject } from '@emotion/core';
 import { Space, Divider } from 'antd';
-import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
+import { OrderSearchResponseDTO } from 'reduxypat/lib/Api/api-types';
 
-type PropTypes = { showImage?: boolean; orderData: OrderResponseDTO };
+type PropTypes = { showImage?: boolean; orderData: OrderSearchResponseDTO };
 
 export const OrderedProductsList = (props: PropTypes): JSX.Element => {
   const products =

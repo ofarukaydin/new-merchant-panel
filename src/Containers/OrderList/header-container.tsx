@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchParams } from 'Util/types';
+import { OrderSearchQueryParams } from 'Util/types';
 import { ShippingStageHeader } from 'Containers/OrderList/header-shipping-stage';
 import { CSSObject } from '@emotion/core';
 import { ThemeConfig } from 'Util/theme-config';
@@ -8,7 +8,7 @@ import { CancelledOrdersHeader } from 'Containers/OrderList/header-cancelled-ord
 
 type PropTypes = {
   handleSearch: (value: string) => void;
-  params: SearchParams;
+  params: OrderSearchQueryParams;
 };
 
 export const CustomHeader = ({ handleSearch, params }: PropTypes): JSX.Element => {

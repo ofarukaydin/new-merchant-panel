@@ -4,18 +4,18 @@ import { Table } from 'antd';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { navigateTo } from 'Util/util';
-import { SearchParams, useTypedSelector } from 'Util/types';
+import { OrderSearchQueryParams, useTypedSelector } from 'Util/types';
 import { TablePaginationConfig } from 'antd/lib/table/interface';
 import { SideDrawer } from 'Containers/OrderList/drawer';
 import { CustomHeader } from 'Containers/OrderList/header-container';
 import { getOrderListColumns } from 'Containers/OrderList/columns';
 import { Actions, Selectors } from 'reduxypat';
-import { OrderResponseDTO } from 'reduxypat/lib/Api/api-types';
+import { OrderSearchResponseDTO } from 'reduxypat/lib/Api/api-types';
 
-export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Element => {
+export const OrderlistConfig = ({ params }: { params: OrderSearchQueryParams }): JSX.Element => {
   const dispatch = useDispatch();
 
-  const [drawerData, setDrawerData] = useState<OrderResponseDTO>({});
+  const [drawerData, setDrawerData] = useState<OrderSearchResponseDTO>({});
   const [showDrawer, setShowDrawer] = useState(false);
 
   const orderTableData = useTypedSelector(Selectors.orders.orderTableSelector);
@@ -52,7 +52,7 @@ export const OrderlistConfig = ({ params }: { params: SearchParams }): JSX.Eleme
     navigateTo('/orders', mutatedParams);
   };
 
-  const openDrawerWith = (orderData: OrderResponseDTO): void => {
+  const openDrawerWith = (orderData: OrderSearchResponseDTO): void => {
     setDrawerData(orderData);
     setShowDrawer(true);
   };

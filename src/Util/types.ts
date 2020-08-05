@@ -2,7 +2,7 @@ import { TypedUseSelectorHook, useSelector } from 'react-redux';
 import { RootState } from 'Redux/store';
 import { SearchOrderRequestDTO } from 'reduxypat/lib/Api/api-types';
 
-export interface SearchParams extends SearchOrderRequestDTO {
+export interface OrderSearchQueryParams extends SearchOrderRequestDTO {
   page?: 'shippingStage' | 'cancelledOrders' | 'refundedOrders' | 'newOrders' | 'preparing';
 }
 
@@ -14,5 +14,5 @@ export type ProductSearchQueryParams = {
   pageIndex?: number;
   pageSize?: number;
   orderBy?: string;
-  orderDir?: 'ASCEND' | 'DESCEND' | undefined;
+  orderDir?: 'ASCEND' | 'DESCEND';
 };

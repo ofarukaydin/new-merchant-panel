@@ -21,9 +21,8 @@ export const SideDrawer = (props: PropTypes): JSX.Element => {
   const clickRef = useRef<HTMLSpanElement | null>(null);
 
   const openPrintPage = (): void => {
-    if (clickRef) {
-      clickRef.current?.click();
-    }
+    clickRef?.current?.click();
+    props.onClose();
   };
 
   return (

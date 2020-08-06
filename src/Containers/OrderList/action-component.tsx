@@ -45,7 +45,8 @@ export const OrderActionsComponent = (props: PropTypes): JSX.Element => {
             message: 'Başarılı',
             description: `Sipariş "${OrderStatus[status]}" durumuna geçirildi.`,
           });
-          if (props.openPrintPage && props.params.page === 'newOrders') props.openPrintPage();
+          if (status === 'PREPARING' && props.openPrintPage && props.params.page === 'newOrders')
+            props.openPrintPage();
         } else {
           notification.error({
             message: 'Başarısız',
